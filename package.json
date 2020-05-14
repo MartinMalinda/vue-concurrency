@@ -8,7 +8,7 @@
   "scripts": {
     "build": "microbundle",
     "dev": "microbundle watch",
-    "test": "npm run test"
+    "test": "jest"
   },
   "keywords": [
     "vue",
