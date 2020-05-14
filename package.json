@@ -1,0 +1,20 @@
+{
+  "name": "vue-concurrency",
+  "version": "0.0.0",
+  "description": "A library for encapsulating asynchronous operations and managing concurrency for Vue + Composition API",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "keywords": [
+    "vue",
+    "composition api",
+    "vuejs",
+    "concurrency",
+    "task",
+    "async",
+    "hooks"
+  ],
+  "author": "Martin Malinda",
+  "license": "MIT"
+}
