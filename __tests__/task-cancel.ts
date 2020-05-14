@@ -1,5 +1,4 @@
 import { waitFor } from "@testing-library/vue";
-import flushPromises from "flush-promises";
 import useTask from "../src/Task";
 import { mockSetup } from "./task";
 

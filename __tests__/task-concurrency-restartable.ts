@@ -1,11 +1,11 @@
-import { waitFor } from '@testing-library/vue';
-import useTask, { Task } from '../Task';
-import { TaskInstance } from '../TaskInstance';
-import { mockSetup } from './task';
-import { timeout } from './task-cancel';
+import { waitFor } from "@testing-library/vue";
+import useTask, { Task } from "../src/Task";
+import { TaskInstance } from "../src/TaskInstance";
+import { mockSetup } from "./task";
+import { timeout } from "./task-cancel";
 
 export function performNTimes(
-  task: Task<any>
+  task: Task<any, any>
 ): (n: number) => TaskInstance<any>[] {
   return (n: number) => {
     return Array.from(Array(n)).map((_, index) => {
@@ -14,22 +14,22 @@ export function performNTimes(
   };
 }
 
-export function perform3x(task: Task<any>) {
+export function perform3x(task: Task<any, any>) {
   return performNTimes(task)(3);
 }
 
-describe('useTask | restartable task', () => {
-  test('runs the first task instance right away', async () => {
+describe("useTask | restartable task", () => {
+  test("runs the first task instance right away", async () => {
     await mockSetup(() => {
-      const task = useTask(function*() {}).restartable();
+      const task = useTask(function* () {}).restartable();
       const taskInstance = task.perform();
       expect(taskInstance.isRunning).toBe(true);
     });
   });
 
-  test('cancels first running task when the task is performed again', async () => {
+  test("cancels first running task when the task is performed again", async () => {
     await mockSetup(async () => {
-      const task = useTask(function*() {
+      const task = useTask(function* () {
         yield timeout(10);
       }).restartable();
       const taskInstance1 = task.perform();
@@ -43,9 +43,9 @@ describe('useTask | restartable task', () => {
     });
   });
 
-  test('cancels first running task when maxConcurrency is reached', async () => {
+  test("cancels first running task when maxConcurrency is reached", async () => {
     await mockSetup(async () => {
-      const task = useTask(function*() {
+      const task = useTask(function* () {
         yield timeout(50);
       })
         .restartable()
