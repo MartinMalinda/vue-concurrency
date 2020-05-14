@@ -2,8 +2,12 @@
   "name": "vue-concurrency",
   "version": "0.0.0",
   "description": "A library for encapsulating asynchronous operations and managing concurrency for Vue + Composition API",
-  "main": "index.js",
+  "source": "src/foo.ts",
+  "module": "dist/foo.module.js",
+  "main": "dist/index.js",
   "scripts": {
+    "build": "microbundle",
+    "dev": "microbundle watch",
     "test": "npm run test"
   },
   "keywords": [
@@ -18,13 +22,14 @@
   "author": "Martin Malinda",
   "license": "MIT",
   "devDependencies": {
-    "rollup": "^2.10.0",
-    "rollup-plugin-terser": "^5.3.0",
-    "rollup-plugin-typescript2": "^0.27.1",
+    "@vue/composition-api": "^0.5.0",
+    "caf": "^9.0.0",
+    "microbundle": "^0.12.0",
     "typescript": "^3.9.2",
     "vue": "^2.6.11"
   },
   "peerDependencies": {
-    "@vue/composition-api": "^2.2.1"
+    "@vue/composition-api": "^0.5.0",
+    "caf": "^9.0.0"
   }
 }
