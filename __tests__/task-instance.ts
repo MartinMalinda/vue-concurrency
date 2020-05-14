@@ -4,7 +4,7 @@ import { mockSetup } from "./task";
 describe("useTask | task instance", () => {
   test("has right value after finishing", async () => {
     await mockSetup(async () => {
-      const task = useTask<string>(function* () {
+      const task = useTask(function* () {
         return "foo";
       });
       const taskInstance = task.perform();
@@ -19,7 +19,7 @@ describe("useTask | task instance", () => {
   test("has right error after finishing", async () => {
     const error = new Error("woah");
     await mockSetup(async () => {
-      const taskInstance = useTask<void>(function* () {
+      const taskInstance = useTask(function* () {
         throw error;
       }).perform();
       try {
