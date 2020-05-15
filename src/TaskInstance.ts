@@ -84,17 +84,23 @@ export default function createTaskInstance<T>(
         [t.isRunning, "running"],
         [t.isEnqueued, "enqueued"],
         [t.isCanceled, "canceled"],
+        [t.isCancelling, "cancelling"],
         [t.isDropped, "dropped"],
         [t.isError, "error"],
         [t.isFinished, "finished"],
       ].find(([cond]) => cond) as [boolean, string];
-      return match[1];
+      return match && match[1];
     }),
 
     error: null,
     value: null,
     cancel() {
       taskInstance.isCancelling = true;
+
+      if (taskInstance.isEnqueued) {
+        taskInstance.isFinished = true;
+      }
+
       taskInstance.isEnqueued = false;
 
       if (taskInstance.token) {
@@ -154,8 +160,8 @@ function runTaskInstance<T>(
   params: any[],
   options: TaskInstanceOptions
 ): void {
-  const token = new CAF.cancelToken();
-  const cancelable = CAF(cb, token);
+  const token = new (CAF as any).cancelToken();
+  const cancelable = (CAF as any)(cb, token);
   taskInstance.token = token;
 
   taskInstance.hasStarted = true;
