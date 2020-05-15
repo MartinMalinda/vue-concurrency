@@ -2,8 +2,8 @@
   "name": "vue-concurrency",
   "version": "0.0.0",
   "description": "A library for encapsulating asynchronous operations and managing concurrency for Vue + Composition API",
-  "source": "src/foo.ts",
-  "module": "dist/foo.module.js",
+  "source": "src/index.ts",
+  "module": "dist/index.module.js",
   "main": "dist/index.js",
   "scripts": {
     "build": "microbundle",
