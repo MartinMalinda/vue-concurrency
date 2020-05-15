@@ -8,7 +8,9 @@
   "scripts": {
     "build": "microbundle",
     "dev": "microbundle watch",
-    "test": "jest"
+    "test": "jest",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
   },
   "keywords": [
     "vue",
@@ -32,7 +34,8 @@
     "ts-jest": "^25.5.1",
     "typescript": "^3.9.2",
     "vue": "^2.6.11",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "vuepress": "^1.5.0"
   },
   "peerDependencies": {
     "@vue/composition-api": "^0.5.0",
