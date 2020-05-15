@@ -1,13 +1,11 @@
 import CAF from "caf";
 import { computed } from "@vue/composition-api";
-import { TaskCb } from "./Task";
-import { _reactive, _reactiveContent } from "./utils";
+import { TaskCb, AbortSignalWithPromise } from "./Task";
+import { _reactive, _reactiveContent, DeferredObject, defer } from "./utils";
 
-type ThenCb<T> = (value: T) => any;
-type CatchCb = (reason: Error) => any;
 type onFulfilled<T> = ((value: T) => any) | null | undefined;
-type onRejected = ((reason: Error) => any) | null | undefined;
-export interface TaskInstance<T> {
+type onRejected = ((reason: any) => any) | null | undefined;
+export interface TaskInstance<T> extends PromiseLike<any> {
   id: number;
 
   // Lifecycle
@@ -26,6 +24,7 @@ export interface TaskInstance<T> {
 
   _run: () => void;
   cancel: () => void;
+  canceledOn: (signal: AbortSignalWithPromise) => TaskInstance<T>;
   token?: Record<string, any>;
 
   // Concurrency
@@ -37,9 +36,9 @@ export interface TaskInstance<T> {
   error: object | null;
 
   // Promise-like stuff
+  _shouldThrow: boolean;
+  _deferredObject: DeferredObject;
   _handled: boolean; // this is needed to set to true so that Vue does show error about unhandled rejection
-  _resolvers: ThenCb<T>[];
-  _rejecters: CatchCb[];
   then: (onfulfilled: onFulfilled<T>, onrejected?: onRejected) => any;
   catch: (onrejected?: onRejected) => any;
 }
@@ -102,6 +101,13 @@ export default function createTaskInstance<T>(
         taskInstance.token.abort("cancel");
       }
     },
+    canceledOn(signal: AbortSignalWithPromise) {
+      signal.pr.catch((e) => {
+        taskInstance.cancel();
+      });
+
+      return taskInstance;
+    },
     _run() {
       runTaskInstance(taskInstance, cb, params, options);
     },
@@ -110,22 +116,19 @@ export default function createTaskInstance<T>(
 
     // Workaround for Vue not to scream because of unhandled rejection. Task is always "handled" because the error is saved to taskInstance.error.
     _handled: true,
-    _resolvers: [],
-    _rejecters: [],
+    _deferredObject: defer(),
+    _shouldThrow: false, // task throws only if it's used promise-like way (then, catch, await)
     then(onFulfilled, onRejected) {
-      return promiseWrapAndPushCallbacks(taskInstance, onFulfilled, onRejected);
+      taskInstance._shouldThrow = true;
+      return taskInstance._deferredObject.promise.then(onFulfilled, onRejected);
     },
     catch(onRejected) {
-      return new Promise((resolve) => {
-        const resolveWrap = wrapCallback(resolve, onRejected);
-        // if the taskInstance already errored out, invoke the catch immediately
-        if (taskInstance.isError) {
-          resolveWrap(taskInstance.error);
-        } else {
-          // save for later invocation
-          taskInstance._rejecters.push(resolveWrap);
-        }
-      });
+      taskInstance._shouldThrow = true;
+      return taskInstance._deferredObject.promise.catch(onRejected);
+    },
+    finally(cb: () => any) {
+      taskInstance._shouldThrow = true;
+      return taskInstance._deferredObject.promise.finally(cb);
     },
   });
 
@@ -164,13 +167,14 @@ function runTaskInstance<T>(
     taskInstance.isFinished = true;
   }
 
-  cancelable(token, ...params)
+  cancelable
+    .call(taskInstance, token, ...params)
     .then((value) => {
       taskInstance.value = value;
       taskInstance.isSuccessful = true;
-      setFinished();
 
-      taskInstance._resolvers.forEach((resolveFn) => resolveFn(value));
+      setFinished();
+      taskInstance._deferredObject.resolve(value);
       options.onFinish(taskInstance);
     })
     .catch((e) => {
@@ -179,45 +183,9 @@ function runTaskInstance<T>(
       }
 
       setFinished();
-      taskInstance._rejecters.forEach((rejectFn) => rejectFn(e));
+      if (taskInstance._shouldThrow) {
+        taskInstance._deferredObject.reject(e);
+      }
       options.onFinish(taskInstance);
     });
-}
-
-function promiseWrapAndPushCallbacks(
-  taskInstance: TaskInstance<any>,
-  onFulfilled: onFulfilled<any>,
-  onRejected: onRejected
-) {
-  return new Promise((_resolve, _reject) => {
-    const resolveWrap = wrapCallback(_resolve, onFulfilled);
-    const rejectWrap = wrapCallback(_reject, onRejected);
-
-    // if the task is already error, reject immediately
-    if (taskInstance.isError) {
-      rejectWrap(taskInstance.error);
-      // if the task is already finished, resolve immediately
-    } else if (taskInstance.isFinished) {
-      resolveWrap(taskInstance.value);
-      // else save the callbacks to be invoked later (when the task finishes)
-    } else {
-      taskInstance._resolvers.push(resolveWrap);
-      taskInstance._rejecters.push(rejectWrap);
-    }
-  });
-}
-
-function wrapCallback(
-  promiseFn: Function,
-  consumerProvidedCb: onFulfilled<any> | onRejected
-) {
-  return (value) => {
-    if (consumerProvidedCb) {
-      // TODO: double check this. This wrapping might cause problems for async/await (especially catch)
-      // Maybe just use the forwarding to internal promise...
-      promiseFn(consumerProvidedCb(value));
-    } else {
-      promiseFn(value);
-    }
-  };
 }

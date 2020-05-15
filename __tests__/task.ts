@@ -1,7 +1,7 @@
 import { render } from "@testing-library/vue";
 import Vue from "vue";
-import useTask from "../src/Task";
 import { createComponentStub } from "../test-utils/components";
+import useTask from "../src/index";
 
 export const mockSetup = async (cb): Promise<void> => {
   let _setupPromiseResolve;
@@ -21,7 +21,7 @@ export const mockSetup = async (cb): Promise<void> => {
 describe("useTask | task with no instances", () => {
   test("isIdle if not performed", async () => {
     await mockSetup(() => {
-      const task = useTask(function* () {});
+      const task = useTask(function*() {});
       expect(task.isIdle).toBe(true);
       expect(task.isRunning).not.toBe(true);
     });
@@ -29,28 +29,28 @@ describe("useTask | task with no instances", () => {
 
   test("has performCount 0", async () => {
     await mockSetup(() => {
-      const task = useTask(function* () {});
+      const task = useTask(function*() {});
       expect(task.performCount).toBe(0);
     });
   });
 
   test("has `undefined` last (instance)", async () => {
     await mockSetup(() => {
-      const task = useTask(function* () {});
+      const task = useTask(function*() {});
       expect(task.last).toBe(undefined);
     });
   });
 
   test("has `undefined` lastSuccessful (instance)", async () => {
     await mockSetup(() => {
-      const task = useTask(function* () {});
+      const task = useTask(function*() {});
       expect(task.lastSuccessful).toBe(undefined);
     });
   });
 
   test("has `undefined` firstEnqueued (instance)", async () => {
     await mockSetup(() => {
-      const task = useTask(function* () {});
+      const task = useTask(function*() {});
       expect(task.firstEnqueued).toBe(undefined);
     });
   });

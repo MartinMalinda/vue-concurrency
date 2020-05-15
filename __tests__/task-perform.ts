@@ -5,7 +5,7 @@ import { mockSetup } from "./task";
 describe("useTask | task perform", () => {
   test("returns a task instance", async () => {
     await mockSetup(() => {
-      const task = useTask(function* () {});
+      const task = useTask(function*() {});
       const taskInstance = task.perform();
       expect(taskInstance.isRunning).toBe(true);
     });
@@ -13,7 +13,7 @@ describe("useTask | task perform", () => {
 
   test("task.isRunning is set back to false when all the instances finish", async () => {
     await mockSetup(async () => {
-      const waitTask = useTask(function* (signal, time) {
+      const waitTask = useTask(function*(signal, time) {
         yield timeout(time);
       });
       const taskInstance1 = waitTask.perform(5);
@@ -41,7 +41,7 @@ describe("useTask | task perform", () => {
 
   test("can be awaited", async () => {
     await mockSetup(async () => {
-      const task = useTask(function* () {
+      const task = useTask(function*() {
         return "foo";
       });
       const result = await task.perform();
@@ -51,7 +51,7 @@ describe("useTask | task perform", () => {
 
   test("can be used as a promise (then)", async () => {
     await mockSetup(async () => {
-      const task = useTask(function* () {
+      const task = useTask(function*() {
         return "foo";
       });
       const foo = await task.perform().then((taskInstanceValue) => {
@@ -64,7 +64,7 @@ describe("useTask | task perform", () => {
 
   test("can be used as a promise (then - chaining)", async () => {
     await mockSetup(async () => {
-      const task = useTask(function* () {
+      const task = useTask(function*() {
         return "foo";
       });
       const foo = await task
@@ -85,7 +85,7 @@ describe("useTask | task perform", () => {
     const error = new Error("Woah");
     let catchCbCalled = false;
     await mockSetup(async () => {
-      const task = useTask(function* () {
+      const task = useTask(function*() {
         throw error;
       });
       await task.perform().catch((caughtError) => {
@@ -101,7 +101,7 @@ describe("useTask | task perform", () => {
     const error = new Error("Woah");
     let catchCbCalled = false;
     await mockSetup(async () => {
-      const task = useTask(function* () {
+      const task = useTask(function*() {
         throw error;
       });
       await task
@@ -121,7 +121,7 @@ describe("useTask | task perform", () => {
 
   test("can be awaited when already whinished", async () => {
     await mockSetup(async () => {
-      const taskInstance = useTask(function* () {
+      const taskInstance = useTask(function*() {
         return "foo";
       }).perform();
 
@@ -135,7 +135,7 @@ describe("useTask | task perform", () => {
 
   test("makes performCount increase", async () => {
     await mockSetup(async () => {
-      const task = useTask(function* () {});
+      const task = useTask(function*() {});
       task.perform();
       task.perform();
 
@@ -145,7 +145,7 @@ describe("useTask | task perform", () => {
 
   test("allows last to be accessed", async () => {
     await mockSetup(async () => {
-      const task = useTask(function* () {});
+      const task = useTask(function*() {});
       task.perform();
       const taskInstance2 = task.perform();
       expect(task.last).toBe(taskInstance2);
@@ -154,7 +154,7 @@ describe("useTask | task perform", () => {
 
   test("allows lastSuccessful to be accessed", async () => {
     await mockSetup(async () => {
-      const task = useTask(function* () {});
+      const task = useTask(function*() {});
       task.perform();
       const taskInstance2 = task.perform();
       expect(task.lastSuccessful).toBe(undefined);
@@ -165,7 +165,7 @@ describe("useTask | task perform", () => {
 
   test("returns a taskInstance that isRunning", async () => {
     await mockSetup(async () => {
-      const task = useTask(function* () {});
+      const task = useTask(function*() {});
       const taskInstance = task.perform();
       expect(taskInstance.isRunning).toBe(true);
       expect(taskInstance.isFinished).toBe(false);
@@ -175,7 +175,7 @@ describe("useTask | task perform", () => {
   test("passes arguments to the generator function along with abort signal", async () => {
     let taskCallbackCalled = false;
     await mockSetup(async () => {
-      const task = useTask(function* (signal, argA, argB) {
+      const task = useTask(function*(signal, argA, argB) {
         taskCallbackCalled = true;
         expect(signal).toBeInstanceOf(AbortSignal);
         expect(argA).toBe("foo");

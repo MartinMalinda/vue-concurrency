@@ -16,7 +16,7 @@ import {
 } from "./utils";
 
 type MaybeRef<T> = T | Ref<T>;
-interface AbortSignalWithPromise extends AbortSignal {
+export interface AbortSignalWithPromise extends AbortSignal {
   pr: Promise<void>;
 }
 
@@ -62,6 +62,7 @@ export type Task<T, U extends any[]> = {
 };
 
 export type TaskCb<T, U extends any[]> = (
+  this: TaskInstance<T>,
   signal: AbortSignalWithPromise,
   ...params: U
 ) => Generator<unknown, T, unknown>;

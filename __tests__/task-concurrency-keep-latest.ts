@@ -6,7 +6,7 @@ import { performNTimes, perform3x } from "./task-concurrency-restartable";
 describe("useTask | keepLatest task", () => {
   test("runs the first task instance right away", async () => {
     await mockSetup(() => {
-      const task = useTask(function* () {}).keepLatest();
+      const task = useTask(function*() {}).keepLatest();
       const taskInstance = task.perform();
       expect(taskInstance.isRunning).toBe(true);
     });
@@ -14,7 +14,7 @@ describe("useTask | keepLatest task", () => {
 
   test("drop 2d and enqueues 3rd instance if the first one is running", async () => {
     await mockSetup(() => {
-      const task = useTask(function* () {}).keepLatest();
+      const task = useTask(function*() {}).keepLatest();
       const [instance1, instance2, instance3] = perform3x(task);
 
       expect(instance1.isRunning).toBe(true);
@@ -25,7 +25,7 @@ describe("useTask | keepLatest task", () => {
 
   test("runs the first enqueued task if the running task finishes", async () => {
     await mockSetup(async () => {
-      const task = useTask(function* () {
+      const task = useTask(function*() {
         yield timeout(15);
       }).keepLatest();
       const [instance1, instance2, instance3] = perform3x(task);
@@ -46,7 +46,7 @@ describe("useTask | keepLatest task", () => {
 
   test("runs the first enqueued tasks if the running task finishes (maxConcurrency)", async () => {
     await mockSetup(async () => {
-      const task = useTask(function* (_, index) {
+      const task = useTask(function*(_, index) {
         yield timeout(index * 15);
       })
         .keepLatest()

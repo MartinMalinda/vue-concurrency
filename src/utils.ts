@@ -91,3 +91,63 @@ export function _reactive<T>(obj: T) {
   // return obj as Reactive<T>;
   return reactive(obj) as T;
 }
+
+export type DeferredObject = {
+  promise: Promise<void>;
+  resolve: Function;
+  reject: Function;
+};
+export function defer(): DeferredObject {
+  const deferredObject: Record<string, any> = {};
+  const promise = new Promise((resolve, reject) => {
+    deferredObject.resolve = resolve;
+    deferredObject.reject = reject;
+  });
+  deferredObject.promise = promise;
+
+  return deferredObject as DeferredObject;
+}
+
+export function printTask(task: Task<any, any>) {
+  let taskType = "General";
+
+  if (task._isDropping) {
+    taskType = "Drop";
+  }
+
+  if (task._isEnqueuing) {
+    taskType = "Enqueue";
+  }
+
+  if (task._isRestartable) {
+    taskType = "Restartable";
+  }
+
+  if (task._isKeepingLatest) {
+    taskType = "KeepLatest";
+  }
+
+  let header = `${taskType} Task`;
+
+  if (taskType !== "General") {
+    header = `${header} with maxConcurrency ${task._maxConcurrency}`;
+  }
+
+  const instanceRows = task._instances.map((instance) => {
+    let colorEmoji;
+
+    if (instance.isSuccessful) {
+      colorEmoji = "🍏";
+    } else if (instance.isRunning || instance.isEnqueued) {
+      colorEmoji = "🍊";
+    } else if (instance.isError || instance.isCanceled || instance.isDropped) {
+      colorEmoji = "🔴";
+    }
+
+    const { status, value, error } = instance;
+    return { status: `${colorEmoji} ${status}`, value, error };
+  });
+
+  console.log(`🚦 ${header}`);
+  console.table(instanceRows);
+}
