@@ -28,7 +28,7 @@
   "author": "Martin Malinda",
   "license": "MIT",
   "dependencies": {
-    "caf": "^9.0.0"
+    "caf": "git+https://github.com/MartinMalinda/CAF.git"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.7.0",
@@ -47,6 +47,6 @@
   },
   "peerDependencies": {
     "@vue/composition-api": "^0.5.0",
-    "caf": "^9.0.0"
+    "caf": "git+https://github.com/MartinMalinda/CAF.git"
   }
 }
