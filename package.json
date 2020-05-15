@@ -5,8 +5,12 @@
   "source": "src/index.ts",
   "module": "dist/index.module.js",
   "main": "dist/index.js",
+  "files": [
+    "src",
+    "dist"
+  ],
   "scripts": {
-    "build": "microbundle",
+    "build": "microbundle build --tsconfig tsconfig.build.json",
     "dev": "microbundle watch",
     "test": "jest",
     "docs:dev": "vuepress dev docs",

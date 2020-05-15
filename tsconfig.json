@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "outDir": ".types",
     "target": "es5",
     "module": "esnext",
     "moduleResolution": "node",
