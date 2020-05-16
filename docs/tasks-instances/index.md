@@ -2,7 +2,7 @@
 
 When `useApi()` is called, the returned object is a `Task`. You can think of it as a wrapper over the generator function. Just like an async function can be called many times with different arguments and different results, so can `Task`. `Tasks` are performed and the result of that is `TaskInstance`. One `Task` can therefore have many TaskInstances. But as opposed to plain functions, Task is a reactive object and it is aware of all its TaskInstances.
 
-Task is running if at least on the TaskInstances is running. You can access `last` and `lastSuccessful` task instance.
+Among other things, Task is running if at least on the TaskInstances is running. You can access `last` and `lastSuccessful` task instance.
 
 ## Passing tasks
 

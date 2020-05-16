@@ -65,9 +65,9 @@ export default defineComponent({
 
 <template>
   <div>
-    <div v-if="getUsers.isRunning">Loading...</div>
-    <div v-else-if="getUsers.isError">
-      <p>{{ getUsers.last.error.message }}</p>
+    <div v-if="getUsersTask.isRunning">Loading...</div>
+    <div v-else-if="getUsersTask.isError">
+      <p>{{ getUsersTask.last.error.message }}</p>
       <button @click="getUsersTask.perform">Try again</button>
     </div>
     <!-- via `.last`, the last TaskInstance is accessed. -->
