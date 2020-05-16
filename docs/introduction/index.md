@@ -17,7 +17,7 @@ We often have to use techniques like debouncing, throttling. On the side, we oft
 ## More safety and less boilerplate with Tasks
 
 `vue-concurrency` introduce the concept of `Task` which encapsulates an asynchronous operation.
-You might think of a `Task` as a `Promise` and there's a big overlap, but `Task` provides much more features, while still staying relatively lightweight and simple.
+You might think of a `Task` as a `Promise` and there indeed is an overlap, but `Task` provides much more features, while still staying relatively lightweight and simple.
 
 `Task` has two fundamental qualities:
 

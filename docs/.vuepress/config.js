@@ -20,8 +20,8 @@ module.exports = {
         title: "Practice",
         collapsable: false,
         children: [
-          "/performing-tasks/",
           "/task-state/",
+          "/performing-tasks/",
           "/cancellation/",
           "/managing-concurrency/",
           "/awaiting-tasks/",

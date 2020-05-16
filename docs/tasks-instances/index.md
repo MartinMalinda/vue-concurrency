@@ -1,8 +1,15 @@
 # Tasks and Task Instances
 
-When `useApi()` is called, the returned object is a `Task`. You can think of it as a wrapper over the generator function. Just like an async function can be called many times with different arguments and different results, so can `Task`. `Tasks` are performed and the result of that is `TaskInstance`. One `Task` can therefore have many TaskInstances. But as opposed to plain functions, Task is a reactive object and it is aware of all its TaskInstances.
+`useTask()` returns a `Task`. You can think of it as a wrapper over the generator function. Just like an async function can be called many times with different arguments and different results, so can `Task`. `Tasks` are performed and the result of that is `TaskInstance`. One `Task` can therefore have many TaskInstances. But as opposed to plain functions, Task is a reactive object and it is aware of all its TaskInstances.
 
 Among other things, Task is running if at least on the TaskInstances is running. You can access `last` and `lastSuccessful` task instance.
+
+```ts
+const myTask = useTask(function*() {
+  const response = yield get("/api/users");
+  return response.data;
+});
+```
 
 ## Passing tasks
 
@@ -48,7 +55,7 @@ One way to solve this is to refactor with tasks:
 </div>
 ```
 
-In this case - `<Home>` is in control of data fetching. It can perform both tasks in parallel, or one after another. But the data fetching strategy can be changed without passing specific props and changing logic in different components. Both `<Feed>` and `<SuggestedProfiles>` are simple presentational components for which it's easy to write tests.
+In this case `<Home>` is in control of data fetching. It can perform both tasks in parallel, or one after another. But the data fetching strategy can be changed without passing specific props and changing logic in different components. Both `<Feed>` and `<SuggestedProfiles>` are simple presentational components for which it's easy to write tests.
 
 ## Generic task-aware components
 

@@ -11,14 +11,17 @@ export default defineComponent({
   props: {},
 
   setup() {
-    const task = useTask(function*(signal, time) {
-      const t0 = performance.now();
-      yield timeout(5000);
-      const t1 = performance.now();
-      return `finished in ${t1 - t0} miliseconds`;
-    })
-      .maxConcurrency(3)
-      .enqueue();
+    const task = useTask(function*() {
+      // wait some time to simulate a network request
+      yield timeout(Math.random() * 2000);
+
+      if (Math.random() < 0.5) {
+        // lets say the API is flaky and errors out often:
+        throw new Error(`Internal Server Error`);
+      }
+
+      return { name: "John", lastName: "Doe" };
+    });
 
     return {
       task
@@ -29,83 +32,73 @@ export default defineComponent({
 
 <template>
   <div>
-    task.performCount: {{ task.performCount }}
-    <br />
-    <button @click="task.perform">Perform</button>
-    <button @click="task.cancelAll">CancelAll</button>
-    <button @click="() => task._instances = []">Clear</button>
-    <br />
-    <br />
+    <pre class="language-ts">
+<code>// task state
+{
+  performCount: <span class="token number">{{ task.performCount }}</span>,
+  isIdle: <span class="token boolean">{{ task.isIdle }}</span>,
+  isRunning: <span class="token boolean">{{ task.isRunning }}</span>,
+  last: {{ task.last ? `{ status: "${task.last.status}", ... }`  : "undefined" }},
+  lastSuccessful: {{ task.lastSuccessful ? `{ status: "${task.lastSuccessful.status}", ... }` : "undefined" }}
+}</code></pre>
+    <div>
+      <button @click="task.perform">Perform</button>
+      <button @click="() => task._instances = []">Clear</button>
+    </div>
     <div
       :class="{
-        ['instance-row']: true,
-        [instance.status]: true
+      ['task-instance']: true,
+      [instance.status]: true
       }"
       v-for="instance in task._instances"
     >
-      <div class="timer" v-if="instance.isRunning" />
-      Instance {{instance.id}} : {{ instance.status }}
+      <pre class="language-ts"><code>{
+  status: <span class="token string">"{{ instance.status }}"</span>,
+  error: {{ instance.error && `Error { message: "${instance.error.message}" }` || "null" }},
+  value: {{ instance.value || "null" }},
+
+  hasStarted: <span
+  class="token boolean"
+>{{ instance.hasStarted }}</span>,
+  isRunning: <span class="token boolean">{{ instance.isRunning }}</span>,
+  isError: <span class="token boolean">{{ instance.isError }}</span>,
+  isCanceled: <span class="token boolean">{{ instance.isCanceled }}</span>,
+  isFinished: <span class="token boolean">{{ instance.isFinished }}</span>
+}</code></pre>
     </div>
   </div>
 </template>
 
 <style>
-.instance-row {
-  width: 400px;
-  padding: 5px 10px;
-  /* border: 2px solid black; */
-  position: relative;
-  overflow: hidden;
-
+.task-instance {
+  font-size: 14px;
+  opacity: 0;
+  animation: 0.3s appear forwards;
   transition: 0.3s all;
-  margin: 1px 0;
-  font-size: 12px;
 }
 
-.instance-row.enqueued {
-  background: #b6dce4;
+.task-instance pre[class*="language-"] {
+  background: #282c34cf;
 }
 
-.instance-row.running {
-  background: #f4d9aa;
-}
-
-.instance-row.cancelling,
-.instance-row.canceled {
-  background: pink;
-}
-
-.instance-row.error {
+.task-instance.error {
   background: red;
 }
 
-.instance-row.finished {
-  background: #78b078;
-  height: 0.3em;
-  padding-top: 0;
-  padding-bottom: 0;
-  color: transparent;
+.task-instance.running {
+  background: orange;
 }
 
-.timer {
-  position: absolute;
-  width: 0%;
-  height: 3px;
-  background: darkorange;
-  top: 0;
-  left: 0;
-  opacity: 0.5;
-
-  animation: 5s shrink forwards;
-  animation-timing-function: linear;
+.task-instance.finished {
+  background: green;
 }
 
-@keyframes shrink {
+@keyframes appear {
   0% {
-    width: 0%;
+    opacity: 0;
   }
   100% {
-    width: 100%;
+    opacity: 1;
   }
 }
 </style>
