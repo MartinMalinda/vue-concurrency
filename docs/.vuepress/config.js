@@ -1,6 +1,6 @@
 // .vuepress/config.js
 module.exports = {
-  title: "🚦vue-concurrency",
+  title: "🚦vue-concurrency (alpha)",
   description:
     "A library for encapsulating asynchronous operations and managing concurrency",
   themeConfig: {

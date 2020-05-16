@@ -45,6 +45,7 @@ export default defineComponent({
       <button @click="task.perform">Perform</button>
       <button @click="() => task._instances = []">Clear</button>
     </div>
+    <h4 v-if="task._instances.length">Instances:</h4>
     <div
       :class="{
       ['task-instance']: true,
