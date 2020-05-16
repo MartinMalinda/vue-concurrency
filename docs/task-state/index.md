@@ -1,3 +1,7 @@
+---
+sidebarDepth: 0
+---
+
 # Task State
 
 Tasks hold state about the asynchronous operations they encapsulate. Tasks derive state from the adherent task instances and task instances derive state from the progress of the underlying generator function.
@@ -6,20 +10,21 @@ Tasks hold state about the asynchronous operations they encapsulate. Tasks deriv
 
 `TaskInstance` on the other hand has a clear lifecycle:
 
-`isEnqueued`  
-`hasStarted`  
-`isRunning`  
-`isError`  
-`isCanceled`  
-`isFinished`  
-And some others.
+1. `hasStarted`
+2. `isRunning`
+3. `isError || is.Canceled || isFinished`
 
-Task Instances also hold
+Task Instances also hold...
 
 `error` = what has been thrown during the generator function call  
 `value` = what has been returned in the generator function call
 
 Most of these are frequently used both in templates and elsewhere.
+
+::: tip
+There's also more state connected to concurrency policies like `isEnqueued` or `isDropped`.  
+See [Managing Concurrency](/managing-concurrency/) for more details.
+:::
 
 ## Demo
 
@@ -27,13 +32,13 @@ Let's test a task like this one:
 
 ```ts
 const getUserTask = useTask(function*() {
+  // wait some time to simulate an async operation
+  yield timeout(2000);
+
   if (Math.random() < 0.5) {
     // lets say the API is flaky and errors out often:
     throw new Error(`Internal Server Error`);
   }
-
-  // wait 200ms to simulate a network request
-  yield timeout(2000);
 
   return { name: "John", lastName: "Doe" };
 });
