@@ -16,7 +16,7 @@ export default defineComponent({
 
     time: {
       type: Number,
-      default: 5000
+      default: 3000
     }
   },
 

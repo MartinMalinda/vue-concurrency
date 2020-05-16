@@ -1,1 +1,81 @@
+---
+sidebarDepth: 0
+---
+
 # Introduction
+
+`vue-concurrency` is a port of <a href="http://ember-concurrency.com/docs/introduction" target="_blank">ember-concurrency</a> and as such aims to solve the same are of problems. It's a library that has been widely popular in the ember community for years and that was proven to be easy to use in many applications in production. Vue's latest advances with Composition API allowed development of this port, keeping almost the same public API.
+
+Feel free to head over to the docs of <a href="http://ember-concurrency.com/docs/introduction" target="_blank">ember-concurrency</a> and read the theoretical introduction there or stay here for a shorter and briefer version.
+
+## The problem: defensive programming, race conditions
+
+Client side applications often have to deal with managing asynchronous operations. These can be asynchronous requests to the server, logic happening in the background and also reacting to user input in various forms - scrolling, navigating, interacting with form UI and so on. We also want to create more resilient UIs which means we want to retry AJAX called multiple times in case of a network fail, or we want to give the user an option to retry manually.
+
+We often have to use techniques like debouncing, throttling. On the side, we often resolve to a lot of defensive programming to do this safely and we set flags like `isSearching`, `isLoading`, `isError` by ourselves. Not only is this tedious to do over and over again, it also leaves space for bugs. Forgetting to set `isLoading` to `false` in some edgecase will leave the UI in loading state forever. Forgetting to turn off some background operation when user transitions to a different page can lead to nasty errors.
+
+## More safety and less boilerplate with Tasks
+
+`vue-concurrency` introduce the concept of `Task` which encapsulates an asynchronous operation.
+You might think of a `Task` as a `Promise` and there's a big overlap, but `Task` provides much more features, while still staying relatively lightweight and simple.
+
+`Task` has two fundamental qualities:
+
+- It has it's own derived state. `isIdle`, `isRunning`, `isError` and so on. There's no need to manage that yourself anymore.
+- It can be canceled. And it is cancelled automatically if the component where it is used has been unmounted.
+
+On top of that, it is possible to set a concurrency policy in a declarative way.  
+Handling form submission? Set the `Task` to `drop()` to prevent duplicate submissions.  
+Perfoming a search when user types into an input? Add a delay and set a task to `restartable()`.  
+The possibility to cancel a task allows you to solve some problems in straightforward way, such as starting an infinite loop and just cancelling it later when it is no longer needed to run.
+
+### Basic Example
+
+```vue
+<script lang="ts">
+import { defineComponent } from "@vue/composition-api";
+import useTask from "vue-concurrency";
+
+export default defineComponent({
+  setup() {
+    // Declaring a Task:
+    const getUsersTask = useTask(function*() {
+      /* Tasks use generators instead of async functions.
+      They can function effectively the same way as async functions,
+      writing yield instead of await,
+      but as opposed to Promises, they can be cancelled. */
+
+      // Using any promise-friendly ajax solution: axios, fetch...
+      // It should throw in case of an error response
+      const response = yield get("/api/users");
+
+      // What gets returned will end up on the task instance in `.value`
+      return serializeUsers(userData);
+    });
+
+    // This is a task for fetching data from the server, lets perform it right away
+    getUsersTask.perform();
+    // In case of saving a user, the `perform()` would happen later (after form submission)
+
+    // Pass the whole Task to the template
+    return { getUsersTask };
+  },
+});
+</script>
+
+<template>
+  <div>
+    <div v-if="getUsers.isRunning">Loading...</div>
+    <div v-else-if="getUsers.isError">
+      <p>{{ getUsers.last.error.message }}</p>
+      <button @click="getUsersTask.perform">Try again</button>
+    </div>
+    <!-- via `.last`, the last TaskInstance is accessed. -->
+    <div v-else v-for="user in getUsers.last.value">
+      {{ user.name }}
+    </div>
+  </div>
+</template>
+```
+
+So this is a quick peek on what `vue-concurrency` can do. For this usecase it would be also easy to use other solutions, such as a simple `usePromise`, `Suspense` as `<Await>` component. The benefit of a `Task` is that while staying relatively simple the usage can be extended for more advanced cases (chaining, handling concurrency). Tasks are also not strictly tied to the template so you can reuse the same concepts elsewhere than view logic. More on that later.

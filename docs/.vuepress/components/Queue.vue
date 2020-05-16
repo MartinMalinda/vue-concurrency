@@ -78,7 +78,8 @@ export default defineComponent({
 }
 
 .instance-row.finished {
-  background: #78b078;
+  background: #3daf7c;
+  color: white;
 
   animation: 0.3s minimize forwards;
   animation-delay: 2s;
@@ -99,7 +100,7 @@ export default defineComponent({
   left: 0;
   opacity: 0.5;
 
-  animation: 5s shrink forwards;
+  animation: 3s shrink forwards;
   animation-timing-function: linear;
 }
 
