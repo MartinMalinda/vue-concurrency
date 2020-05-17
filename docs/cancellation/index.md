@@ -104,7 +104,9 @@ const registerTask = useTask(function*(signal, { email, password }) {
 
 Now if that specific task instance of `registerTask` gets cancelled, both the particular instances `validateEmailTask` and `createUserTask` will get cancelled too.
 
-Generator functions also potentially allow to do this automatically, so this feature is planned for the next versions of `vue-concurrency`.
+::: tip
+`cancelOn()` is generally needed only when you deal with explicit cancelation (calling `cancel()`, `cancelAll()`) or when the task is `restartable()`. In the case of component unmounting, all the task instances are canceled on their own.
+:::
 
 ## Example
 

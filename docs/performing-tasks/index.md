@@ -4,7 +4,7 @@ sidebarDepth: 0
 
 # Performing Tasks
 
-Performing a task and creating a new task instance happens via calling `perform()`.
+Performing a task and creating a new task instance happens via calling `perform()`. This method takes a generator function that uses the `yield` syntax to pause executation on promises and promise-like objects till they resolve. Essentialy it works the same way as `async await` but with a possibiliy of cancellation. Generator functions don't work this way by default though, they only behave this way in tasks because they were instructed so by [CAF](https://github.com/getify/CAF).
 
 ```ts
 setup() {
