@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, ref } from "@vue/composition-api";
+import { defineComponent, ref, onMounted } from "@vue/composition-api";
 import useTask, { Task } from "../../../src/Task";
 
 function timeout(time) {
@@ -17,7 +17,9 @@ export default defineComponent({
       }
     });
 
-    updateTimeTask.perform();
+    onMounted(() => {
+      updateTimeTask.perform();
+    });
 
     return {
       time,
@@ -30,7 +32,7 @@ export default defineComponent({
 <template>
   <div>
     <br />
-    <div>The time is {{ time.toString().split(' ')[4] }}</div>
+    <div>The time is {{ time && time.toString().split(' ')[4] }}</div>
     <br />
     <button :disabled="updateTimeTask.isIdle" @click="updateTimeTask.cancelAll">Pause</button>
     <button :disabled="updateTimeTask.isRunning" @click="updateTimeTask.perform">Resume</button>
