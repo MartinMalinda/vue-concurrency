@@ -43,7 +43,7 @@ export default defineComponent({
     });
 
     const saveUserTask = useTask(function*(signal, userData, redirect) {
-      // Access userData and redirect from arguments
+      // Access userData and redirect from arguments 👆
       const response = yield post("/api/users", userData);
       if (redirect) {
         router.push({ path: "/" });
@@ -56,7 +56,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <!-- Pass arguments when performing -->
+  <!-- Pass arguments when performing 👇 -->
   <form @submit.prevent="() => saveUserTask.perform(formState, true)">
     <label for="email">Email:</label>
     <input id="email" v-model="formState.email" type="email" />

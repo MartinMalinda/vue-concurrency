@@ -22,9 +22,9 @@ module.exports = {
         children: [
           "/task-state/",
           "/performing-tasks/",
+          "/composing-tasks/",
           "/cancellation/",
           "/managing-concurrency/",
-          "/awaiting-tasks/",
           "/handling-errors/",
           "/testing/",
           "/typescript-support/",
