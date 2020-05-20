@@ -1,6 +1,6 @@
 {
   "name": "vue-concurrency",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A library for encapsulating asynchronous operations and managing concurrency for Vue + Composition API",
   "source": "src/index.ts",
   "module": "dist/index.module.js",
@@ -28,14 +28,13 @@
   "author": "Martin Malinda",
   "license": "MIT",
   "dependencies": {
-    "caf": "git+https://github.com/MartinMalinda/CAF.git"
+    "caf": "^9.0.0",
+    "@vue/composition-api": "^0.5.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.7.0",
     "@testing-library/vue": "^5.0.2",
     "@types/jest": "^25.2.2",
-    "@vue/composition-api": "^0.5.0",
-    "caf": "^9.0.0",
     "jest": "^26.0.1",
     "microbundle": "^0.12.0",
     "ts-jest": "^25.5.1",
@@ -47,6 +46,6 @@
   },
   "peerDependencies": {
     "@vue/composition-api": "^0.5.0",
-    "caf": "git+https://github.com/MartinMalinda/CAF.git"
+    "caf": "^9.0.0"
   }
 }
