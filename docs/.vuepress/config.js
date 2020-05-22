@@ -14,7 +14,7 @@ module.exports = {
       {
         title: "Theory",
         collapsable: false,
-        children: ["/introduction/", "/tasks-instances/"],
+        children: ["/installation/", "/introduction/", "/tasks-instances/"],
       },
       {
         title: "Practice",

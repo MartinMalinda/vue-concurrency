@@ -32,14 +32,14 @@ This means that errors thrown inside tasks are "safe" and they will not crash yo
 </template>
 ```
 
-## Network request errors
+## AJAX error responses
 
 When doing XHR/Fetch inside tasks it is important to make sure that an error is thrown when the response is not OK. That generally means throwing an error when the status code is 4XX, 5XX. [Axios](https://github.com/axios/axios) is doing that by default. [Fetch does not do that](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#Checking_that_the_fetch_was_successful), it only sets `response.ok` to false.
 
 The issue is described in this article:  
 [Fetch and errors](https://www.tjvantoll.com/2015/09/13/fetch-and-errors/)
 
-To make sure an error is throw, you can create a small wrapper function like this:
+To make sure an error is thrown, you can create a small wrapper function like this:
 
 ```ts
 function ajax(url, options) {
