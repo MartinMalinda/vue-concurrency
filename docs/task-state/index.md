@@ -49,5 +49,5 @@ const getUserTask = useTask(function*() {
 ::: warning
 Tasks and Task instances from vue-concurrency hold state but that does not mean it's a full-fledged state-management solution. Tasks hold state regarding asynchronous operations. They're not meant to be used as a data store or hold other application state (UI, Authentication...). Tasks are also bound to the component they exist on, so the state is short-lived.
 
-Unless your data flow is very straightforward, you might need a more generic state management library on the side, such as VueX, Pinia or others.
+Unless your data flow is very straightforward, you might need a more generic state management library on the side, such as VueX, Pinia, XState or others.
 :::

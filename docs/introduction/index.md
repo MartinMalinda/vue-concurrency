@@ -4,7 +4,7 @@ sidebarDepth: 0
 
 # Introduction
 
-`vue-concurrency` is a port of <a href="http://ember-concurrency.com/docs/introduction" target="_blank">ember-concurrency</a> and as such aims to solve the same are of problems. It's a library that has been widely popular in the ember community for years and that was proven to be easy to use in many applications in production. Vue's latest advances with Composition API allowed development of this port, keeping almost the same public API.
+`vue-concurrency` is a port of <a href="http://ember-concurrency.com/docs/introduction" target="_blank">ember-concurrency</a> and as such aims to solve the same area of problems. It's a library that has been widely popular in the ember community for years and that was proven to be easy to use in many applications in production. Vue's latest advances with Composition API allowed development of this port, keeping almost the same public API.
 
 Feel free to head over to the docs of <a href="http://ember-concurrency.com/docs/introduction" target="_blank">ember-concurrency</a> and read the theoretical introduction there or stay here for a shorter and briefer version.
 

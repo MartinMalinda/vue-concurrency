@@ -12,9 +12,9 @@ module.exports = {
     ],
     sidebar: [
       {
-        title: "Theory",
+        title: "",
         collapsable: false,
-        children: ["/installation/", "/introduction/", "/tasks-instances/"],
+        children: ["/introduction/", "/tasks-instances/", "/installation/"],
       },
       {
         title: "Practice",
