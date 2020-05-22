@@ -1,1 +1,1 @@
-# TypeScript Support
+# Using with TypeScript

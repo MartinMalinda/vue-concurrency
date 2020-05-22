@@ -1,3 +1,7 @@
+---
+sidebarDepth: 0
+---
+
 # Tasks and Task Instances
 
 `useTask()` returns a `Task`. You can think of it as a wrapper object over the generator function. Just like an async function can be called many times with different arguments and different results, so can `Task`. `Tasks` are performed and the result of that is a `TaskInstance`. One `Task` can therefore have many TaskInstances. But as opposed to plain functions, Task is a reactive object and it is aware of all its TaskInstances.
