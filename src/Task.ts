@@ -16,6 +16,10 @@ import {
 } from "./utils";
 
 type MaybeRef<T> = T | Ref<T>;
+type R<T> = T extends PromiseLike<infer U> ? U : T;
+export type YieldReturn<T> = T extends Task<infer U, any>
+  ? U
+  : R<ReturnType<T extends (...args: any) => any ? T : any>>;
 export interface AbortSignalWithPromise extends AbortSignal {
   pr: Promise<void>;
 }
@@ -65,7 +69,7 @@ export type TaskCb<T, U extends any[]> = (
   this: TaskInstance<T>,
   signal: AbortSignalWithPromise,
   ...params: U
-) => Generator<unknown, T, unknown>;
+) => Generator<any, T, any>;
 
 export default function useTask<T, U extends any[]>(
   cb: TaskCb<T, U>

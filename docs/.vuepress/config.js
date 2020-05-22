@@ -31,6 +31,16 @@ module.exports = {
         ],
       },
       {
+        title: "Examples",
+        collapsable: false,
+        children: [
+          // VueX
+          // Nuxt
+          // AsyncContent
+          // Metabolism game
+        ],
+      },
+      {
         title: "API overview",
         collapsable: false,
       },

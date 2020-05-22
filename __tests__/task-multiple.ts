@@ -1,5 +1,5 @@
 import { waitFor } from "@testing-library/vue";
-import useTask from "../src/Task";
+import useTask, { YieldReturn } from "../src/Task";
 import { mockSetup } from "./task";
 import { timeout } from "./task-cancel";
 
@@ -11,8 +11,9 @@ describe("useTask | multiple | task", () => {
         return "foo";
       });
       const mainTask = useTask(function*() {
-        const result = (yield childTask.perform()) as string;
-        return (result + (yield childTask.perform())) as string;
+        const a: YieldReturn<typeof childTask> = yield childTask.perform();
+        const b: YieldReturn<typeof childTask> = yield childTask.perform();
+        return a + b;
       });
 
       mainTask.perform();
