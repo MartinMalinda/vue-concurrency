@@ -35,6 +35,7 @@ module.exports = {
         collapsable: false,
         children: [
           "/examples/store/",
+          "/examples/autocomplete/",
           // VueX
           // Nuxt
           // AsyncContent
