@@ -81,6 +81,37 @@ const sequentialTask = useSequentialTask(taskA, taskB, taskC);
 
 This one is similar to pipe task, except it does not pass the value from one task to another.
 
+## Task creators
+
+You might find yourself creating similar looking tasks at different places. At that point it could be useful to create a function that wraps the creation of the task. It can even take arguments.
+
+```ts
+// utils/tasks.js
+
+export function useGetBooksTask ({ includeAuthors: false } = {}) {
+  return useTask(function*(signal) {
+    let authors;
+    if (includeAuthors) {
+      // not yield here, to be able to load both requests in parallel
+      authors = fetch('/api/authors', { signal });
+    }
+    const books = fetch('/api/books', { signal });
+    return Promise.all([authors, books]);
+  });
+}
+```
+
+```ts
+// SomeComponent.vue
+
+import { useGetBooksTask } from '../utils/tasks.js'
+
+setup() {
+  const getBooksTask = useGetBooksTask({ includeAuthors: true }).drop();
+  getBooksTask.perform()
+}
+```
+
 ## TaskGroup
 
 TaskGroups are another construct that help dealing with multiple tasks. But as opposed to wrap tasks they are not meant for performing, only for tracking state.
