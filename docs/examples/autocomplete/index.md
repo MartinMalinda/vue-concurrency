@@ -6,6 +6,8 @@ sidebarDepth: 0
 
 ## Debounced search
 
+<GithubSearch />
+
 ## Throttled search suggestions
 
 A common usecase: show quick suggestions when a user is typing into a searchbox. This is different from the example above because a task is being performed already when the user is typing. So this would be an example of throttling rather than debouncing. We don't want to fire a request on every keystroke but we want to do it every now and then. A `drop()` task can be used for throttling but it's not usable in this case, because we want to make sure that the last instance of the task (last input) is always performed. `keepLatest()` is a good fit.
