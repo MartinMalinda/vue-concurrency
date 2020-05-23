@@ -34,6 +34,7 @@ module.exports = {
         title: "Examples",
         collapsable: false,
         children: [
+          "/examples/store/",
           // VueX
           // Nuxt
           // AsyncContent
