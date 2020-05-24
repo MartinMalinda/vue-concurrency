@@ -52,11 +52,13 @@ export default defineComponent({
   <div>
     <br />
     <div :style="{ display: 'flex' }">
-      <input placeholder="Search..." :style="{ height: '20px' }" @input="searchTask.perform" />
+      <input placeholder="Search wiki..." :style="{ height: '20px' }" @input="searchTask.perform" />
       <span v-if="searchTask.isRunning">&nbsp;☁️</span>
     </div>
-    <div v-if="searchTask.lastSuccessful" v-for="searchResult in searchTask.lastSuccessful.value">
-      <a target="_blank" :href="searchResult.url">{{ searchResult.header }}</a>
+    <div v-if="searchTask.lastSuccessful">
+      <div v-for="searchResult in searchTask.lastSuccessful.value">
+        <a target="_blank" :href="searchResult.url">{{ searchResult.header }}</a>
+      </div>
     </div>
   </div>
 </template>

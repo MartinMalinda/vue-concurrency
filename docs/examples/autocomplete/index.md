@@ -6,7 +6,60 @@ sidebarDepth: 0
 
 ## Debounced search
 
-<GithubSearch />
+Searching as the user is typing is a common feature on modern websites and in general provides good UX. The most common way to make it work is to trigger an action as the user is typing but debounce the outcome. There are general `debounce()` functions that accept any kind of function, but using task for this makes thing a bit more straightforward, because we get a bunch of derived state along.
+
+Debouncing with tasks essentially means creating a restartable task with a delay. If there's a waiting period in the beginning and the task kepts getting restarted we essentially get debouncing. Accessing `lastSuccessful` on task is useful in this case because we want resiliently display any kind of value to the user.
+
+<SpecieSearch />
+
+```vue
+<script>
+function searchSpecies(term, options) {
+  return ajax(
+    `https://api.gbif.org/v1/species/search?q=${term}&rank=GENUS`,
+    options
+  );
+}
+
+export default defineComponent({
+  setup() {
+    const searchTask = useTask(function*(signal, event) {
+      yield timeout(700);
+
+      const { value } = event.target;
+      const { results } = yield searchSpecies(value, { signal });
+      return results;
+    }).restartable();
+
+    return { searchTask };
+  },
+});
+</script>
+
+<template>
+  <div>
+    <br />
+    <div>
+      <input placeholder="Search species..." @input="searchTask.perform" />
+      <span v-if="searchTask.isRunning">☁️</span>
+    </div>
+    <div v-if="searchTask.lastSuccessful">
+      <div v-for="specie in searchTask.lastSuccessful.value">
+        <a
+          target="_blank"
+          :href="`https://en.wikipedia.org/wiki/${specie.canonicalName}`"
+        >
+          {{ specie.canonicalName }}
+          <span v-if="specie.vernacularNames.length">
+            ({{ specie.vernacularNames[0].vernacularName }})
+          </span>
+        </a>
+        <br />
+      </div>
+    </div>
+  </div>
+</template>
+```
 
 ## Throttled search suggestions
 
