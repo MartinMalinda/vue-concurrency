@@ -32,8 +32,11 @@ export default defineComponent({
   setup() {
     const searchTask = useTask(function*(signal, event) {
       yield timeout(700);
-
       const { value } = event.target;
+      if (!value) {
+        return [];
+      }
+
       const { results } = yield searchSpecies(value, { signal });
       return results;
     }).restartable();

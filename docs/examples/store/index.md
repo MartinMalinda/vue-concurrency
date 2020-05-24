@@ -1,3 +1,7 @@
+---
+sidebarDepth: 0
+---
+
 # Saving data to Store
 
 All the task state is short-lived because task lives on a component and it gets destroyed when the component is unmounted. If you need the state to survive this, there's several options. You can move your task to a parent component and pass it down. In many cases this is fine but often the task can become too far away from the place it is actually used and that makes your whole application code harder to reason about, not to mention the necessary prop-drilling.

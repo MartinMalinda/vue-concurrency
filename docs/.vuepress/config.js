@@ -28,15 +28,15 @@ module.exports = {
           "/handling-errors/",
           "/testing/",
           "/typescript-support/",
+          "/ssr-support/",
         ],
       },
       {
         title: "Examples",
         collapsable: false,
         children: [
-          "/examples/store/",
           "/examples/autocomplete/",
-          // VueX
+          "/examples/store/",
           // Nuxt
           // AsyncContent
           // Metabolism game
