@@ -30,7 +30,10 @@ If you're using [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fet
 
 If you need to support IE, you need to polyfill those two.
 
-- [Symbol polyfill](https://github.com/medikoo/es6-symbol)
 - [AbortController polyfill](https://github.com/mo/abortcontroller-polyfill)
+
+Symbol polyfill is probably already included for you as it's most likely shipped as part of Vue itself. But depending from Vue version and build tooling, it might also need to be added:
+
+- [Symbol polyfill](https://github.com/medikoo/es6-symbol)
 
 `Fetch` polyfill is not needed (unless you use it:))
