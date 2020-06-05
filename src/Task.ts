@@ -206,4 +206,6 @@ function onTaskInstanceFinish(task: Task<any, any>): void {
       firstEnqueued._run();
     }
   }
+
+  //TODO: run task.serialize() hook
 }
