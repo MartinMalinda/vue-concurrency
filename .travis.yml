@@ -1,4 +1,7 @@
 sudo: false
+env:
+  global:
+    - CC_TEST_REPORTER_ID=0f3713a6e7989ace379710aa54e49b98b055724a73dd375e2b6a72a7875d4145
 language: node_js
 node_js:
   - "10"
