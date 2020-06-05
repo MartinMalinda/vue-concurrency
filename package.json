@@ -1,6 +1,6 @@
 {
   "name": "vue-concurrency",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A library for encapsulating asynchronous operations and managing concurrency for Vue + Composition API",
   "source": "src/index.ts",
   "module": "dist/index.module.js",
@@ -14,7 +14,8 @@
     "dev": "microbundle watch",
     "test": "jest",
     "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "docs:build": "vuepress build docs",
+    "release": "release-it"
   },
   "keywords": [
     "vue",
@@ -37,6 +38,7 @@
     "@types/jest": "^25.2.2",
     "jest": "^26.0.1",
     "microbundle": "^0.12.0",
+    "release-it": "^13.6.2",
     "ts-jest": "^25.5.1",
     "typescript": "^3.9.2",
     "vue": "^2.6.11",
@@ -47,5 +49,11 @@
   "peerDependencies": {
     "@vue/composition-api": "^0.5.0",
     "caf": "^9.0.0"
+  },
+  "release-it": {
+    "github": {
+      "tokenRef": "RELEASE_IT_GITHUB_TOKEN_VC",
+      "release": true
+    }
   }
 }
