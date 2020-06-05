@@ -1,5 +1,4 @@
-import { Task } from "./Task";
-import useTask from "./index";
+import useTask, { Task } from "./Task";
 
 export function usePipeTask<T, U extends any[]>(
   firstTask: Task<any, U>,
