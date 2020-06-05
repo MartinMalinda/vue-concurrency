@@ -1,94 +1,79 @@
 import useTask from "../src/Task";
 import { mockSetup } from "./task";
 import { wait } from "./task-cancel";
-import { performNTimes, perform3x } from "./task-concurrency-restartable";
+import { perform3x } from "./task-concurrency-restartable";
 
-describe("useTask | enqueue task", () => {
+describe("useTask | drop task", () => {
   test("runs the first task instance right away", async () => {
     await mockSetup(() => {
-      const task = useTask(function*() {}).enqueue();
-      const taskInstance = task.perform();
-      expect(taskInstance.isRunning).toBe(true);
+      const task = useTask(function*() {}).drop();
+      const instance = task.perform();
+      expect(instance.isRunning).toBe(true);
     });
   });
 
-  test("enqueues 2d and 3rd instance if the first one is running", async () => {
+  test("drops the second instance if the first isRunning", async () => {
     await mockSetup(() => {
-      const task = useTask(function*() {}).enqueue();
+      const task = useTask(function*() {}).drop();
       const instance1 = task.perform();
       const instance2 = task.perform();
-      const instance3 = task.perform();
-
       expect(instance1.isRunning).toBe(true);
-      expect(instance2.isEnqueued).toBe(true);
-      expect(instance3.isEnqueued).toBe(true);
 
-      expect(instance3.isRunning).toBe(false);
-      expect(instance3.hasStarted).toBe(false);
-      expect(instance3.isFinished).toBe(false);
-      expect(instance3.isError).toBe(false);
+      expect(instance2.isDropped).toBe(true);
+      expect(instance2.isRunning).toBe(false);
+      expect(instance2.isFinished).toBe(false);
+      expect(instance2.isSuccessful).toBe(false);
+      expect(instance2.isCanceled).toBe(false);
+      expect(instance2.isError).toBe(false);
+      expect(instance2.hasStarted).toBe(false);
     });
   });
 
-  test("runs the first enqueued task if the running task finishes", async () => {
+  test("allows new instance to run if there is no one already running", async () => {
     await mockSetup(async () => {
-      const task = useTask(function*() {
-        yield wait(15);
-      }).enqueue();
+      const task = useTask(function*() {}).drop();
+      const instance1 = task.perform();
+      await instance1;
+      const instance2 = task.perform();
+      expect(instance2.isRunning).toBe(true);
+    });
+  });
+
+  test("starts dropping instances once maxConcurrency is reached", async () => {
+    await mockSetup(async () => {
+      const task = useTask(function*() {})
+        .drop()
+        .maxConcurrency(3);
       const [instance1, instance2, instance3] = perform3x(task);
 
-      await instance1;
-
-      expect(instance2.isRunning).toBe(true);
-      expect(instance3.isRunning).toBe(false);
-
-      await instance2;
-
-      expect(instance3.isRunning).toBe(true);
-    });
-  });
-
-  test("runs the first enqueued tasks if the running task finishes (maxConcurrency)", async () => {
-    await mockSetup(async () => {
-      const task = useTask(function*(_, index) {
-        yield wait(index * 30);
-      })
-        .enqueue()
-        .maxConcurrency(3);
-      const [
-        instance1,
-        instance2,
-        instance3,
-        instance4,
-        instance5,
-        instance6,
-        instance7,
-      ] = performNTimes(task)(7);
-
-      // first three instances running
       expect(instance1.isRunning).toBe(true);
       expect(instance2.isRunning).toBe(true);
       expect(instance3.isRunning).toBe(true);
 
-      // rest enqueued
-      expect(instance4.isEnqueued).toBe(true);
-      expect(instance5.isEnqueued).toBe(true);
-      expect(instance6.isEnqueued).toBe(true);
-      expect(instance7.isEnqueued).toBe(true);
+      const instance4 = task.perform();
+      const instance5 = task.perform();
 
-      // wait for instance2, leaving space for two enqueed tasks to start running
+      expect(instance4.isDropped).toBe(true);
+      expect(instance5.isDropped).toBe(true);
+    });
+  });
+
+  test("allows multiple instances to run again with maxConcurrency if previous ones finished", async () => {
+    await mockSetup(async () => {
+      const task = useTask(function*(_, index: number) {
+        yield wait(index * 15);
+      })
+        .drop()
+        .maxConcurrency(3);
+      const [_, instance2] = perform3x(task);
+
       await instance2;
+
+      const [instance4, instance5, instance6] = perform3x(task);
 
       expect(instance4.isRunning).toBe(true);
       expect(instance5.isRunning).toBe(true);
-      expect(instance6.isEnqueued).toBe(true);
-      expect(instance7.isEnqueued).toBe(true);
-
-      // again
-      await instance4;
-
-      expect(instance6.isRunning).toBe(true);
-      expect(instance7.isRunning).toBe(true);
+      expect(instance6.isDropped).toBe(true);
     });
   });
 });
