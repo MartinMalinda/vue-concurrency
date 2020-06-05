@@ -1,5 +1,5 @@
 import { mockSetup } from "./task";
-import useTask from "../src/index";
+import useTask from "../src/Task";
 import {
   usePipeTask,
   useParallelTask,

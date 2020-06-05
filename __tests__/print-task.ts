@@ -1,5 +1,5 @@
 import { mockSetup } from "./task";
-import useTask from "../src";
+import useTask from "../src/Task";
 import { printTask } from "../src/utils";
 
 describe("printTask()", () => {

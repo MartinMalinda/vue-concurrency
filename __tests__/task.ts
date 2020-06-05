@@ -1,7 +1,7 @@
 import { render } from "@testing-library/vue";
 import Vue from "vue";
 import { createComponentStub } from "../test-utils/components";
-import useTask from "../src/index";
+import useTask from "../src/Task";
 
 export const mockSetup = async (cb): Promise<void> => {
   let _setupPromiseResolve;

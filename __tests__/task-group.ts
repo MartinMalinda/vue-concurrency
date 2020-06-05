@@ -1,7 +1,7 @@
 import { mockSetup } from "./task";
-import useTask from "../src/index";
 import useTaskGroup from "../src/TaskGroup";
 import { wait } from "./task-cancel";
+import useTask from "../src/Task";
 
 describe("useTaskGroup", () => {
   test("has correct initial state state", async () => {
