@@ -2,7 +2,7 @@ import { waitFor } from "@testing-library/vue";
 import useTask, { Task } from "../src/Task";
 import { TaskInstance } from "../src/TaskInstance";
 import { mockSetup } from "./task";
-import { timeout } from "./task-cancel";
+import { wait } from "./task-cancel";
 
 export function performNTimes(
   task: Task<any, any>
@@ -21,7 +21,7 @@ export function perform3x(task: Task<any, any>) {
 describe("useTask | restartable task", () => {
   test("runs the first task instance right away", async () => {
     await mockSetup(() => {
-      const task = useTask(function* () {}).restartable();
+      const task = useTask(function*() {}).restartable();
       const taskInstance = task.perform();
       expect(taskInstance.isRunning).toBe(true);
     });
@@ -29,11 +29,11 @@ describe("useTask | restartable task", () => {
 
   test("cancels first running task when the task is performed again", async () => {
     await mockSetup(async () => {
-      const task = useTask(function* () {
-        yield timeout(10);
+      const task = useTask(function*() {
+        yield wait(10);
       }).restartable();
       const taskInstance1 = task.perform();
-      await timeout(5);
+      await wait(5);
       const taskInstance2 = task.perform();
       expect(taskInstance1.isCancelling).toBe(true);
       expect(taskInstance2.isRunning).toBe(true);
@@ -45,8 +45,8 @@ describe("useTask | restartable task", () => {
 
   test("cancels first running task when maxConcurrency is reached", async () => {
     await mockSetup(async () => {
-      const task = useTask(function* () {
-        yield timeout(50);
+      const task = useTask(function*() {
+        yield wait(50);
       })
         .restartable()
         .maxConcurrency(3);

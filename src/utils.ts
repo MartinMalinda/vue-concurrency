@@ -2,12 +2,13 @@ import { computed, Ref, watch, reactive } from "@vue/composition-api";
 import { Task } from "./Task";
 import { TaskInstance } from "./TaskInstance";
 
-export function waitFor(cb: () => any) {
+export function waitForValue<T = any>(cb: () => T): Promise<T> {
   return new Promise((resolve) => {
-    watch(() => {
+    const stop = watch(() => {
       const value = cb();
       if (value) {
         resolve(value);
+        stop();
       }
     });
   });
@@ -150,4 +151,12 @@ export function printTask(task: Task<any, any>) {
 
   console.log(`🚦 ${header}`);
   console.table(instanceRows);
+}
+
+export function timeout(time) {
+  if (process.env.NODE_ENV === "test") {
+    return Promise.resolve();
+  }
+
+  return new Promise((resolve) => setTimeout(resolve, time));
 }

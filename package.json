@@ -13,6 +13,7 @@
     "build": "microbundle build --tsconfig tsconfig.build.json",
     "dev": "microbundle watch",
     "test": "jest",
+    "test:coverage": "jest --coverage",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
     "release": "release-it"

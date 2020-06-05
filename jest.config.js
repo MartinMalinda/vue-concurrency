@@ -10,4 +10,8 @@ module.exports = {
   moduleFileExtensions: ["js", "ts"],
 
   moduleNameMapper: {},
+
+  collectCoverage: true,
+  coverageReporters: ["lcov"],
+  collectCoverageFrom: ["src/**/*.{js,jsx,ts,tsx}"],
 };

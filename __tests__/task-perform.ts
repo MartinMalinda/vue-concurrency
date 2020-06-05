@@ -1,5 +1,5 @@
 import useTask from "../src/Task";
-import { timeout } from "./task-cancel";
+import { wait } from "./task-cancel";
 import { mockSetup } from "./task";
 
 describe("useTask | task perform", () => {
@@ -14,7 +14,7 @@ describe("useTask | task perform", () => {
   test("task.isRunning is set back to false when all the instances finish", async () => {
     await mockSetup(async () => {
       const waitTask = useTask(function*(signal, time) {
-        yield timeout(time);
+        yield wait(time);
       });
       const taskInstance1 = waitTask.perform(5);
       const taskInstance2 = waitTask.perform(10);

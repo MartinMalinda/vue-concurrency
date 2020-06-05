@@ -1,13 +1,13 @@
 import { waitFor } from "@testing-library/vue";
 import useTask, { YieldReturn } from "../src/Task";
 import { mockSetup } from "./task";
-import { timeout } from "./task-cancel";
+import { wait } from "./task-cancel";
 
 describe("useTask | multiple | task", () => {
   test("can yield instance of another task", async () => {
     await mockSetup(async () => {
       const childTask = useTask(function*() {
-        yield timeout(20);
+        yield wait(20);
         return "foo";
       });
       const mainTask = useTask(function*() {

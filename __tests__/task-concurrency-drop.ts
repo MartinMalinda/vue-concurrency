@@ -1,6 +1,6 @@
 import useTask from "../src/Task";
 import { mockSetup } from "./task";
-import { timeout } from "./task-cancel";
+import { wait } from "./task-cancel";
 import { performNTimes, perform3x } from "./task-concurrency-restartable";
 
 describe("useTask | enqueue task", () => {
@@ -33,7 +33,7 @@ describe("useTask | enqueue task", () => {
   test("runs the first enqueued task if the running task finishes", async () => {
     await mockSetup(async () => {
       const task = useTask(function*() {
-        yield timeout(15);
+        yield wait(15);
       }).enqueue();
       const [instance1, instance2, instance3] = perform3x(task);
 
@@ -51,7 +51,7 @@ describe("useTask | enqueue task", () => {
   test("runs the first enqueued tasks if the running task finishes (maxConcurrency)", async () => {
     await mockSetup(async () => {
       const task = useTask(function*(_, index) {
-        yield timeout(index * 30);
+        yield wait(index * 30);
       })
         .enqueue()
         .maxConcurrency(3);

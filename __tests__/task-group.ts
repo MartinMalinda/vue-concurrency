@@ -1,7 +1,7 @@
 import { mockSetup } from "./task";
 import useTask from "../src/index";
 import useTaskGroup from "../src/TaskGroup";
-import { timeout } from "./task-cancel";
+import { wait } from "./task-cancel";
 
 describe("useTaskGroup", () => {
   test("has correct initial state state", async () => {
@@ -34,7 +34,7 @@ describe("useTaskGroup", () => {
   test("isRunning changes when a child task is performed", async () => {
     await mockSetup(async () => {
       const addTask = useTask(function*(signal, a: number, b: number) {
-        yield timeout(50);
+        yield wait(50);
         return a + b;
       });
       const add10Task = useTask(function*(signal, a: number) {

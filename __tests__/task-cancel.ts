@@ -6,8 +6,8 @@ describe("useTask cancel", () => {
   test("taskInstance.cancel results in isCanceled:true and no value", async () => {
     let reached2ndYield = false;
     await mockSetup(async () => {
-      const task = useTask(function* () {
-        yield timeout(15);
+      const task = useTask(function*() {
+        yield wait(15);
         reached2ndYield = true;
         return "foo";
       });
@@ -30,7 +30,7 @@ describe("useTask cancel", () => {
 
   test("task.cancelAll cancels all running instances", async () => {
     await mockSetup(async () => {
-      const task = useTask(function* () {
+      const task = useTask(function*() {
         return "foo";
       });
       const taskInstance1 = task.perform();
@@ -58,13 +58,13 @@ describe("useTask cancel", () => {
   test("signal.pr is called when the task is canceled", async () => {
     const signalCatchCallback = jest.fn();
     await mockSetup(async () => {
-      const task = useTask(function* (signal) {
+      const task = useTask(function*(signal) {
         signal.pr.catch(signalCatchCallback);
-        yield timeout(30);
+        yield wait(30);
         return "foo";
       });
       const taskInstance = task.perform();
-      await timeout(5);
+      await wait(5);
       taskInstance.cancel();
 
       await waitFor(() => expect(taskInstance.isFinished).toBe(true));
@@ -73,6 +73,6 @@ describe("useTask cancel", () => {
   });
 });
 
-export function timeout(time: number) {
+export function wait(time: number) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }
