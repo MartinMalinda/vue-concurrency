@@ -5,6 +5,15 @@ import { _reactive, _reactiveContent, DeferredObject, defer } from "./utils";
 
 type onFulfilled<T> = ((value: T) => any) | null | undefined;
 type onRejected = ((reason: any) => any) | null | undefined;
+export type TaskInstanceStatus =
+  | "running"
+  | "enqueued"
+  | "canceled"
+  | "cancelling"
+  | "dropped"
+  | "error"
+  | "success"
+  | undefined;
 export interface TaskInstance<T> extends PromiseLike<any> {
   id: number;
 
@@ -20,7 +29,7 @@ export interface TaskInstance<T> extends PromiseLike<any> {
   isCanceled: boolean;
 
   isNotDropped: boolean;
-  status: string;
+  status: TaskInstanceStatus;
 
   _run: () => void;
   cancel: () => void;
@@ -33,14 +42,15 @@ export interface TaskInstance<T> extends PromiseLike<any> {
 
   // Data State
   value: T | null;
-  error: object | null;
+  error: any | null;
 
   // Promise-like stuff
   _shouldThrow: boolean;
   _deferredObject: DeferredObject;
   _handled: boolean; // this is needed to set to true so that Vue does show error about unhandled rejection
-  then: (onfulfilled: onFulfilled<T>, onrejected?: onRejected) => any;
+  then: (onfulfilled: onFulfilled<T>, onrejected?: onRejected) => Promise<any>;
   catch: (onrejected?: onRejected) => any;
+  finally: (onfulfilled: () => any) => any;
 }
 
 export interface ModifierOptions {
@@ -87,8 +97,8 @@ export default function createTaskInstance<T>(
         [t.isCancelling, "cancelling"],
         [t.isDropped, "dropped"],
         [t.isError, "error"],
-        [t.isFinished, "finished"],
-      ].find(([cond]) => cond) as [boolean, string];
+        [t.isSuccessful, "success"],
+      ].find(([cond]) => cond) as [boolean, TaskInstanceStatus];
       return match && match[1];
     }),
 
@@ -132,7 +142,7 @@ export default function createTaskInstance<T>(
       taskInstance._shouldThrow = true;
       return taskInstance._deferredObject.promise.catch(onRejected);
     },
-    finally(cb: () => any) {
+    finally(cb) {
       taskInstance._shouldThrow = true;
       return taskInstance._deferredObject.promise.finally(cb);
     },

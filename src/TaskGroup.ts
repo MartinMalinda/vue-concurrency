@@ -2,12 +2,12 @@ import { Task } from "./Task";
 import { reactive } from "@vue/composition-api";
 import { computed } from "@vue/composition-api";
 
-interface TaskState {
+export interface TaskState {
   isRunning: boolean;
   isIdle: boolean;
 }
 
-type TaskGroup<U extends Record<string, Task<any, any>>> = TaskState & U;
+export type TaskGroup<U extends Record<string, Task<any, any>>> = TaskState & U;
 
 export default function useTaskGroup<U extends Record<string, Task<any, any>>>(
   taskMap: U
