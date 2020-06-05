@@ -92,13 +92,10 @@ If a task, lets refer to it as main task, performs different tasks (child tasks)
 This cascade of cancellation is possible via `taskInstance.cancelOn()`.
 
 ```ts
-const registerTask = useTask(function*(signal, { email, password }) {
-  const { isValid } = yield validateEmailTask.perform(email).cancelOn(signal);
-  if (isValid) {
-    yield createUserTask.perform({ email, password }).cancelOn(signal);
-  } else {
-    // ... throw Error
-  }
+const searchTask = useTask(function*(signal, { query }) {
+  const events = yield searchEvents.perform(query).cancelOn(signal);
+  const users = yield searchUsers.perform(query).cancelOn(signal);
+  return { events, users };
 });
 ```
 

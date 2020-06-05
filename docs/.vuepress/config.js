@@ -45,6 +45,11 @@ module.exports = {
       {
         title: "API overview",
         collapsable: false,
+        children: [
+          "/api-overview/use-task/",
+          "api-overview/task-instance/",
+          "/api-overview/other/",
+        ],
       },
     ],
   },
