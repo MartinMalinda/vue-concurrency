@@ -52,10 +52,19 @@ useTask(function*()) {
 });
 ```
 
+As an alternative, there's also [useAsyncTask()](/api-overview/other/#useasynctask) for which there's no issue of typing awaited values:
+
+```ts
+useAsyncTask(function*() {
+  const accounts = await getAccountsTask.perform(); // correct typing here
+});
+```
+
+It can be used if cancelation is not a priority.
+
 ---
 
 ::: tip
 
-- [Github issue: Allow to use an async function as an alternative to generator](https://github.com/MartinMalinda/vue-concurrency/issues/3)
 - [Github issue: Task return type is not inferred with `return yield`](https://github.com/MartinMalinda/vue-concurrency/issues/2)
   :::

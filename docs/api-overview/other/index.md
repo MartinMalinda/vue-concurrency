@@ -47,6 +47,19 @@ setup() {
 }
 ```
 
+### useAsyncTask() `(cb: (signal: AbortSignalWithPromise, ...params: U) => Promise<T>) => Task<T, U>`
+
+This hook is a wrapper over `useTask()` that allows to pass an async function instead. It returns a Task just like a regular useTask hook but due to limitation of promises, the cancelation is not as good (the async function keeps running even if the task is canceled). The main advantage is that `await` has working type inferrence in TypeScript.
+
+```ts
+const saveTask = useAsyncTask(async (signal, data) => {
+  const response = await ajax("/some/method", { data });
+  return response.data;
+});
+
+saveTask.perform({ name: "Joe" });
+```
+
 ### usePipeTask() `(...tasks: Task<any, any[]>[]) => Task<any, any[]>`
 
 ```ts

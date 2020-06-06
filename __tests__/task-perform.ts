@@ -65,7 +65,7 @@ describe("useTask | task perform", () => {
   test("can be used as a promise (then - chaining)", async () => {
     await mockSetup(async () => {
       const task = useTask(function*() {
-        return "foo";
+        return Promise.resolve("foo");
       });
       const foo = await task
         .perform()

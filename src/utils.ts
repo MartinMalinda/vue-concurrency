@@ -1,5 +1,5 @@
 import { computed, Ref, watch, reactive } from "@vue/composition-api";
-import { Task, AbortSignalWithPromise } from "./Task";
+import useTask, { Task, AbortSignalWithPromise } from "./Task";
 import { TaskInstance } from "./TaskInstance";
 
 export function waitForValue<T = any>(cb: () => T): Promise<T> {
@@ -175,5 +175,13 @@ export function getCancelToken(
         cancel();
       }
     });
+  });
+}
+
+export function useAsyncTask<T, U extends any[]>(
+  fn: (signal: AbortSignalWithPromise, ...params: U) => Promise<T>
+) {
+  return useTask(function*(signal, ...params: U) {
+    return fn(signal, ...params);
   });
 }

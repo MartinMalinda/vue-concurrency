@@ -16,10 +16,10 @@ import {
 } from "./utils";
 
 type MaybeRef<T> = T | Ref<T>;
-type R<T> = T extends PromiseLike<infer U> ? U : T;
+type Resolved<T> = T extends PromiseLike<infer U> ? U : T;
 export type YieldReturn<T> = T extends Task<infer U, any>
   ? U
-  : R<ReturnType<T extends (...args: any) => any ? T : any>>;
+  : Resolved<ReturnType<T extends (...args: any) => any ? T : any>>;
 export interface AbortSignalWithPromise extends AbortSignal {
   pr: Promise<void>;
 }
@@ -67,14 +67,13 @@ export type Task<T, U extends any[]> = {
 };
 
 export type TaskCb<T, U extends any[]> = (
-  this: TaskInstance<T>,
   signal: AbortSignalWithPromise,
   ...params: U
 ) => Generator<any, T, any>;
 
 export default function useTask<T, U extends any[]>(
   cb: TaskCb<T, U>
-): Task<T, U> {
+): Task<Resolved<T>, U> {
   const content = _reactiveContent({
     _isRestartable: false,
     _isDropping: false,
@@ -198,7 +197,8 @@ export default function useTask<T, U extends any[]>(
     task.cancelAll();
   });
 
-  return task;
+  // TODO: remove this type forcing
+  return task as Task<Resolved<T>, U>;
 }
 
 function onTaskInstanceFinish(task: Task<any, any>): void {
