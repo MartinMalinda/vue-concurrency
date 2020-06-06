@@ -39,7 +39,7 @@ export default defineComponent({
 </template>
 ```
 
-<TaskProvider :perform="true" :time="1000" v-slot="{ task }">
+<TaskProvider :time="1000" v-slot="{ task }">
   <div>
     <div v-if="task.isRunning">
       Loading...
@@ -50,7 +50,7 @@ export default defineComponent({
     <div v-else>
       tada <br />
     </div>
-    <button @click="task.perform"> Restart </button>
+    <button @click="task.perform"> Start </button>
   </div>
 </TaskProvider>
 

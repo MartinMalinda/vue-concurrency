@@ -28,6 +28,7 @@ export type Task<T, U extends any[]> = {
   // Lifecycle state
   isIdle: MaybeRef<boolean>;
   isRunning: boolean;
+  isError: boolean;
   performCount: number;
 
   // Shortcuts to useful instances
@@ -92,6 +93,7 @@ export default function useTask<T, U extends any[]>(
     isRunning: computed(
       () => !!task._instances.find((instance) => instance.isRunning)
     ),
+    isError: computed(() => !!(task.last && task.last.isError)),
 
     _instances: [],
     // TODO: the filter + lastOf combo is concise and clear, but more efficient would be classic loop and iterating from the end (findLastIf macro)

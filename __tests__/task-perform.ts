@@ -168,6 +168,7 @@ describe("useTask | task perform", () => {
       const task = useTask(function*() {});
       const taskInstance = task.perform();
       expect(taskInstance.isRunning).toBe(true);
+      expect(task.isRunning).toBe(true);
       expect(taskInstance.isFinished).toBe(false);
     });
   });

@@ -54,6 +54,10 @@ Returns `true` if there's at least one running instance.
 
 Task is idle if there's no running instance.
 
+### isError `boolean`
+
+Task isError if the last instance has error.
+
 ### last `TaskInstance<T> | undefined`
 
 Returns the last task instance if there's any.

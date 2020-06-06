@@ -2,7 +2,7 @@ import { render } from "@testing-library/vue";
 import Vue from "vue";
 import { createComponentStub } from "../test-utils/components";
 import useTask from "../src/Task";
-import { defineComponent } from "@vue/composition-api";
+import { wait } from "./task-cancel";
 
 export const mockSetup = async (cb): Promise<void> => {
   let _setupPromiseResolve;
@@ -53,6 +53,24 @@ describe("useTask | task with no instances", () => {
     await mockSetup(() => {
       const task = useTask(function*() {});
       expect(task.firstEnqueued).toBe(undefined);
+    });
+  });
+
+  test("has isError false if not performed", async () => {
+    await mockSetup(async () => {
+      const task = useTask(function*() {});
+      expect(task.isError).toBe(false);
+    });
+  });
+
+  test("has isError false if not performed", async () => {
+    await mockSetup(async () => {
+      const task = useTask(function*() {
+        throw new Error("You shall not pass");
+      });
+      task.perform();
+      await wait(50);
+      expect(task.isError).toBe(true);
     });
   });
 });
