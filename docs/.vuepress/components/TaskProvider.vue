@@ -17,19 +17,32 @@ export default defineComponent({
     time: {
       type: Number,
       default: 3000
-    }
+    },
+
+    perform: Boolean,
+
+    errorChance: Number
   },
 
-  setup({ modify, time }) {
+  setup({ perform, modify, time, errorChance }) {
     let task = useTask(function*(signal) {
       const t0 = performance.now();
       yield timeout(time);
       const t1 = performance.now();
+
+      if (errorChance && 1 - Math.random() < errorChance) {
+        throw new Error(`Internal Server Error`);
+      }
+
       return `finished in ${t1 - t0} miliseconds`;
     });
 
     if (modify) {
       task = modify(task);
+    }
+
+    if (perform) {
+      task.perform();
     }
 
     return { task };

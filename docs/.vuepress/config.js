@@ -1,6 +1,6 @@
 // .vuepress/config.js
 module.exports = {
-  title: "🚦vue-concurrency (alpha)",
+  title: "🚦vue-concurrency | beta",
   description:
     "A library for encapsulating asynchronous operations and managing concurrency",
   themeConfig: {
@@ -35,6 +35,7 @@ module.exports = {
         title: "Examples",
         collapsable: false,
         children: [
+          "/examples/loading-states/",
           "/examples/autocomplete/",
           "/examples/store/",
           // Nuxt
