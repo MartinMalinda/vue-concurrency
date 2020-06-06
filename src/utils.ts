@@ -1,10 +1,10 @@
-import { computed, Ref, watch, reactive } from "@vue/composition-api";
+import { computed, Ref, watchEffect, reactive } from "@vue/composition-api";
 import useTask, { Task, AbortSignalWithPromise } from "./Task";
 import { TaskInstance } from "./TaskInstance";
 
 export function waitForValue<T = any>(cb: () => T): Promise<T> {
   return new Promise((resolve) => {
-    const stop = watch(() => {
+    const stop = watchEffect(() => {
       const value = cb();
       if (value) {
         resolve(value);
@@ -161,14 +161,10 @@ export function timeout(time) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }
 
-interface TokenCreator {
-  CancelToken: any;
-  [key: string]: any;
-}
-export function getCancelToken(
-  axios: TokenCreator,
+export function getCancelToken<T extends { CancelToken: any }>(
+  axios: T,
   signal: AbortSignalWithPromise
-): object {
+) {
   return new axios.CancelToken((cancel) => {
     signal.pr.catch((reason) => {
       if (reason === "cancel") {
