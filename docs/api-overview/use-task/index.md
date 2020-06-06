@@ -7,7 +7,7 @@ sidebarDepth: 0
 `useTask()` Accepts a Generator functions and returns a `Task<T, U[]>` where `T` is the return value of the generator and `U` is the type of parameters.
 
 ```ts
-import useTask from "vue-concurrency";
+import { useTask } from "vue-concurrency";
 
 /* ... */
 

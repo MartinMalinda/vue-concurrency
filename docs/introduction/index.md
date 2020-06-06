@@ -12,7 +12,7 @@ Feel free to head over to the docs of <a href="http://ember-concurrency.com/docs
 
 Client side applications often have to deal with managing asynchronous operations. These can be asynchronous requests to the server, logic happening in the background and also reacting to user input in various forms - scrolling, navigating, interacting with form UI and so on. We also want to create more resilient UIs which means we want to retry AJAX calls repeatedly in case of a network fail, or we want to give the user an option to retry manually.
 
-We often have to use techniques like debouncing, throttling. On the side, we often resolve to a lot of defensive programming to do this safely and we set variable flags like `isSearching`, `isLoading`, `isError` by ourselves. Not only is this tedious to do over and over again, it also leaves space for bugs. Forgetting to set `isLoading` to `false` in some edgecase will leave the UI in loading state forever. Forgetting to turn off some background operation when user transitions to a different page can lead to nasty errors. It's better if this doesn't have to be done.
+We often have to use techniques like debouncing, throttling. On the side, we may resolve to a lot of defensive programming to do this safely and we set variable flags like `isSearching`, `isLoading`, `isError` by ourselves. Not only is this tedious to do over and over again, it also leaves space for bugs. Forgetting to set `isLoading` to `false` in some edgecase will leave the UI in a loading state forever. Forgetting to turn off some background operation when user transitions to a different page can lead to errors. It's better if this doesn't have to be done.
 
 ## More safety and less boilerplate with Tasks
 
@@ -26,7 +26,7 @@ You might think of a `Task` as a `Promise` and there indeed is an overlap, but `
 
 On top of that, it is possible to set a concurrency policy in a declarative way.  
 Handling form submission? Set the `Task` to `drop()` to prevent duplicate submissions.  
-Perfoming a search when user types into an input? Add a delay and set a task to `restartable()`.  
+Perfoming a search when user types into an input? Add a delay and set a task to be `restartable()`.  
 Need to poll the server in a regular interval? A `while (true) {}` loop is fine to do with Tasks because they can be canceled.
 
 ### Basic Example
@@ -34,7 +34,7 @@ Need to poll the server in a regular interval? A `while (true) {}` loop is fine 
 ```vue
 <script lang="ts">
 import { defineComponent } from "@vue/composition-api";
-import useTask from "vue-concurrency";
+import { useTask } from "vue-concurrency";
 
 export default defineComponent({
   setup() {
@@ -78,4 +78,4 @@ export default defineComponent({
 </template>
 ```
 
-So this is a quick peek on what `vue-concurrency` can do. For this usecase it would be also easy to use other solutions, such as a simple `usePromise` hook, new `Suspense` or `<Await>` component. The benefit of a `Task` is that the usage can be later on extended for more advanced cases (chaining, handling concurrency). Tasks are also not strictly tied to the template so you can reuse the same concepts elsewhere than view logic. More on that later.
+So this is a quick peek on what `vue-concurrency` can do. For this usecase it would also be easy to use other solutions, such as a simple `usePromise` hook, new `Suspense API` or `<Await>` component. The benefit of a `Task` is that the usage can be later on extended for more advanced cases (chaining, handling concurrency). Tasks are also not strictly tied to the template so you can reuse the same concepts elsewhere than view logic. More on that later.

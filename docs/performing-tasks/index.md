@@ -4,7 +4,7 @@ sidebarDepth: 0
 
 # Performing Tasks
 
-Performing a task and creating a new task instance happens via calling `perform()`. This method takes a generator function that uses the `yield` syntax to pause executation on promises and promise-like objects till they resolve. Essentialy it works the same way as `async await` but with a possibiliy of cancellation. Generator functions don't work this way by default though, they only behave this way in tasks because they were instructed so by [CAF](https://github.com/getify/CAF).
+Performing a task and creating a new task instance happens via calling `perform()`. This method takes a generator function that uses the `yield` syntax to pause executation on promises and promise-like objects till they resolve. Essentialy it works the same way as `async await` but with a possibility of cancellation. Generator functions don't work this way by default though, they only behave this way in tasks because they were instructed so by [CAF](https://github.com/getify/CAF).
 
 ```ts
 setup() {
@@ -18,7 +18,7 @@ setup() {
 }
 ```
 
-If you just need to use a task once and only use the instance, you can perform right away:
+If you need to use a task just once and only use the instance, you can perform right away:
 
 ```ts
 setup() {
@@ -27,11 +27,11 @@ setup() {
 }
 ```
 
-This shortcut is useful when fetching data or perfoming immediately for other reasons but it has a downside of losing a referrence to the task. There's only a referrence to the task instance. You can't perform the task again, so you can't allow the user to retry.
+This shortcut is handy but there's only a referrence to the task instance. You can't perform the task again, so you can't allow the user to retry.
 
 ## Passing arguments
 
-Just like you can pass different arguments when calling the same function, you can pass different arguments when performing tasks.
+Just like you can pass different arguments when calling the same function, you can pass different arguments when performing tasks: `task.perform(foo, bar)`.
 
 ```vue
 <script lang="ts">

@@ -60,7 +60,7 @@ Such a naming convention adds more structure and removes data-wiring code form t
 
 ```ts
 import useStore from "../store";
-import useTask from "vue-concurrency";
+import { useTask } from "vue-concurrency";
 
 export const endpoints = {
   getUsers(signal) {

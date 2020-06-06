@@ -4,7 +4,7 @@ sidebarDepth: 0
 
 # Composing Tasks
 
-If multiple tasks need to be performed there are several ways how to approache it. Although tasks are not Promises, they can be used in [PromiseLike](https://microsoft.github.io/PowerBI-JavaScript/interfaces/_node_modules_typedoc_node_modules_typescript_lib_lib_es5_d_.promiselike.html) way. That means you can use `then()`, `catch()` and `finally()` methods on them and you can also `yield` and `await` them.
+If multiple tasks need to be performed there are several ways how to approach it. Although tasks are not Promises, they can be used in a [PromiseLike](https://microsoft.github.io/PowerBI-JavaScript/interfaces/_node_modules_typedoc_node_modules_typescript_lib_lib_es5_d_.promiselike.html) way. That means you can use `then()`, `catch()` and `finally()` methods on them and you can also `yield` and `await` them.
 
 You can also pass Tasks to methods like `Promise.all` or `Promise.race`.
 
@@ -71,7 +71,6 @@ parallelTask.perform("bar");
 ```
 
 This task runs all child tasks in parallel. If performed with arguments, it passes them to all of the child tasks.
-This is similar to `Promise.all`.
 
 ### Sequential Task
 
@@ -104,7 +103,7 @@ export function useGetBooksTask ({ includeAuthors: false } = {}) {
 ```ts
 // SomeComponent.vue
 
-import { useGetBooksTask } from '../utils/tasks.js'
+import { useGetBooksTask } from '../utils/tasks'
 
 setup() {
   const getBooksTask = useGetBooksTask({ includeAuthors: true }).drop();

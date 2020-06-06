@@ -4,9 +4,9 @@ sidebarDepth: 0
 
 # Tasks and Task Instances
 
-`useTask()` returns a `Task`. You can think of it as a wrapper object over the generator function. Just like an async function can be called many times with different arguments and different results, so can `Task`. `Tasks` are performed and the result of that is a `TaskInstance`. One `Task` can therefore have many TaskInstances. But as opposed to plain functions, Task is a reactive object and it is aware of all its TaskInstances.
+`useTask()` returns a `Task`. You can think of it as a wrapper object over the generator function. Just like an async function can be called many times with different arguments and different results, so can `Task`. `Tasks` are performed and the result of that is a `TaskInstance`. One `Task` can therefore have many task instances. But as opposed to plain functions, Task is a reactive object and it is aware of all its instances.
 
-Among other things, Task is running if at least on the TaskInstances is running. You can access `last` and `lastSuccessful` task instance.
+Among other things, Task is running if at least one of its instances is running. You can access `last` and `lastSuccessful` task instance.
 
 ```ts
 const getUsersTask = useTask(function*() {
@@ -24,13 +24,13 @@ This encapsulation brings benefits especially if your components are aware of it
 <RegisterForm :saveTask="saveUserTask" />
 ```
 
-When the form is submitted, the component just calls `saveTask.perform(userData)`.
+When the form is submitted, the component calls `saveTask.perform(userData)`.
 There's benefits to this approach:
 
 - There's no need to pass several props like `isLoading`, `serverError` and `onSuccess`
-- `Task` API is always the same, so it ensures code and UX consistency across different forms
+- `Task` API is always the same, so it ensures code and UX consistency across different places
 - The `saveUserTask` can potentially be also passed elsewhere
-- `saveTask` can be easily mocked in component tests. There's no need to do network stubbing. You can test just client side validation in `RegisterForm` component test and the whole flow in an E2E test or `<RegisterPage>` component test.
+- `saveTask` can be mocked in component tests. There's no need to do network stubbing. You can test just client side validation in `RegisterForm` component test and the whole flow in an E2E test or `<RegisterPage>` component test.
 
 Let's take a look at a different scenario:
 
@@ -48,7 +48,7 @@ There's a `<Home>` component with a template like this:
 </div>
 ```
 
-Let's assume `<SuggestedProfiles />` does an AJAX request on it's own. The problem is the AJAX happens only after the feed has finished loading. Yet, the loading could easily happen in parallel.  
+Let's assume component `<SuggestedProfiles />` does an AJAX request on it's own. The problem is the AJAX happens only after the feed has finished loading. Yet, the loading could easily happen in parallel.  
 One way to solve this is to refactor with tasks:
 
 ```vue
@@ -88,7 +88,7 @@ The error and loading views can be overriden with scoped slots:
 
 ```vue
 <AsyncContent :task="task">
-  <template name="loading">Some-content-placeholder</template>
+  <template v-slot:running>Some-content-placeholder</template>
   <template>{{ task.last.value }}</template>
 </AsyncContent>
 ```
@@ -105,4 +105,4 @@ Perform the task on click, show a spinner inside if the task is running. In case
 
 ### Others
 
-The list goes on, there can be `<TaskForm>`, `<TaskModal>` and so on. You can make your components very task aware or not at all. There's pros and cons of course. Tasks enforce consistency, but having these specific components locks you in to use them (which might be a good thing though:)).
+The list goes on, there can be `<TaskForm>`, `<TaskModal>` and so on. You can make your components very task aware or not at all. Tasks enforce consistency, but having these specific components locks you in to using them (which might be a good thing though:)).

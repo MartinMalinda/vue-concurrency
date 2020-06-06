@@ -163,11 +163,12 @@ export function timeout(time) {
 
 interface TokenCreator {
   CancelToken: any;
+  [key: string]: any;
 }
 export function getCancelToken(
   axios: TokenCreator,
   signal: AbortSignalWithPromise
-) {
+): object {
   return new axios.CancelToken((cancel) => {
     signal.pr.catch((reason) => {
       if (reason === "cancel") {

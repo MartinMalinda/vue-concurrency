@@ -90,7 +90,7 @@ export default defineComponent({
   background: orange;
 }
 
-.task-instance.finished {
+.task-instance.success {
   background: green;
 }
 

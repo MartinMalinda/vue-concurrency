@@ -25,7 +25,7 @@ setup() {
 }
 ```
 
-The task is performed right away, rigin whatever ajax logic needed, but on top of that the instance is added to the `onServerPrefetch` hook. Because the TaskInstance is PromiseLike, the hook can add a callback and wait for it to finish.
+The task is performed right away, running whatever ajax logic needed, but on top of that the instance is added to the `onServerPrefetch` hook. Because the TaskInstance is PromiseLike, the hook can add a callback and wait for it to finish.
 
 In a real world scenario the code example above would not be optimal because the task would be fired both on the server and also on the client, making the AJAX request twice. This problem is not specific to `vue-concurrency` but to SSR in general and to avoid it, it's necessary to efficiently transfer the state from the server to the client and use cache.
 

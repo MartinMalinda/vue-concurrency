@@ -49,7 +49,9 @@ export default defineComponent({
 }
 
 .instance-row {
+  box-sizing: border-box;
   width: 400px;
+  max-width: 100%;
   padding: 5px 10px;
   /* border: 2px solid black; */
   position: relative;
@@ -77,7 +79,7 @@ export default defineComponent({
   background: red;
 }
 
-.instance-row.finished {
+.instance-row.success {
   background: #3daf7c;
   color: white;
 

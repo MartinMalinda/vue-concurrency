@@ -4,7 +4,7 @@ sidebarDepth: 0
 
 # Testing
 
-Encapsulation and consistence of tasks can make tests more straightforward. Components that accept tasks via props are quite easily tested.
+Encapsulation and consistence of tasks can make tests more straightforward. Components that accept tasks via props are quite straightforward to test.
 
 There's two common approaches for testing such components.
 
@@ -40,11 +40,11 @@ import Vue, { h } from "vue";
 
 describe("SaveButton", () => {
   it("is disabled when the task is running", async () => {
+    let task;
     const wrapper = mount(
-      Vue.component({
-        name: "TaskProvider",
+      defineComponent({
         setup() {
-          const task = useTask(function*() {
+          task = useTask(function*() {
             return "success";
           });
 
@@ -69,17 +69,14 @@ You can probably simplify this process with some handy helper function:
 
 ```ts
 export function setupAndMount(setup) {
-  return mount(
-    Vue.component({
-      name: "TaskProvider",
-      setup,
-    })
+  return mount(defineComponent({ setup });
   );
 }
 
 // in test:
+let task;
 const wrapper = setupAndMount(() => {
-  const task = useTask(function*() {
+  task = useTask(function*() {
     return "success";
   });
 

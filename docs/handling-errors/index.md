@@ -8,15 +8,15 @@ Tasks are designed to make error handling easier. By default tasks catch any err
 
 ```ts
 const task = useTask(function*() {
-  throw new Error("Impossibru");
+  throw new Error("You shall not pass");
 });
 
 const instance = task.perform();
 console.log(instance.isError); // true
-console.log(instance.error); // Error 'Impossibru'
+console.log(instance.error); // Error 'You shall not pass'
 ```
 
-This means that errors thrown inside tasks are "safe" and they will not crash your app. It is then assumed that a proper handling is done in a template:
+This means that errors thrown inside tasks are "safe" and they will not crash your app. The error is "handled" by being put in the `error` which is then used, most commonly in the template:
 
 ```vue
 <template>
@@ -34,7 +34,7 @@ This means that errors thrown inside tasks are "safe" and they will not crash yo
 
 ## AJAX error responses
 
-When doing XHR/Fetch inside tasks it is important to make sure that an error is thrown when the response is not OK. That generally means throwing an error when the status code is 4XX, 5XX. [Axios](https://github.com/axios/axios) is doing that by default. [Fetch does not do that](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#Checking_that_the_fetch_was_successful), it only sets `response.ok` to false.
+When doing XHR/Fetch inside tasks it is important to make sure that an error is thrown when the response is not OK. That generally means throwing an error when the status code is in the range of 4XX, 5XX. [Axios](https://github.com/axios/axios) is doing that by default. [Fetch does not do that](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#Checking_that_the_fetch_was_successful), it only sets `response.ok` to false.
 
 The issue is described in this article:  
 [Fetch and errors](https://www.tjvantoll.com/2015/09/13/fetch-and-errors/)
@@ -60,7 +60,7 @@ function ajax(url, options) {
 
 ## Promises and async/await
 
-A different situation is, when you handle a task via async/await or promise-y way. In that case you're expected to catch errors yourself. That means `.catch()` if using task like Promise or `try catch` if you're using `async await`. This allows proper propagation errors when tasks are being used in other tasks (see [Composing Tasks](/composing-tasks/))
+A different situation is, when you handle a task via async/await or promise-y way. In that case you're expected to catch errors yourself. That means `.catch()` if using task like Promise or `try catch` if you're using `async await`. This allows proper propagation of errors when tasks are being used in other tasks (see [Composing Tasks](/composing-tasks/)).
 
 ### async/await
 
@@ -83,7 +83,7 @@ setup() {
 }
 ```
 
-### Promises
+### Promise syntax
 
 ```ts
 setup() {
