@@ -3,3 +3,4 @@ exclude_patterns:
   - "__tests__/**/*"
   - "test-utils/**/*"
   - "docs/**/*"
+  - "src/index.ts"
