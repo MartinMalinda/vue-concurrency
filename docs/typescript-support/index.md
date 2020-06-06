@@ -35,7 +35,7 @@ useTask(function*(signal)) {
 If you're using custom async functions it is possible to make this pattern a bit more generic. This pattern has been borrowed from [redux-saga-typescript](https://github.com/ilbrando/redux-saga-typescript).
 
 ```ts
-import { YieldReturn } from 'vue-concurrency';
+import { YieldReturn } from 'vue-concurrency/src/Task';
 
 /* ... */
 
