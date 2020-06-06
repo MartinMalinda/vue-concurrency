@@ -29,6 +29,8 @@
     "hooks"
   ],
   "author": "Martin Malinda",
+  "repository": "github:martinmalinda/vue-concurrency",
+  "homepage": "https://vue-concurrency.netlify.app/",
   "license": "MIT",
   "dependencies": {
     "caf": "^9.0.0",
