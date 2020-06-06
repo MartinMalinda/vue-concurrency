@@ -70,7 +70,7 @@ export default defineComponent({
   background: #f4d9aa;
 }
 
-.instance-row.cancelling,
+.instance-row.canceling,
 .instance-row.canceled {
   background: pink;
 }

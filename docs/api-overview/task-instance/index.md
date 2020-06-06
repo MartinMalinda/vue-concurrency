@@ -112,7 +112,7 @@ try {
 
 `finally` is called either way not matter if instance resolved or rejected
 
-### status `"running" | "enqueued" | "canceled" | "cancelling" | "dropped" | "error" | "success" | undefined`
+### status `"running" | "enqueued" | "canceled" | "canceling" | "dropped" | "error" | "success"`
 
 `status` might be useful for debugging purposes.
 

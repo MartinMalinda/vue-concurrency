@@ -35,10 +35,10 @@ describe("useTask | restartable task", () => {
       const taskInstance1 = task.perform();
       await wait(5);
       const taskInstance2 = task.perform();
-      expect(taskInstance1.isCancelling).toBe(true);
+      expect(taskInstance1.isCanceling).toBe(true);
       expect(taskInstance2.isRunning).toBe(true);
       const taskInstance3 = task.perform();
-      expect(taskInstance2.isCancelling).toBe(true);
+      expect(taskInstance2.isCanceling).toBe(true);
       expect(taskInstance3.isRunning).toBe(true);
     });
   });
@@ -56,13 +56,13 @@ describe("useTask | restartable task", () => {
       expect(instance3.isRunning).toBe(true);
 
       const instance4 = task.perform();
-      expect(instance1.isCancelling).toBe(true);
+      expect(instance1.isCanceling).toBe(true);
       expect(instance2.isRunning).toBe(true);
       expect(instance3.isRunning).toBe(true);
       expect(instance4.isRunning).toBe(true);
 
       const instance5 = task.perform();
-      await waitFor(() => expect(instance2.isCancelling).toBe(true));
+      await waitFor(() => expect(instance2.isCanceling).toBe(true));
       expect(instance3.isRunning).toBe(true);
       expect(instance4.isRunning).toBe(true);
       expect(instance5.isRunning).toBe(true);

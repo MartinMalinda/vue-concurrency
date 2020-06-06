@@ -9,11 +9,10 @@ export type TaskInstanceStatus =
   | "running"
   | "enqueued"
   | "canceled"
-  | "cancelling"
+  | "canceling"
   | "dropped"
   | "error"
-  | "success"
-  | undefined;
+  | "success";
 export interface TaskInstance<T> extends PromiseLike<any> {
   id: number;
 
@@ -25,7 +24,7 @@ export interface TaskInstance<T> extends PromiseLike<any> {
   isError: boolean;
   isSuccessful: boolean;
 
-  isCancelling: boolean;
+  isCanceling: boolean;
   isCanceled: boolean;
 
   isNotDropped: boolean;
@@ -78,12 +77,12 @@ export default function createTaskInstance<T>(
     hasStarted: false,
     isRunning: false,
     isFinished: false,
-    isCancelling: false,
+    isCanceling: false,
     isCanceled: computed(
-      () => taskInstance.isCancelling && taskInstance.isFinished
+      () => taskInstance.isCanceling && taskInstance.isFinished
     ),
     isActive: computed(
-      () => taskInstance.isRunning && !taskInstance.isCancelling
+      () => taskInstance.isRunning && !taskInstance.isCanceling
     ),
     isSuccessful: false,
     isNotDropped: computed(() => !taskInstance.isDropped),
@@ -94,7 +93,7 @@ export default function createTaskInstance<T>(
         [t.isRunning, "running"],
         [t.isEnqueued, "enqueued"],
         [t.isCanceled, "canceled"],
-        [t.isCancelling, "cancelling"],
+        [t.isCanceling, "canceling"],
         [t.isDropped, "dropped"],
         [t.isError, "error"],
         [t.isSuccessful, "success"],
@@ -105,7 +104,7 @@ export default function createTaskInstance<T>(
     error: null,
     value: null,
     cancel() {
-      taskInstance.isCancelling = true;
+      taskInstance.isCanceling = true;
 
       if (taskInstance.isEnqueued) {
         taskInstance.isFinished = true;

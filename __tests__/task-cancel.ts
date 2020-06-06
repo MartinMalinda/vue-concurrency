@@ -15,7 +15,7 @@ describe("useTask cancel", () => {
       expect(taskInstance.isRunning).toBe(true);
       taskInstance.cancel();
 
-      expect(taskInstance.isCancelling).toBe(true);
+      expect(taskInstance.isCanceling).toBe(true);
       await waitFor(() => expect(taskInstance.isCanceled).toBe(true), {
         interval: 10,
       });
