@@ -82,21 +82,17 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="async-content">
-    <div v-if="task.isRunning">
-      <slot name="loading">Loading... (put your favourite spinner here)</slot>
-    </div>
-    <div v-else-if="task.isError">
-      <slot :error="lastError" name="error">
-        <div>
-          <p>{{ lastError.message || "Something went wrong" }}</p>
-          <button @click="task.perform">Try again</button>
-        </div>
-      </slot>
-    </div>
-    <div v-else-if="lastValue">
-      <slot :lastValue="lastValue" />
-    </div>
+  <div>
+    <slot name="loading" v-if="task.isRunning">
+      Loading... (put your favourite spinner here)
+    </slot>
+    <slot name="error" v-else-if="task.isError" :error="lastError">
+      <div>
+        <p>{{ lastError.message || "Something went wrong" }}</p>
+        <button @click="task.perform">Try again</button>
+      </div>
+    </slot>
+    <slot v-else-if="task.performCount > 0" :lastValue="lastValue" />
   </div>
 </template>
 ```
@@ -115,7 +111,7 @@ When a component is designed like this, the most straightforward usage is like t
 </template>
 ```
 
-In this case the `v-if` is not necessary but it's a good practice because **slots are processed eagerly**. So accessing some value on `task.last` if it's not finished would lead to errors.
+In this case the `v-if` is not necessary but it's a good practice because **slots are processed eagerly**. So accessing some value on `task.last` if task is not finished would lead to errors.
 
 Providing custom loading or error template can be done this way:
 
