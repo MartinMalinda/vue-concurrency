@@ -10,7 +10,7 @@ export function usePipeTask<T, U extends any[]>(
       result = yield task.perform(result).canceledOn(signal);
     }
 
-    return result as T;
+    return result;
   });
 }
 
@@ -25,7 +25,7 @@ export function useParallelTask(...tasks: Task<any, any>[]): Task<any[], any> {
   });
 }
 
-export function useSequentialTask<T, U extends any[]>(
+export function useSequentialTask<U extends any[]>(
   ...tasks: Task<any, any>[]
 ): Task<any, U> {
   return useTask(function*(signal, ...args: U) {

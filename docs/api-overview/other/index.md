@@ -4,7 +4,13 @@ sidebarDepth: 0
 
 ## Utils
 
-### waitForValue() `(cb: () => T): Promise<T>`
+<ApiHeader>
+
+### waitForValue()
+
+`(cb: () => T): Promise<T>`
+
+</ApiHeader>
 
 This helper allows waiting until some reactive value is truthy. This may be useful in some cases when the task is supposed to wait for some DOM API or some other event. It should be used when there's no easy alternative.
 
@@ -18,7 +24,13 @@ const task = useTask(function*() {
 });
 ```
 
-### printTask() `Task<any, any[]> => void`
+<ApiHeader>
+
+### printTask()
+
+`Task<any, any[]> => void`
+
+</ApiHeader>
 
 Logs useful information about the task into the console. This might be useful for debugging.
 
@@ -31,7 +43,13 @@ watchEffect(() => {
 });
 ```
 
-### getCancelToken() `(axios : object, signal: AbortSignalWithPromise) => object`
+<ApiHeader>
+
+### getCancelToken()
+
+`(axios : object, signal: AbortSignalWithPromise) => object`
+
+</ApiHeader>
 
 Because `Axios` is frequently used with Vue apps, `vue-concurrency` provides a helper function that allows creating an axios cancel token from the `AbortSignal`.
 
@@ -47,7 +65,13 @@ setup() {
 }
 ```
 
-### useAsyncTask() `(cb: (signal: AbortSignalWithPromise, ...params: U) => Promise<T>) => Task<T, U>`
+<ApiHeader>
+
+### useAsyncTask()
+
+`(cb: (signal: AbortSignalWithPromise, ...params: U) => Promise<T>) => Task<T, U>`
+
+</ApiHeader>
 
 This hook is a wrapper over `useTask()` that allows to pass an async function instead. It returns a Task just like a regular useTask hook but due to limitation of promises, the cancelation is not as good (the async function keeps running even if the task is canceled). The main advantage is that `await` has working type inferrence in TypeScript.
 
@@ -60,7 +84,13 @@ const saveTask = useAsyncTask(async (signal, data) => {
 saveTask.perform({ name: "Joe" });
 ```
 
-### usePipeTask() `(...tasks: Task<any, any[]>[]) => Task<any, any[]>`
+<ApiHeader>
+
+### usePipeTask()
+
+`(...tasks: Task<any, any[]>[]) => Task<any, any[]>`
+
+</ApiHeader>
 
 ```ts
 import { usePipeTask } from "vue-concurrency";
@@ -68,7 +98,13 @@ import { usePipeTask } from "vue-concurrency";
 
 - [Details](/composing-tasks/#pipe-task)
 
-### useParallelTask() `(...tasks: Task<any, any[]>[]) => Task<any, any[]>`
+<ApiHeader>
+
+### useParallelTask()
+
+`(...tasks: Task<any, any[]>[]) => Task<any, any[]>`
+
+</ApiHeader>
 
 ```ts
 import { useParallelTask } from "vue-concurrency";
@@ -76,7 +112,13 @@ import { useParallelTask } from "vue-concurrency";
 
 - [Details](/composing-tasks/#parallel-task)
 
-### useSequentialTask() `(...tasks: Task<any, any[]>[]) => Task<any, any[]>`
+<ApiHeader>
+
+### useSequentialTask()
+
+`(...tasks: Task<any, any[]>[]) => Task<any, any[]>`
+
+</ApiHeader>
 
 ```ts
 import { useSequentialTask } from "vue-concurrency";
@@ -84,7 +126,13 @@ import { useSequentialTask } from "vue-concurrency";
 
 - [Details](/composing-tasks/#sequential-task)
 
-### useTaskGroup() `(tasks: Record<string, Task<any, any[]>>)`
+<ApiHeader>
+
+### useTaskGroup()
+
+`(tasks: Record<string, Task<any, any[]>>)`
+
+</ApiHeader>
 
 ```ts
 import { useTaskGroup } from "vue-concurrency";

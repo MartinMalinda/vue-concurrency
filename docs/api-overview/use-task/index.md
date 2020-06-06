@@ -17,7 +17,13 @@ const getProgressTask = useTask(function*() {
 });
 ```
 
-### perform() `(...params: U) => TaskInstance<T>`
+<ApiHeader>
+
+### perform()
+
+`(...params: U) => TaskInstance<T>`
+
+ </ApiHeader>
 
 Performs the task and returns a new task instance.
 
@@ -28,7 +34,13 @@ const task = useTask(function*(signal, a, b) {
 const taskInstance = task.perform(1, 2);
 ```
 
-### cancelAll() `() => void`
+<ApiHeader>
+
+### cancelAll()
+
+`() => void`
+
+ </ApiHeader>
 
 Cancels all running or enqueued instances.
 
@@ -36,11 +48,21 @@ Cancels all running or enqueued instances.
 task.cancelAll();
 ```
 
+<ApiHeader>
+
 ### performCount `number`
+
+</ApiHeader>
 
 Return the number of times the task was performed.
 
-### isRunning `boolean`
+<ApiHeader>
+
+### isRunning
+
+`boolean`
+
+</ApiHeader>
 
 Returns `true` if there's at least one running instance.
 
@@ -50,38 +72,92 @@ Returns `true` if there's at least one running instance.
 </template>
 ```
 
-### isIdle `boolean`
+<ApiHeader>
+
+### isIdle
+
+`boolean`
+
+</ApiHeader>
 
 Task is idle if there's no running instance.
 
-### isError `boolean`
+<ApiHeader>
+
+### isError
+
+`boolean`
+
+</ApiHeader>
 
 Task isError if the last instance has error.
 
-### last `TaskInstance<T> | undefined`
+<ApiHeader>
+
+### last
+
+`TaskInstance<T> | undefined`
+
+</ApiHeader>
 
 Returns the last task instance if there's any.
 
-### lastSuccessful `TaskInstance<T> | undefined`
+<ApiHeader>
+
+### lastSuccessful
+
+`TaskInstance<T> | undefined`
+
+</ApiHeader>
 
 Returns the last task successful instance if there's any.
 
-### drop() `Task<T, U>`
+<ApiHeader>
+
+### drop()
+
+`Task<T, U>`
+
+ </ApiHeader>
 
 Set's the concurrency policy to [drop](/managing-concurrency/#drop) and returns itself.
 
-### enqueue() `Task<T, U>`
+<ApiHeader>
+
+### enqueue()
+
+`Task<T, U>`
+
+ </ApiHeader>
 
 Set's the concurrency policy to [enqueue](/managing-concurrency/#enqueue) and returns itself.
 
-### restartable() `Task<T, U>`
+<ApiHeader>
+
+### restartable()
+
+`Task<T, U>`
+
+ </ApiHeader>
 
 Set's the concurrency policy to [restartable](/managing-concurrency/#restartable) and returns itself.
 
-### keepLatest() `Task<T, U>`
+<ApiHeader>
+
+### keepLatest()
+
+`Task<T, U>`
+
+ </ApiHeader>
 
 Set's the concurrency policy to [keepLatest](/managing-concurrency/#keepLatest) and returns itself.
 
-### maxConcurrency() `Task<T, U>`
+<ApiHeader>
+
+### maxConcurrency()
+
+`Task<T, U>`
+
+ </ApiHeader>
 
 Set's the [max concurrency](/managing-concurrency/#maxconcurrency) and returns itself.
