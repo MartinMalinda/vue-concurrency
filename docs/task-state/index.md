@@ -10,14 +10,14 @@ Tasks hold state about the asynchronous operations they encapsulate. Tasks deriv
 
 `TaskInstance` on the other hand has a clear lifecycle:
 
-1. `hasStarted`
+1. `hasStarted | isDropped | isEnqueued`
 2. `isRunning`
-3. `isError || isCanceled || isFinished`
+3. `isError | isCanceled | isSuccessful`
 
 Task Instances also hold...
 
-`error` = what has been thrown during the generator function call  
-`value` = what has been returned in the generator function call
+`error` = what has been thrown during the function call  
+`value` = what has been returned in the function call
 
 Most of these are frequently used both in templates and elsewhere.
 
