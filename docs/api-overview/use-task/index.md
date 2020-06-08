@@ -48,6 +48,18 @@ Cancels all running or enqueued instances.
 task.cancelAll();
 ```
 
+### clear()
+
+`() => void`
+
+ </ApiHeader>
+
+Cancels all running or enqueued instances and clears the instance stack to reset the task to initial state.
+
+```ts
+task.cancelAll();
+```
+
 <ApiHeader>
 
 ### performCount `number`

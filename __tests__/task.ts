@@ -19,7 +19,7 @@ export const mockSetup = async (cb): Promise<void> => {
   await Vue.nextTick();
 };
 
-describe("useTask | task with no instances", () => {
+describe("useTask", () => {
   test("isIdle if not performed", async () => {
     await mockSetup(() => {
       const task = useTask(function*() {});
@@ -63,7 +63,7 @@ describe("useTask | task with no instances", () => {
     });
   });
 
-  test("has isError false if not performed", async () => {
+  test("has isError true if last instance has error", async () => {
     await mockSetup(async () => {
       const task = useTask(function*() {
         throw new Error("You shall not pass");
@@ -71,6 +71,19 @@ describe("useTask | task with no instances", () => {
       task.perform();
       await wait(50);
       expect(task.isError).toBe(true);
+    });
+  });
+
+  test("can be cleared of its instances", async () => {
+    await mockSetup(async () => {
+      const task = useTask(function*() {
+        return "foo";
+      });
+      task.perform();
+
+      task.clear();
+
+      expect(task.performCount).toBe(0);
     });
   });
 });

@@ -39,6 +39,7 @@ export type Task<T, U extends any[]> = {
   // Action Methods
   cancelAll: () => void;
   perform: (...params: U) => TaskInstance<T>;
+  clear: () => void;
 
   // Modifiers
   restartable: () => Task<T, U>;
@@ -153,6 +154,11 @@ export default function useTask<T, U extends any[]>(
       });
       task._instances = [...task._instances, newInstance];
       return newInstance;
+    },
+
+    clear() {
+      this.cancelAll();
+      this._instances = [];
     },
 
     restartable() {
