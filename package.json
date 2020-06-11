@@ -13,7 +13,7 @@
     "build": "microbundle build --tsconfig tsconfig.build.json",
     "dev": "microbundle watch",
     "test": "jest",
-    "prepare": "npm run build",
+    "prepublishOnly": "npm run build",
     "test:coverage": "jest --coverage",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
@@ -35,7 +35,7 @@
   "license": "MIT",
   "dependencies": {
     "caf": "^9.0.0",
-    "@vue/composition-api": "^0.5.0"
+    "@vue/composition-api": "^0.6.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.7.0",
@@ -50,10 +50,6 @@
     "vue-template-compiler": "^2.6.11",
     "vuepress": "^1.5.0",
     "vuepress-plugin-typescript": "^0.2.0"
-  },
-  "peerDependencies": {
-    "@vue/composition-api": "^0.5.0",
-    "caf": "^9.0.0"
   },
   "release-it": {
     "github": {
