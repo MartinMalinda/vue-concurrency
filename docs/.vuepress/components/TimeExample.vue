@@ -8,7 +8,7 @@ function timeout(time) {
 
 export default defineComponent({
   setup() {
-    const time = ref<Date>(null);
+    const time = ref<Date | null>(null);
     const updateTimeTask = useTask(function*() {
       // wait some time to simulate a network request
       while (true) {
