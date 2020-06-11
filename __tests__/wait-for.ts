@@ -6,7 +6,7 @@ import { wait } from "./task-cancel";
 describe("waitForValue", () => {
   test("returns the right value", async () => {
     await mockSetup(async () => {
-      const foo = ref<string>(null);
+      const foo = ref<string | null>(null);
       let resolved = false;
       const promise = waitForValue(() => foo.value).then(
         () => (resolved = true)
