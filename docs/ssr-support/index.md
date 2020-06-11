@@ -57,13 +57,29 @@ You can also solve this problem by using a custom caching solution with VueX, Pi
 
 - [Saving data to store with tasks](/examples/store)
 
+## With Nuxt Composition API
+
+If you use Nuxt, you might use [useAsync](https://composition-api.now.sh/helpers/useAsync.html) or `useFetch` hook from [nuxt/composition-api](https://composition-api.now.sh/).
+
+```ts
+const data = useAsync(myTask.perform);
+
+return { data, myTask };
+```
+
+::: warning
+The approach of saving data to client side store works well together with SSR, but `useAsync` and `useServerPrefetch` have not been thoroughly tested and probably don't have ideal DX.
+
+If you think that built-in SSR support would be great, [give it a thumbs up here](https://github.com/MartinMalinda/vue-concurrency/issues/10).
+:::
+
 ## Performing tasks on the client side only
 
 In other occasions you actually don't want the task to be performed on the server at all, only on the client. Perhaps it's some less critical piece of UI that can load lazily later.
 
 If you're using `Nuxt` you can often solved this by wrapping the whole component with a [`<client-only>`](https://nuxtjs.org/api/components-client-only/) component.
 
-Otherwise, if you need more control, or you're not using Nuxt, you can handling this with `onMounted` hook:
+Otherwise, if you need more control, or you're not using Nuxt, you can handling this with `onBeforeMounted` hook:
 
 ```vue
 <script>
@@ -75,7 +91,7 @@ export default defineComponent({
       return ajax("/some/api");
     });
 
-    onMounted(() => myTask.perform());
+    onBeforeMounted(() => myTask.perform());
 
     return {
       myTask,
