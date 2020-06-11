@@ -88,8 +88,7 @@ export const _reactiveContent = <T>(obj: T) => {
   return obj as Reactive<T>;
 };
 
-export function _reactive<T>(obj: T) {
-  // return obj as Reactive<T>;
+export function _reactive<T extends object>(obj: T) {
   return reactive(obj) as T;
 }
 
