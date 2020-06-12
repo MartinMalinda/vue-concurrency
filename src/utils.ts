@@ -92,20 +92,20 @@ export function _reactive<T extends object>(obj: T) {
   return reactive(obj) as T;
 }
 
-export type DeferredObject = {
-  promise: Promise<void>;
+export type DeferredObject<T> = {
+  promise: Promise<T>;
   resolve: Function;
   reject: Function;
 };
-export function defer(): DeferredObject {
+export function defer<T>(): DeferredObject<T> {
   const deferredObject: Record<string, any> = {};
   const promise = new Promise((resolve, reject) => {
     deferredObject.resolve = resolve;
     deferredObject.reject = reject;
   });
-  deferredObject.promise = promise;
+  deferredObject.promise = promise as Promise<T>;
 
-  return deferredObject as DeferredObject;
+  return deferredObject as DeferredObject<T>;
 }
 
 export function printTask(task: Task<any, any>) {

@@ -1,6 +1,6 @@
 import { waitFor } from "@testing-library/vue";
 import useTask from "../src/Task";
-import { mockSetup } from "./task";
+import { mockSetup } from "../test-utils/components";
 
 describe("useTask cancel", () => {
   test("taskInstance.cancel results in isCanceled:true and no value", async () => {

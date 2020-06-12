@@ -1,5 +1,5 @@
 import useTask from "../src/Task";
-import { mockSetup } from "./task";
+import { mockSetup } from "../test-utils/components";
 import { wait } from "./task-cancel";
 import { performNTimes, perform3x } from "./task-concurrency-restartable";
 

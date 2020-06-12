@@ -1,6 +1,6 @@
 import { waitFor } from "@testing-library/vue";
 import useTask, { YieldReturn } from "../src/Task";
-import { mockSetup } from "./task";
+import { mockSetup } from "../test-utils/components";
 import { wait } from "./task-cancel";
 
 describe("useTask | multiple | task", () => {

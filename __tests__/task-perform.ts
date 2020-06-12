@@ -1,6 +1,6 @@
 import useTask from "../src/Task";
 import { wait } from "./task-cancel";
-import { mockSetup } from "./task";
+import { mockSetup } from "../test-utils/components";
 
 describe("useTask | task perform", () => {
   test("returns a task instance", async () => {

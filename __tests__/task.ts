@@ -1,23 +1,6 @@
-import { render } from "@testing-library/vue";
-import Vue from "vue";
-import { createComponentStub } from "../test-utils/components";
 import useTask from "../src/Task";
 import { wait } from "./task-cancel";
-
-export const mockSetup = async (cb): Promise<void> => {
-  let _setupPromiseResolve;
-  const setupPromise = new Promise(
-    (resolve) => (_setupPromiseResolve = resolve)
-  );
-  const component = createComponentStub("TaskUsingComponent", async () => {
-    await cb();
-    _setupPromiseResolve();
-  });
-
-  render(component);
-  await setupPromise;
-  await Vue.nextTick();
-};
+import { mockSetup } from "../test-utils/components";
 
 describe("useTask", () => {
   test("isIdle if not performed", async () => {

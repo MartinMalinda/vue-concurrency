@@ -1,4 +1,4 @@
-import { mockSetup } from "./task";
+import { mockSetup } from "../test-utils/components";
 import useTask from "../src/Task";
 import { printTask } from "../src/utils";
 

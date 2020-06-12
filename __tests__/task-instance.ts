@@ -1,10 +1,10 @@
 import useTask from "../src/Task";
-import { mockSetup } from "./task";
+import { mockSetup } from "../test-utils/components";
 
 describe("useTask | task instance", () => {
   test("has right value after finishing", async () => {
     await mockSetup(async () => {
-      const task = useTask(function* () {
+      const task = useTask(function*() {
         return "foo";
       });
       const taskInstance = task.perform();
@@ -19,7 +19,7 @@ describe("useTask | task instance", () => {
   test("has right error after finishing", async () => {
     const error = new Error("woah");
     await mockSetup(async () => {
-      const taskInstance = useTask(function* () {
+      const taskInstance = useTask(function*() {
         throw error;
       }).perform();
       try {

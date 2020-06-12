@@ -1,7 +1,7 @@
 import { waitFor } from "@testing-library/vue";
 import useTask, { Task } from "../src/Task";
 import { TaskInstance } from "../src/TaskInstance";
-import { mockSetup } from "./task";
+import { mockSetup } from "../test-utils/components";
 import { wait } from "./task-cancel";
 
 export function performNTimes(

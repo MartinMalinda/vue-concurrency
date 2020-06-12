@@ -1,5 +1,5 @@
 import { waitForValue, timeout } from "../src/utils";
-import { mockSetup } from "./task";
+import { mockSetup } from "../test-utils/components";
 import { ref } from "@vue/composition-api";
 import { wait } from "./task-cancel";
 

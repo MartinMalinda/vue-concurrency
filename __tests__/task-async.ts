@@ -1,4 +1,4 @@
-import { mockSetup } from "./task";
+import { mockSetup } from "../test-utils/components";
 import { useAsyncTask } from "../src/utils";
 import { wait } from "./task-cancel";
 

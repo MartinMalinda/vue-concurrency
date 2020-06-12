@@ -45,7 +45,7 @@ export interface TaskInstance<T> extends PromiseLike<any> {
 
   // Promise-like stuff
   _shouldThrow: boolean;
-  _deferredObject: DeferredObject;
+  _deferredObject: DeferredObject<T>;
   _handled: boolean; // this is needed to set to true so that Vue does show error about unhandled rejection
   then: (onfulfilled: onFulfilled<T>, onrejected?: onRejected) => Promise<any>;
   catch: (onrejected?: onRejected) => any;
@@ -131,7 +131,7 @@ export default function createTaskInstance<T>(
 
     // Workaround for Vue not to scream because of unhandled rejection. Task is always "handled" because the error is saved to taskInstance.error.
     _handled: true,
-    _deferredObject: defer(),
+    _deferredObject: defer<T>(),
     _shouldThrow: false, // task throws only if it's used promise-like way (then, catch, await)
     then(onFulfilled, onRejected) {
       taskInstance._shouldThrow = true;
