@@ -43,13 +43,10 @@ export function useTaskPrefetch<T>(
   }
 
   /* Client */
+  const [last] = reviveTaskInstances(key, task).reverse();
 
-  const taskCache = getTaskFromContext(key);
-  if (taskCache) {
-    task._instances = taskCache.instances || [];
-    task._instances.forEach(reviveTaskInstance);
-    deleteTaskCache(key);
-    return task.last as TaskInstance<T>;
+  if (last) {
+    return last;
   } else {
     return task.perform();
   }
@@ -70,6 +67,17 @@ function saveTaskToSSRContext(key: string, task: Task<any, any>) {
   }
 }
 
+function reviveTaskInstances(key: string, task: Task<any, any>) {
+  const taskCache = getTaskFromContext(key);
+  if (taskCache) {
+    task._instances = taskCache.instances || [];
+    task._instances.forEach(reviveTaskInstance);
+    deleteTaskCache(key);
+  }
+
+  return task._instances;
+}
+
 function getNuxtData() {
   return (window as any).__NUXT__;
 }
@@ -85,4 +93,13 @@ function getTaskFromContext(key) {
 function deleteTaskCache(key) {
   const nuxtData = getNuxtData();
   delete nuxtData.vueConcurrency[key];
+}
+
+export function useSSRPersistance(key: string, task: Task<any, any>) {
+  if (isServer()) {
+    saveTaskToSSRContext(key, task);
+    return;
+  }
+
+  reviveTaskInstances(key, task);
 }

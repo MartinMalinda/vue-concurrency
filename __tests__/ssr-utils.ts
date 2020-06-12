@@ -1,6 +1,5 @@
 import { reviveTaskInstance } from "../src/ssr-utils";
 import { TaskInstance } from "../src/TaskInstance";
-import { mockSetup } from "../test-utils/components";
 
 describe("reviveTaskInstance", () => {
   it("creates deffered object that resolves", async () => {
