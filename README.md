@@ -12,11 +12,12 @@ vue-concurrency aims to provide a reasonable abstraction for performing asynchro
 
 ## Features
 
-- **TypeScript Support**
+- **TypeScript support**
 - **Async cancellation** via generator functions and [CAF](https://github.com/getify/CAF)
 - Providing `AbortSignal` to **abort XHR/Fetch requests**
 - **Derived reactive state** to track status of async operations: `isRunning, isIdle, isFinished, isCancelled` and more
 - **Concurrency management**: `drop()`, `restartable()`, `enqueue()` and other tasks
+- **SSR support** (experimental)
 
 ## Installation
 

@@ -1,6 +1,10 @@
-## other configuration excluded from example...
+# TODO: remove ssr-utils once they're not experimental
 exclude_patterns:
   - "__tests__/**/*"
   - "test-utils/**/*"
+  - "**/node_modules/"
+  - "**/*.d.ts"
   - "docs/**/*"
   - "src/index.ts"
+  - "src/types/**/*"
+  - "src/ssr-utils.ts"
