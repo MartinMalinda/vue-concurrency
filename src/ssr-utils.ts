@@ -1,4 +1,8 @@
-import { onServerPrefetch, getCurrentInstance } from "@vue/composition-api";
+import {
+  onServerPrefetch,
+  getCurrentInstance,
+  computed,
+} from "@vue/composition-api";
 import { TaskInstance } from "./TaskInstance";
 import { Task } from "./Task";
 
@@ -27,7 +31,6 @@ export function useTaskPrefetch<T>(
   task: Task<T, any>
 ): TaskInstance<T> {
   /* Server */
-
   if (isServer()) {
     // perform, add to prefetch, add to ssrContext
     const taskInstance = task.perform();
@@ -63,7 +66,9 @@ function saveTaskToSSRContext(key: string, task: Task<any, any>) {
       $ssrContext.nuxt.vueConcurrency = {};
     }
 
-    $ssrContext.nuxt.vueConcurrency[key] = { instances: task._instances };
+    $ssrContext.nuxt.vueConcurrency[key] = computed(() => ({
+      instances: task._instances,
+    }));
   }
 }
 
@@ -87,7 +92,7 @@ function getTaskFromContext(key) {
     throw Error(`Could not access  window.__NUXT__`);
   }
 
-  return getNuxtData().vueConcurrency[key];
+  return getNuxtData().vueConcurrency[key].value;
 }
 
 function deleteTaskCache(key) {

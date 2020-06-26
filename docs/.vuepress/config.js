@@ -50,6 +50,7 @@ module.exports = {
           "/api-overview/use-task/",
           "api-overview/task-instance/",
           "/api-overview/other/",
+          "/api-overview/ssr-utils/",
         ],
       },
     ],
