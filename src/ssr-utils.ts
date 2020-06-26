@@ -61,7 +61,7 @@ function saveTaskToSSRContext(key: string, task: Task<any, any>) {
     throw new Error("Could not access $ssrContext");
   }
 
-  if ($ssrContext?.nuxt) {
+  if ($ssrContext && $ssrContext.nuxt) {
     if (!$ssrContext.nuxt.vueConcurrency) {
       $ssrContext.nuxt.vueConcurrency = {};
     }

@@ -25,9 +25,11 @@ export const mockSetup = async (cb): Promise<void> => {
   const setupPromise = new Promise(
     (resolve) => (_setupPromiseResolve = resolve)
   );
-  const component = createComponentStub("TaskUsingComponent", async () => {
-    await cb();
-    _setupPromiseResolve();
+  const component = createComponentStub("TaskUsingComponent", () => {
+    const maybePromise = cb();
+    maybePromise?.then
+      ? maybePromise.then(_setupPromiseResolve)
+      : _setupPromiseResolve();
   });
 
   render(component);

@@ -1,4 +1,4 @@
-import { computed, onUnmounted, Ref } from "@vue/composition-api";
+import { computed, onUnmounted } from "@vue/composition-api";
 import createTaskInstance, {
   TaskInstance,
   ModifierOptions,
@@ -14,19 +14,11 @@ import {
   _reactiveContent,
   dropEnqueued,
 } from "./utils";
-
-type MaybeRef<T> = T | Ref<T>;
-type Resolved<T> = T extends PromiseLike<infer U> ? U : T;
-export type YieldReturn<T> = T extends Task<infer U, any>
-  ? U
-  : Resolved<ReturnType<T extends (...args: any) => any ? T : any>>;
-export interface AbortSignalWithPromise extends AbortSignal {
-  pr: Promise<void>;
-}
+import { Resolved, TaskCb } from "./types";
 
 export type Task<T, U extends any[]> = {
   // Lifecycle state
-  isIdle: MaybeRef<boolean>;
+  isIdle: boolean;
   isRunning: boolean;
   isError: boolean;
   performCount: number;
@@ -66,11 +58,6 @@ export type Task<T, U extends any[]> = {
   _enqueuedInstances: readonly TaskInstance<T>[];
   _notDroppedInstances: readonly TaskInstance<T>[];
 };
-
-export type TaskCb<T, U extends any[]> = (
-  signal: AbortSignalWithPromise,
-  ...params: U
-) => Generator<any, T, any>;
 
 export default function useTask<T, U extends any[]>(
   cb: TaskCb<T, U>

@@ -1,10 +1,13 @@
 import CAF from "caf";
 import { computed } from "@vue/composition-api";
-import { TaskCb, AbortSignalWithPromise } from "./Task";
 import { _reactive, _reactiveContent, DeferredObject, defer } from "./utils";
+import {
+  AbortSignalWithPromise,
+  TaskCb,
+  onFulfilled,
+  onRejected,
+} from "./types/index.d";
 
-type onFulfilled<T> = ((value: T) => any) | null | undefined;
-type onRejected = ((reason: any) => any) | null | undefined;
 export type TaskInstanceStatus =
   | "running"
   | "enqueued"

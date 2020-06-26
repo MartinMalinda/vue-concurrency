@@ -1,6 +1,7 @@
 import { computed, Ref, watchEffect, reactive } from "@vue/composition-api";
-import useTask, { Task, AbortSignalWithPromise } from "./Task";
+import useTask, { Task } from "./Task";
 import { TaskInstance } from "./TaskInstance";
+import { AbortSignalWithPromise } from "./types/index.d";
 
 export function waitForValue<T = any>(cb: () => T): Promise<T> {
   return new Promise((resolve) => {
