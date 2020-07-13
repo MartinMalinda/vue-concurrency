@@ -14,7 +14,7 @@ import {
   _reactiveContent,
   dropEnqueued,
 } from "./utils";
-import { Resolved, TaskCb } from "./types";
+import { Resolved, TaskCb } from "./types/index";
 
 export type Task<T, U extends any[]> = {
   // Lifecycle state

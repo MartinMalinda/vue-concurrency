@@ -2,7 +2,7 @@ import { waitFor } from "@testing-library/vue";
 import useTask from "../src/Task";
 import { mockSetup } from "../test-utils/components";
 import { wait } from "./task-cancel";
-import { YieldReturn } from "../src/types";
+import { YieldReturn } from "../src/types/index";
 
 describe("useTask | multiple | task", () => {
   test("can yield instance of another task", async () => {

@@ -6,7 +6,7 @@ import {
   TaskCb,
   onFulfilled,
   onRejected,
-} from "./types";
+} from "./types/index";
 
 export type TaskInstanceStatus =
   | "running"
