@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.7.0",
-    "@testing-library/vue": "^5.0.2",
+    "@testing-library/vue": "^5.0.4",
     "@types/jest": "^25.2.2",
     "jest": "^26.0.1",
     "microbundle": "^0.12.0",
