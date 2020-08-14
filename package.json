@@ -35,7 +35,7 @@
   "license": "MIT",
   "dependencies": {
     "caf": "^9.0.0",
-    "@vue/composition-api": ">=1.0.0-beta.1"
+    "@vue/composition-api": "1.0.0-beta.9"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.7.0",
