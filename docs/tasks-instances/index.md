@@ -48,7 +48,7 @@ There's a `<Home>` component with a template like this:
 </div>
 ```
 
-Let's assume component `<SuggestedProfiles />` does an AJAX request on it's own. The problem is the AJAX happens only after the feed has finished loading. Yet, the loading could easily happen in parallel.  
+Let's assume component `<SuggestedProfiles />` does an AJAX request on it's own. The problem is the AJAX happens when `<SuggestedProfiles />` is being rendered, which only happens when `isFeedLoading` is true, which means it must wait for feed to finish loading. Yet, the loading could easily happen in parallel.  
 One way to solve this is to refactor with tasks:
 
 ```vue
