@@ -42,7 +42,7 @@ export default defineComponent({
     const getUsersTask = useTask(function*() {
       /* Tasks use generators instead of async functions.
       They can function effectively the same way as async functions,
-      writing yield instead of await,
+      writing yield instead of await (more about that in a minute),
       but as opposed to Promises, they can be cancelled. */
 
       // Using any promise-friendly ajax solution: axios, fetch...
@@ -79,3 +79,5 @@ export default defineComponent({
 ```
 
 So this is a quick peek on what `vue-concurrency` can do. For this usecase it would also be easy to use other solutions, such as a simple `usePromise` hook, new `Suspense API` or `<Await>` component. The benefit of a `Task` is that the usage can be later on extended for more advanced cases (chaining, handling concurrency). Tasks are also not strictly tied to the template so you can reuse the same concepts elsewhere than view logic. More on that later.
+
+A note on that `yield get("/api/users");` statement: We didn't make this up! A generator returns an <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol" target="_blank">iterator</a>, and when it reaches a `yield` it waits for the `next()` method to called. If the `next()` method is called with a value, that value is returned from `yield`. In our case, when `useTask` iterates over a promise, it sends the resolved value back to the generator through the `next(value)` method. For another example, see <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators#Advanced_generators" target="_blank">here</a>.
