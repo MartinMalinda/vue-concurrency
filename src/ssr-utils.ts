@@ -57,7 +57,7 @@ export function useTaskPrefetch<T>(
 
 function saveTaskToNuxtState(key: string, task: Task<any, any>) {
   const { $root } = getCurrentInstance() as any;
-  const nuxtState = $root?.context?.nuxtState;
+  const nuxtState = $root && $root.context && $root.context.nuxtState;
   if (!nuxtState) {
     throw new Error("Could not access $root.context.nuxtState");
   }
