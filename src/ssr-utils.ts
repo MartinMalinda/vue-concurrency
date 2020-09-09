@@ -15,9 +15,9 @@ export function reviveTaskInstance(instance: TaskInstance<any>) {
     instance._deferredObject.promise = Promise.resolve(instance.value);
   }
 
-  instance.cancel = () => {};
+  instance.cancel = () => { };
   instance.canceledOn = () => instance;
-  instance._run = () => {};
+  instance._run = () => { };
   instance.then = (...params) =>
     instance._deferredObject.promise.then(...params);
   instance.catch = (...params) =>
@@ -37,7 +37,7 @@ export function useTaskPrefetch<T>(
     onServerPrefetch(async () => {
       try {
         await taskInstance;
-        saveTaskToSSRContext(key, task);
+        saveTaskToNuxtState(key, task);
       } catch (e) {
         // no need for extra handling
       }
@@ -55,21 +55,20 @@ export function useTaskPrefetch<T>(
   }
 }
 
-function saveTaskToSSRContext(key: string, task: Task<any, any>) {
-  const { $ssrContext } = getCurrentInstance() as any;
-  if (!$ssrContext) {
-    throw new Error("Could not access $ssrContext");
+function saveTaskToNuxtState(key: string, task: Task<any, any>) {
+  const { $root } = getCurrentInstance() as any;
+  const nuxtState = $root?.context?.nuxtState;
+  if (!nuxtState) {
+    throw new Error("Could not access $root.context.nuxtState");
   }
 
-  if ($ssrContext && $ssrContext.nuxt) {
-    if (!$ssrContext.nuxt.vueConcurrency) {
-      $ssrContext.nuxt.vueConcurrency = {};
-    }
-
-    $ssrContext.nuxt.vueConcurrency[key] = computed(() => ({
-      instances: task._instances,
-    }));
+  if (!nuxtState.vueConcurrency) {
+    nuxtState.vueConcurrency = {};
   }
+
+  nuxtState.vueConcurrency[key] = computed(() => ({
+    instances: task._instances,
+  }));
 }
 
 function reviveTaskInstances(key: string, task: Task<any, any>) {
@@ -102,7 +101,7 @@ function deleteTaskCache(key) {
 
 export function useSSRPersistance(key: string, task: Task<any, any>) {
   if (isServer()) {
-    saveTaskToSSRContext(key, task);
+    saveTaskToNuxtState(key, task);
     return;
   }
 
