@@ -56,5 +56,6 @@
       "tokenRef": "RELEASE_IT_GITHUB_TOKEN_VC",
       "release": true
     }
-  }
+  },
+  "sideEffects": false
 }
