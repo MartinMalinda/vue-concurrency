@@ -1,4 +1,4 @@
-import { waitFor } from "@testing-library/vue";
+import { waitFor } from "@testing-library/dom";
 import useTask from "../src/Task";
 import { mockSetup } from "../test-utils/components";
 
@@ -6,7 +6,7 @@ describe("useTask cancel", () => {
   test("taskInstance.cancel results in isCanceled:true and no value", async () => {
     let reached2ndYield = false;
     await mockSetup(async () => {
-      const task = useTask(function*() {
+      const task = useTask(function* () {
         yield wait(15);
         reached2ndYield = true;
         return "foo";
@@ -30,7 +30,7 @@ describe("useTask cancel", () => {
 
   test("task.cancelAll cancels all running instances", async () => {
     await mockSetup(async () => {
-      const task = useTask(function*() {
+      const task = useTask(function* () {
         return "foo";
       });
       const taskInstance1 = task.perform();
@@ -58,7 +58,7 @@ describe("useTask cancel", () => {
   test("signal.pr is called when the task is canceled", async () => {
     const signalCatchCallback = jest.fn();
     await mockSetup(async () => {
-      const task = useTask(function*(signal) {
+      const task = useTask(function* (signal) {
         signal.pr.catch(signalCatchCallback);
         yield wait(30);
         return "foo";

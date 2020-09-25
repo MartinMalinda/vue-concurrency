@@ -1,4 +1,4 @@
-import { waitFor } from "@testing-library/vue";
+import { waitFor } from "@testing-library/dom";
 import useTask, { Task } from "../src/Task";
 import { TaskInstance } from "../src/TaskInstance";
 import { mockSetup } from "../test-utils/components";
@@ -21,7 +21,7 @@ export function perform3x(task: Task<any, any>) {
 describe("useTask | restartable task", () => {
   test("runs the first task instance right away", async () => {
     await mockSetup(() => {
-      const task = useTask(function*() {}).restartable();
+      const task = useTask(function* () { }).restartable();
       const taskInstance = task.perform();
       expect(taskInstance.isRunning).toBe(true);
     });
@@ -29,7 +29,7 @@ describe("useTask | restartable task", () => {
 
   test("cancels first running task when the task is performed again", async () => {
     await mockSetup(async () => {
-      const task = useTask(function*() {
+      const task = useTask(function* () {
         yield wait(10);
       }).restartable();
       const taskInstance1 = task.perform();
@@ -45,7 +45,7 @@ describe("useTask | restartable task", () => {
 
   test("cancels first running task when maxConcurrency is reached", async () => {
     await mockSetup(async () => {
-      const task = useTask(function*() {
+      const task = useTask(function* () {
         yield wait(50);
       })
         .restartable()

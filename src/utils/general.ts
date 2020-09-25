@@ -62,12 +62,17 @@ function computedFilterBy<T>(cb: () => T[], key: keyof T, value?: any) {
 }
 
 export function computedLength(cb: () => any[]): Readonly<Ref<number>> {
-  return computed(() => cb().length);
+  return computed(() => {
+    const arr = cb();
+    console.log({ arr });
+    return arr.length;
+  });
 }
 
 export function computedLastOf<T>(cb: () => readonly T[]): Ref<T | undefined> {
   return computed(() => {
     const collection = cb();
+    console.log({ collection });
     return collection[collection.length - 1];
   });
 }
