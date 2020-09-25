@@ -1,4 +1,4 @@
-import { computed, onUnmounted } from "@vue/composition-api";
+import { computed, onUnmounted } from "./utils/api";
 import createTaskInstance, {
   TaskInstance,
   ModifierOptions,

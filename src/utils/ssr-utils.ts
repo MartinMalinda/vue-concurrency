@@ -2,7 +2,7 @@ import {
   onServerPrefetch,
   getCurrentInstance,
   computed,
-} from "@vue/composition-api";
+} from "./api";
 import { TaskInstance } from "../TaskInstance";
 import { Task } from "../Task";
 

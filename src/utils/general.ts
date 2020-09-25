@@ -1,4 +1,4 @@
-import { computed, Ref, watchEffect, reactive } from "@vue/composition-api";
+import { computed, Ref, watchEffect, reactive } from "./api";
 import useTask, { Task } from "../Task";
 import { TaskInstance } from "../TaskInstance";
 import { AbortSignalWithPromise } from "../types/index";
