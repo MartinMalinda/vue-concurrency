@@ -1,14 +1,8 @@
-const isVue2 = process.env.VUE !== "3";
-
-let setupFiles = [];
-
-if (isVue2) {
-  setupFiles = ["<rootDir>/test-utils/vue-2-setup.ts"]
-}
+const vueVersion = process.env.VUE || 2;
 
 module.exports = {
   preset: "ts-jest",
-  setupFiles,
+  setupFiles: [`<rootDir>/test-utils/vue-${vueVersion}-setup.ts`],
   setupFilesAfterEnv: ["<rootDir>/test-utils/test-setup.ts"],
   clearMocks: true,
   coverageDirectory: "coverage",
