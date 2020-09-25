@@ -13,7 +13,7 @@ import {
   _reactive,
   _reactiveContent,
   dropEnqueued,
-} from "./utils";
+} from "./utils/general";
 import { Resolved, TaskCb } from "./types/index";
 
 export type Task<T, U extends any[]> = {

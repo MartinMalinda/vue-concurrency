@@ -1,4 +1,4 @@
-import { reviveTaskInstance } from "../src/ssr-utils";
+import { reviveTaskInstance } from "../src/utils/ssr-utils";
 import { TaskInstance } from "../src/TaskInstance";
 
 describe("reviveTaskInstance", () => {
@@ -61,9 +61,9 @@ describe("reviveTaskInstance", () => {
     } as TaskInstance<any>;
     reviveTaskInstance(taskInstance);
 
-    expect(taskInstance.then(() => {})).toBeInstanceOf(Promise);
-    expect(taskInstance.catch(() => {})).toBeInstanceOf(Promise);
-    expect(taskInstance.finally(() => {})).toBeInstanceOf(Promise);
+    expect(taskInstance.then(() => { })).toBeInstanceOf(Promise);
+    expect(taskInstance.catch(() => { })).toBeInstanceOf(Promise);
+    expect(taskInstance.finally(() => { })).toBeInstanceOf(Promise);
     expect(taskInstance.cancel()).toBe(undefined);
     expect(taskInstance.canceledOn({} as any)).toBe(taskInstance);
   });

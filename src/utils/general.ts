@@ -1,7 +1,7 @@
 import { computed, Ref, watchEffect, reactive } from "@vue/composition-api";
-import useTask, { Task } from "./Task";
-import { TaskInstance } from "./TaskInstance";
-import { AbortSignalWithPromise } from "./types/index";
+import useTask, { Task } from "../Task";
+import { TaskInstance } from "../TaskInstance";
+import { AbortSignalWithPromise } from "../types/index";
 
 export function waitForValue<T = any>(cb: () => T): Promise<T> {
   return new Promise((resolve) => {
@@ -177,7 +177,7 @@ export function getCancelToken<T extends { CancelToken: any }>(
 export function useAsyncTask<T, U extends any[]>(
   fn: (signal: AbortSignalWithPromise, ...params: U) => Promise<T>
 ) {
-  return useTask(function*(signal, ...params: U) {
+  return useTask(function* (signal, ...params: U) {
     return fn(signal, ...params);
   });
 }
