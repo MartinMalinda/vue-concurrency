@@ -1,4 +1,4 @@
-# 🚦 vue-concurrency (beta)
+# 🚦 vue-concurrency
 
 [![Test Coverage](https://api.codeclimate.com/v1/badges/59a2cde627ebcefcbba4/test_coverage)](https://codeclimate.com/github/MartinMalinda/vue-concurrency/test_coverage) [![gzip size](http://img.badgesize.io/https://unpkg.com/vue-concurrency/dist/index.modern.js?compression=gzip&label=gzip)](https://unpkg.com/vue-concurrency/dist/index.modern.js) ![npm](https://img.shields.io/npm/v/vue-concurrency)
 
