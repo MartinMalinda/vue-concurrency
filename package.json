@@ -10,8 +10,8 @@
     "dist"
   ],
   "scripts": {
-    "build:vue3": "microbundle build --tsconfig tsconfig.build.json --external vue",
-    "build:vue2": "microbundle build --tsconfig tsconfig.build.json --external vue2,vue,@vue/composition-api --alias ./api=./api2,./utils/api=./utils/api2,vue=vue2",
+    "build:vue3": "microbundle build -o dist/vue3 --tsconfig tsconfig.build.json --external vue",
+    "build:vue2": "microbundle build -o dist/vue2 --tsconfig tsconfig.build.json --external vue2,vue,@vue/composition-api --alias ./api=./api2,./utils/api=./utils/api2,vue=vue2",
     "dev": "microbundle watch",
     "test": "VUE=2 jest && VUE=3 jest",
     "test:vue2": "jest",
