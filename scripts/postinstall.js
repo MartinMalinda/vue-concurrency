@@ -24,7 +24,7 @@ function switchVersion(version) {
   fs.writeFileSync(path.join(dir, 'dist', 'index.js'), `module.exports = require('./vue${version}/vue-concurrency')\n`, 'utf-8')
   fs.writeFileSync(path.join(dir, 'dist', 'index.module.js'), `export * from './vue${version}/vue-concurrency.module'\n`, 'utf-8')
   fs.writeFileSync(path.join(dir, 'dist', 'index.modern.js'), `export * from './vue${version}/vue-concurrency.modern'\n`, 'utf-8')
-  fs.writeFileSync(path.join(dir, 'dist', 'index.d.ts'), `export * from './vue${version}/index'\n`, 'utf-8')
+  fs.writeFileSync(path.join(dir, 'dist', 'index.d.ts'), `export * from './vue${version}/src/index'\n`, 'utf-8')
 }
 
 const Vue = loadModule('vue')
