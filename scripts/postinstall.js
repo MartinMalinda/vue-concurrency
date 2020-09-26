@@ -7,34 +7,12 @@ const path = require('path')
 
 const dir = path.resolve(__dirname, '..')
 
-function replaceInFile(filePath, source, replacement) {
-  fs.readFile(filePath, 'utf8', function (err, data) {
-    if (err) {
-      return console.error(err);
-    }
-    const result = data.replace(source, replacement);
-
-    fs.writeFile(filePath, result, 'utf8', err => err && console.err(err));
-  });
-}
-
 function loadModule(name) {
   try {
     return require(name)
   } catch (e) {
     return undefined
   }
-}
-
-function fixVue3Import() {
-  ['vue-concurrency.modern.js', 'vue-concurrency.module.js'].forEach(fileName => {
-    console.log(path.join(dir, 'dist', 'vue3', fileName));
-    replaceInFile(path.join(dir, 'dist', 'vue3', fileName), `from"vue3"`, `from"vue"`);
-  });
-
-  ['vue-concurrency.js', 'vue-concurrency.umd.js'].forEach(fileName => {
-    replaceInFile(path.join(dir, 'dist', 'vue3', fileName), `require("vue3")`, `require("vue")`);
-  });
 }
 
 function switchVersion(version) {
@@ -51,18 +29,14 @@ function switchVersion(version) {
 
 const Vue = loadModule('vue')
 
-console.log(Vue.version);
-
 if (!Vue || typeof Vue.version !== 'string') {
   console.warn('[vue-concurrency] Vue is not detected in the dependencies. Please install Vue first.')
 }
 else if (Vue.version.startsWith('2.')) {
   switchVersion(2)
-  fixVue3Import();
 }
 else if (Vue.version.startsWith('3.')) {
   switchVersion(3)
-  fixVue3Import();
 }
 else {
   console.warn(`[vue-concurrency] Vue version v${Vue.version} is not suppported.`)
