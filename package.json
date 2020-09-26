@@ -55,7 +55,7 @@
     "typescript": "^3.9.6",
     "vue3": "npm:vue@^3.0.0",
     "vue-template-compiler": "^2.6.11",
-    "vue": "npm:vue@^2.6.11",
+    "vue": "npm:vue@2.6.11",
     "vuepress": "^1.5.0",
     "vuepress-plugin-typescript": "^0.2.0"
   },
