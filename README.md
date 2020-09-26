@@ -13,7 +13,7 @@ vue-concurrency aims to provide a reasonable abstraction for performing asynchro
 ## Features
 
 - Vue 3 ✅
-- Vue 2 + @vue/composition-api ✅
+- Vue 2 + [@vue/composition-api](https://github.com/vuejs/composition-api) ✅
 - **TypeScript support**
 - **Async cancellation** via generator functions and [CAF](https://github.com/getify/CAF)
 - Providing `AbortSignal` to **abort XHR/Fetch requests**
