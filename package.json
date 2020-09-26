@@ -7,7 +7,8 @@
   "main": "dist/index.js",
   "files": [
     "src",
-    "dist"
+    "dist",
+    "scripts"
   ],
   "scripts": {
     "build:vue3": "microbundle build -o dist/vue3 --tsconfig tsconfig.build.json --external vue",
@@ -17,6 +18,7 @@
     "test:vue2": "jest",
     "test:vue3": "VUE=3 jest",
     "prepublishOnly": "npm run build",
+    "postinstall": "node ./scripts/postinstall.js",
     "test:coverage": "jest --coverage",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
