@@ -10,7 +10,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "microbundle build --tsconfig tsconfig.build.json",
+    "build": "microbundle build --tsconfig tsconfig.build.json --external vue",
     "dev": "microbundle watch",
     "test": "VUE=2 jest && VUE=3 jest",
     "test:vue2": "jest",
@@ -50,7 +50,7 @@
     "release-it": "^13.6.2",
     "ts-jest": "^25.5.1",
     "typescript": "^3.9.6",
-    "vue": "npm:vue@^3.0.0",
+    "vue": "^3.0.0",
     "vue-template-compiler": "^2.6.11",
     "vue2": "npm:vue@^2.6.11",
     "vuepress": "^1.5.0",
