@@ -16,6 +16,11 @@ function loadModule(name) {
 }
 
 function switchVersion(version) {
+  if (!fs.existsSync(path.join(dir, 'dist'))) {
+    console.error('[vue-concurrency] dist folder is missing! this might be a broken release');
+    return;
+  }
+
   fs.writeFileSync(path.join(dir, 'dist', 'index.js'), `module.exports = require('./v${version}/vue-concurrency')\n`, 'utf-8')
   fs.writeFileSync(path.join(dir, 'dist', 'index.module.js'), `export * from './v${version}/vue-concurency.module'\n`, 'utf-8')
   fs.writeFileSync(path.join(dir, 'dist', 'index.modern.js'), `export * from './v${version}/vue-concurency.modern'\n`, 'utf-8')
