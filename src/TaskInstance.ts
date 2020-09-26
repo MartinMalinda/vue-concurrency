@@ -1,6 +1,6 @@
 import CAF from "caf";
-import { computed } from "@vue/composition-api";
-import { _reactive, _reactiveContent, DeferredObject, defer } from "./utils";
+import { computed } from "./utils/api";
+import { _reactive, _reactiveContent, DeferredObject, defer } from "./utils/general";
 import {
   AbortSignalWithPromise,
   TaskCb,

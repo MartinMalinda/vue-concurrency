@@ -1,5 +1,5 @@
-import { defer, getCancelToken } from "../src/utils";
-import { waitFor } from "@testing-library/vue";
+import { defer, getCancelToken } from "../src/utils/general";
+import { waitFor } from "@testing-library/dom";
 import { AbortSignalWithPromise } from "../src/types/index";
 
 describe("getCancelToken", () => {

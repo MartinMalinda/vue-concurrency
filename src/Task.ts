@@ -1,4 +1,4 @@
-import { computed, onUnmounted } from "@vue/composition-api";
+import { computed, onUnmounted } from "./utils/api";
 import createTaskInstance, {
   TaskInstance,
   ModifierOptions,
@@ -13,7 +13,7 @@ import {
   _reactive,
   _reactiveContent,
   dropEnqueued,
-} from "./utils";
+} from "./utils/general";
 import { Resolved, TaskCb } from "./types/index";
 
 export type Task<T, U extends any[]> = {
@@ -96,10 +96,12 @@ export default function useTask<T, U extends any[]>(
 
     cancelAll() {
       // Cancel all running and enqueued instances. Finished and dropped instances can't really be canceled.
-      [...task._runningInstances, ...task._enqueuedInstances].forEach(
+      task._instances.forEach(
         (taskInstance) => {
           try {
-            taskInstance.cancel();
+            if (!taskInstance.isDropped && !taskInstance.isFinished) {
+              taskInstance.cancel();
+            }
           } catch (e) {
             if (e !== "cancel") {
               throw e;
@@ -187,7 +189,10 @@ export default function useTask<T, U extends any[]>(
   const task: Task<T, U> = _reactive(content);
 
   onUnmounted(() => {
-    task.cancelAll();
+    // check if there's instances still, Vue 3 might have done some cleanup already
+    if (task._instances) {
+      task.cancelAll();
+    }
   });
 
   // TODO: remove this type forcing

@@ -2,9 +2,9 @@ import {
   onServerPrefetch,
   getCurrentInstance,
   computed,
-} from "@vue/composition-api";
-import { TaskInstance } from "./TaskInstance";
-import { Task } from "./Task";
+} from "./api";
+import { TaskInstance } from "../TaskInstance";
+import { Task } from "../Task";
 
 const isServer = () => typeof window === "undefined";
 

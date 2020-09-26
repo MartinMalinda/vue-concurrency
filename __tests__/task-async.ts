@@ -1,11 +1,11 @@
 import { mockSetup } from "../test-utils/components";
-import { useAsyncTask } from "../src/utils";
+import { useAsyncTask } from "../src/utils/general";
 import { wait } from "./task-cancel";
 
 describe("useAsyncTask", () => {
   test("works", async () => {
     await mockSetup(() => {
-      const task = useAsyncTask(async () => {});
+      const task = useAsyncTask(async () => { });
       expect(task.isIdle).toBe(true);
     });
   });

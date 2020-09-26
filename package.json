@@ -1,19 +1,25 @@
 {
   "name": "vue-concurrency",
-  "version": "1.2.1",
+  "version": "1.2.2-next.4",
   "description": "A library for encapsulating asynchronous operations and managing concurrency for Vue + Composition API",
   "source": "src/index.ts",
   "module": "dist/index.module.js",
   "main": "dist/index.js",
   "files": [
     "src",
-    "dist"
+    "dist",
+    "scripts"
   ],
   "scripts": {
-    "build": "microbundle build --tsconfig tsconfig.build.json",
+    "build:vue3": "microbundle build -o dist/vue3 --tsconfig tsconfig.build.json --external vue3,vue,caf --alias ./api=./api3,./utils/api=./utils/api3,vue3=vue && node ./scripts/fixVue3Import.js",
+    "build:vue2": "microbundle build -o dist/vue2 --tsconfig tsconfig.build.json --external caf,vue2,vue,@vue/composition-api",
+    "build": "npm run build:vue2 && npm run build:vue3",
     "dev": "microbundle watch",
-    "test": "jest",
+    "test": "VUE=2 jest && VUE=3 jest",
+    "test:vue2": "jest",
+    "test:vue3": "VUE=3 jest",
     "prepublishOnly": "npm run build",
+    "postinstall": "node ./scripts/postinstall.js",
     "test:coverage": "jest --coverage",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
@@ -34,20 +40,23 @@
   "homepage": "https://vue-concurrency.netlify.app/",
   "license": "MIT",
   "dependencies": {
-    "caf": "^9.0.0",
-    "@vue/composition-api": "1.0.0-beta.10"
+    "caf": "^9.0.0"
   },
   "devDependencies": {
+    "@testing-library/dom": "^7.24.3",
     "@testing-library/jest-dom": "^5.7.0",
     "@testing-library/vue": "^5.0.4",
     "@types/jest": "^25.2.2",
+    "@vue/composition-api": "^1.0.0-beta.10",
+    "@vue/test-utils": "^2.0.0-beta.5",
     "jest": "^26.0.1",
     "microbundle": "^0.12.0",
     "release-it": "^13.6.2",
     "ts-jest": "^25.5.1",
     "typescript": "^3.9.6",
-    "vue": "^2.6.11",
+    "vue3": "npm:vue@^3.0.0",
     "vue-template-compiler": "^2.6.11",
+    "vue": "npm:vue@2.6.11",
     "vuepress": "^1.5.0",
     "vuepress-plugin-typescript": "^0.2.0"
   },

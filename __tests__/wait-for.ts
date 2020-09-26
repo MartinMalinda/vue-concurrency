@@ -1,6 +1,6 @@
-import { waitForValue, timeout } from "../src/utils";
+import { waitForValue, timeout } from "../src/utils/general";
 import { mockSetup } from "../test-utils/components";
-import { ref } from "@vue/composition-api";
+import { ref } from "../src/utils/api";
 import { wait } from "./task-cancel";
 
 describe("waitForValue", () => {

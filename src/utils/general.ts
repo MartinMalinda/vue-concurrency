@@ -1,7 +1,7 @@
-import { computed, Ref, watchEffect, reactive } from "@vue/composition-api";
-import useTask, { Task } from "./Task";
-import { TaskInstance } from "./TaskInstance";
-import { AbortSignalWithPromise } from "./types/index";
+import { computed, Ref, watchEffect, reactive } from "./api";
+import useTask, { Task } from "../Task";
+import { TaskInstance } from "../TaskInstance";
+import { AbortSignalWithPromise } from "../types/index";
 
 export function waitForValue<T = any>(cb: () => T): Promise<T> {
   return new Promise((resolve) => {
@@ -62,7 +62,10 @@ function computedFilterBy<T>(cb: () => T[], key: keyof T, value?: any) {
 }
 
 export function computedLength(cb: () => any[]): Readonly<Ref<number>> {
-  return computed(() => cb().length);
+  return computed(() => {
+    const arr = cb();
+    return arr.length;
+  });
 }
 
 export function computedLastOf<T>(cb: () => readonly T[]): Ref<T | undefined> {
@@ -177,7 +180,7 @@ export function getCancelToken<T extends { CancelToken: any }>(
 export function useAsyncTask<T, U extends any[]>(
   fn: (signal: AbortSignalWithPromise, ...params: U) => Promise<T>
 ) {
-  return useTask(function*(signal, ...params: U) {
+  return useTask(function* (signal, ...params: U) {
     return fn(signal, ...params);
   });
 }

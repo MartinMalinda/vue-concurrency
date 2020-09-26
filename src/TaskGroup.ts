@@ -1,6 +1,5 @@
 import { Task } from "./Task";
-import { reactive } from "@vue/composition-api";
-import { computed } from "@vue/composition-api";
+import { reactive, computed } from "./utils/api";
 
 export interface TaskState {
   isRunning: boolean;

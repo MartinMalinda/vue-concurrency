@@ -4,7 +4,11 @@
     "target": "es5",
     "module": "esnext",
     "moduleResolution": "node",
-    "lib": ["esnext", "esnext.asynciterable", "dom"],
+    "lib": [
+      "esnext",
+      "esnext.asynciterable",
+      "dom"
+    ],
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,

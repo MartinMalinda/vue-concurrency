@@ -1,38 +1,32 @@
-import { defineComponent } from "@vue/composition-api";
-import { render } from "@testing-library/vue";
-import Vue from "vue";
+import { createApp, h, nextTick } from "vue3";
+import Vue2 from 'vue';
 
-export function createComponentStub(
-  name: string,
-  setup = (props, context) => {}
-) {
-  const stubAttr = `data-test-${name}-stub`;
-  return defineComponent({
-    name,
+const vueVersion = process.env.VUE || 2;
+
+const mountComponent = {
+  2: (setup: () => any) => new (Vue2 as any)({
     setup,
-    render(el) {
-      return el("div", {
-        attrs: {
-          [stubAttr]: true,
-        },
-      });
-    },
-  });
-}
+    render: (h) => h('div'),
+  }).$mount(),
+  3: (setup: () => any) => createApp({
+    setup,
+    render: () => ":)"
+  }).mount(document.body)
+};
 
 export const mockSetup = async (cb): Promise<void> => {
   let _setupPromiseResolve;
   const setupPromise = new Promise(
     (resolve) => (_setupPromiseResolve = resolve)
   );
-  const component = createComponentStub("TaskUsingComponent", () => {
+
+  mountComponent[vueVersion](() => {
     const maybePromise = cb();
     maybePromise?.then
       ? maybePromise.then(_setupPromiseResolve)
       : _setupPromiseResolve();
   });
 
-  render(component);
   await setupPromise;
-  await Vue.nextTick();
+  await nextTick();
 };
