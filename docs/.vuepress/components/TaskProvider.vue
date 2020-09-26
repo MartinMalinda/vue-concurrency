@@ -3,29 +3,30 @@ import { defineComponent } from "@vue/composition-api";
 import useTask, { Task } from "../../../src/Task";
 
 function timeout(time) {
-  return new Promise(resolve => setTimeout(resolve, time));
+  return new Promise((resolve) => setTimeout(resolve, time));
 }
 
 export default defineComponent({
   components: {},
   props: {
     modify: {
-      type: Function,
-      required: false
+      type: Object as () => (task: Task<any, any>) => any,
+      required: false,
     },
 
     time: {
       type: Number,
-      default: 3000
+      default: 3000,
     },
 
     perform: Boolean,
 
-    errorChance: Number
+    errorChance: Number,
   },
 
-  setup({ perform, modify, time, errorChance }) {
-    let task = useTask(function*(signal) {
+  setup(props) {
+    const { perform, modify, time, errorChance } = props;
+    let task = useTask(function* (signal) {
       const t0 = performance.now();
       yield timeout(time);
       const t1 = performance.now();
@@ -46,7 +47,7 @@ export default defineComponent({
     }
 
     return { task };
-  }
+  },
 });
 </script>
 
