@@ -12,7 +12,9 @@
   "scripts": {
     "build": "microbundle build --tsconfig tsconfig.build.json",
     "dev": "microbundle watch",
-    "test": "jest",
+    "test": "VUE=2 jest && VUE=3 jest",
+    "test:vue2": "jest",
+    "test:vue3": "VUE=3 jest",
     "prepublishOnly": "npm run build",
     "test:coverage": "jest --coverage",
     "docs:dev": "vuepress dev docs",
