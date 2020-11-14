@@ -8,7 +8,7 @@ export function waitForValue<T = any>(cb: () => T): Promise<T> {
     const stop = watch(cb, value => {
       if (value !== undefined || value !== null) {
         resolve(value);
-        stop();
+        stop && stop();
       }
     }, { immediate: true });
   });
