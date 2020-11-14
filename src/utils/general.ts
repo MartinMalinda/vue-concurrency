@@ -6,7 +6,7 @@ import { AbortSignalWithPromise } from "../types/index";
 export function waitForValue<T = any>(cb: () => T): Promise<T> {
   return new Promise((resolve) => {
     const stop = watch(cb, value => {
-      if (value !== undefined || value !== null) {
+      if (value !== undefined && value !== null) {
         resolve(value);
         stop && stop();
       }
