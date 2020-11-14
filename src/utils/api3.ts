@@ -1,4 +1,4 @@
-export { ref, reactive, onMounted, onUnmounted, defineComponent, computed, Ref, watchEffect, getCurrentInstance } from "vue3";
+export { ref, reactive, onMounted, onUnmounted, defineComponent, computed, Ref, watchEffect, watch, getCurrentInstance } from "vue3";
 
 // onServerPrefetch is not supported in Vue 3 so far
 export const onServerPrefetch = (cb: () => any) => {

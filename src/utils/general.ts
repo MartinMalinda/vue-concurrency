@@ -1,17 +1,16 @@
-import { computed, Ref, watchEffect, reactive } from "./api";
+import { computed, Ref, watch, reactive } from "./api";
 import useTask, { Task } from "../Task";
 import { TaskInstance } from "../TaskInstance";
 import { AbortSignalWithPromise } from "../types/index";
 
 export function waitForValue<T = any>(cb: () => T): Promise<T> {
   return new Promise((resolve) => {
-    const stop = watchEffect(() => {
-      const value = cb();
-      if (value) {
+    const stop = watch(cb, value => {
+      if (value !== undefined || value !== null) {
         resolve(value);
         stop();
       }
-    });
+    }, { immediate: true });
   });
 }
 
