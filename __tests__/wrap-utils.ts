@@ -48,8 +48,8 @@ describe("useParallelTask", () => {
       const add20Task = useTask(function*(signal, a: number) {
         return a + 20;
       });
-      const pipeTask = useParallelTask(addTask, add10Task, add20Task);
-      const [firstResult, secondResult, thirdResult] = await pipeTask.perform(
+      const parallelTask = useParallelTask(addTask, add10Task, add20Task);
+      const [firstResult, secondResult, thirdResult] = await parallelTask.perform(
         100,
         100
       );
@@ -67,6 +67,22 @@ describe("useParallelTask", () => {
       const pipeTask = useParallelTask(addTask);
       const [number] = await pipeTask.perform(100, 100);
       expect(number).toBe(200);
+    });
+  });
+
+
+  test("works without arguments", async () => {
+    await mockSetup(async () => {
+      const firstTask = useTask(function*(signal) {
+        return 1;
+      });
+      const secondTask = useTask(function * (signal) {
+        return 2;
+      });
+      const parallelTask = useParallelTask(firstTask, secondTask);
+      const [first, second] = await parallelTask.perform();
+      expect(first).toBe(1);
+      expect(second).toBe(2);
     });
   });
 });
