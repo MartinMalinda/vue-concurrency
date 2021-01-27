@@ -81,9 +81,6 @@ export function useTaskPrefetch (key, task) {
 
 export function useSSRPersistance (key, task) {
   const vm = getCurrentInstance();
-
-  if (process.server)
-    return setNuxtTask(vm, key, task);
-
-  reviveTaskInstances(key, task);
+  if (process.server) setNuxtTask(vm, key, task);
+  else reviveTaskInstances(key, task);
 }
