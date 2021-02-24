@@ -30,6 +30,10 @@ vue-concurrency aims to provide a reasonable abstraction for performing asynchro
 - 🔍 [Autocomplete](https://vue-concurrency.netlify.app/examples/autocomplete/)
 - 🚦 [Concurrency](https://vue-concurrency.netlify.app/managing-concurrency/)
 
+## Support
+
+Subscribe to me on [herohero](https://herohero.co/martin) to receive bi-weekly coding tips, hacks and other distilled knowledge from my day to day work. I'm building herohero using Vue 3 and vue concurrency:).
+
 ## License
 
 MIT
