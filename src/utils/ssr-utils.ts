@@ -1,14 +1,42 @@
 import {
   onServerPrefetch,
   getCurrentInstance,
+  onBeforeMount,
   computed,
-} from "./api";
-import { TaskInstance } from "../TaskInstance";
-import { Task } from "../Task";
+} from "@nuxtjs/composition-api";
 
-const isServer = () => typeof window === "undefined";
+async function wrap (func, catcher, finaliser) {
+  try {
+    return await func();
+  } catch (e) {
+    if (catcher) await catcher(e);
+  } finally {
+    if (finaliser) await finaliser();
+  }
+}
 
-export function reviveTaskInstance(instance: TaskInstance<any>) {
+function getNuxtTask (key) {
+  const ssrContext = process.client && window['__NUXT__'];
+
+  if (!ssrContext)
+    throw Error(`Could not access window.__NUXT__ or not operating client-side`);
+
+  if (!ssrContext.vueConcurrency || !ssrContext.vueConcurrency[key])
+    return undefined;
+
+  return ssrContext.vueConcurrency[key].value;
+}
+
+function setNuxtTask (vm, key, task) {
+  const { nuxt: ssrContext } = vm.$ssrContext;
+
+  if (!ssrContext.vueConcurrency)
+    ssrContext.vueConcurrency = {};
+
+  ssrContext.vueConcurrency[key] = computed(() => task._instances);
+}
+
+export function reviveTaskInstance (instance) {
   if (instance.isError) {
     instance._deferredObject.promise = Promise.reject(instance.error);
   } else {
@@ -26,84 +54,33 @@ export function reviveTaskInstance(instance: TaskInstance<any>) {
     instance._deferredObject.promise.finally(...params);
 }
 
-export function useTaskPrefetch<T>(
-  key: string,
-  task: Task<T, any>
-): TaskInstance<T> {
-  /* Server */
-  if (isServer()) {
-    // perform, add to prefetch, add to ssrContext
-    const taskInstance = task.perform();
-    onServerPrefetch(async () => {
-      try {
-        await taskInstance;
-        saveTaskToNuxtState(key, task);
-      } catch (e) {
-        // no need for extra handling
-      }
-    });
-    return taskInstance;
-  }
+function reviveTaskInstances (key, task) {
+  const taskCache = getNuxtTask(key);
 
-  /* Client */
-  const [last] = reviveTaskInstances(key, task).reverse();
-
-  if (last) {
-    return last;
-  } else {
-    return task.perform();
-  }
-}
-
-function saveTaskToNuxtState(key: string, task: Task<any, any>) {
-  const { $root } = getCurrentInstance() as any;
-  const nuxtState = $root && $root.context && $root.context.nuxtState;
-  if (!nuxtState) {
-    throw new Error("Could not access $root.context.nuxtState");
-  }
-
-  if (!nuxtState.vueConcurrency) {
-    nuxtState.vueConcurrency = {};
-  }
-
-  nuxtState.vueConcurrency[key] = computed(() => ({
-    instances: task._instances,
-  }));
-}
-
-function reviveTaskInstances(key: string, task: Task<any, any>) {
-  const taskCache = getTaskFromContext(key);
   if (taskCache) {
-    task._instances = taskCache.instances || [];
+    task._instances = taskCache || [];
     task._instances.forEach(reviveTaskInstance);
-    deleteTaskCache(key);
+  }
+}
+
+export function useTaskPrefetch (key, task) {
+  const vm = getCurrentInstance();
+
+  onServerPrefetch(async () => {
+    await wrap(task.perform);
+    setNuxtTask(vm, key, task);
+  });
+
+  if (process.client) {
+    onBeforeMount(async () => !task._instances.length && task.perform());
+    reviveTaskInstances(key, task);
   }
 
-  return task._instances;
+  return task;
 }
 
-function getNuxtData() {
-  return (window as any).__NUXT__;
-}
-
-function getTaskFromContext(key) {
-  if (!getNuxtData()) {
-    throw Error(`Could not access  window.__NUXT__`);
-  }
-
-  return getNuxtData().vueConcurrency[key].value;
-}
-
-function deleteTaskCache(key) {
-  const nuxtData = getNuxtData();
-  delete nuxtData.vueConcurrency[key];
-}
-
-export function useSSRPersistance(key: string, task: Task<any, any>) {
-  if (isServer()) {
-    saveTaskToNuxtState(key, task);
-    return;
-  }
-
-  reviveTaskInstances(key, task);
+export function useSSRPersistance (key, task) {
+  const vm = getCurrentInstance();
+  if (process.server) setNuxtTask(vm, key, task);
+  else reviveTaskInstances(key, task);
 }
