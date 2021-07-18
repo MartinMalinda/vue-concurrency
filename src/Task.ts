@@ -1,4 +1,4 @@
-import { computed, onUnmounted, getCurrentInstance } from "./utils/api";
+import { computed, onBeforeUnmount, getCurrentInstance } from "./utils/api";
 import createTaskInstance, {
   TaskInstance,
   ModifierOptions,
@@ -191,7 +191,7 @@ export default function useTask<T, U extends any[]>(
   const task: Task<T, U> = _reactive(content);
 
   if (vm && options.cancelOnUnmount) {
-    onUnmounted(() => {
+    onBeforeUnmount(() => {
       // check if there's instances still, Vue 3 might have done some cleanup already
       if (task._instances) {
         // cancelAll with force is more performant is theres less need for checks
