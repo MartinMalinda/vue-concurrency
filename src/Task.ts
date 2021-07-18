@@ -1,4 +1,4 @@
-import { computed, onUnmounted } from "./utils/api";
+import { computed, onUnmounted, getCurrentInstance } from "./utils/api";
 import createTaskInstance, {
   TaskInstance,
   ModifierOptions,
@@ -62,6 +62,7 @@ export type Task<T, U extends any[]> = {
 export default function useTask<T, U extends any[]>(
   cb: TaskCb<T, U>
 ): Task<Resolved<T>, U> {
+  const vm = getCurrentInstance();
   const content = _reactiveContent({
     _isRestartable: false,
     _isDropping: false,
@@ -188,13 +189,15 @@ export default function useTask<T, U extends any[]>(
   });
   const task: Task<T, U> = _reactive(content);
 
-  onUnmounted(() => {
-    // check if there's instances still, Vue 3 might have done some cleanup already
-    if (task._instances) {
-      // cancelAll with force is more performant is theres less need for checks
-      task.cancelAll({ force: true });
-    }
-  });
+  if (vm) {
+    onUnmounted(() => {
+      // check if there's instances still, Vue 3 might have done some cleanup already
+      if (task._instances) {
+        // cancelAll with force is more performant is theres less need for checks
+        task.cancelAll({ force: true });
+      }
+    });
+  }
 
   // TODO: remove this type forcing
   return task as Task<Resolved<T>, U>;

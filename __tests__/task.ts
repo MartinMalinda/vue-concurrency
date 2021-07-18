@@ -69,4 +69,14 @@ describe("useTask", () => {
       expect(task.performCount).toBe(0);
     });
   });
+
+  test('can be called without active component', async () => {
+    const task = useTask(function * () {
+      return 'foo';
+    });
+
+    await task.perform();
+
+    expect(task.last?.value).toBe('foo');
+  });
 });
