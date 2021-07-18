@@ -29,7 +29,7 @@ export type Task<T, U extends any[]> = {
   firstEnqueued: TaskInstance<T> | undefined;
 
   // Action Methods
-  cancelAll: () => void;
+  cancelAll: (options?: { force: boolean }) => void;
   perform: (...params: U) => TaskInstance<T>;
   clear: () => void;
 
@@ -94,13 +94,13 @@ export default function useTask<T, U extends any[]>(
     lastSuccessful: computedLastOf(() => task._successfulInstances),
     firstEnqueued: computedFirstOf(() => task._enqueuedInstances),
 
-    cancelAll() {
+    cancelAll({ force } = { force: false }) {
       // Cancel all running and enqueued instances. Finished and dropped instances can't really be canceled.
       task._instances.forEach(
         (taskInstance) => {
           try {
-            if (!taskInstance.isDropped && !taskInstance.isFinished) {
-              taskInstance.cancel();
+            if (force || !taskInstance.isDropped && !taskInstance.isFinished) {
+              taskInstance.cancel({ force });
             }
           } catch (e) {
             if (e !== "cancel") {
@@ -146,7 +146,7 @@ export default function useTask<T, U extends any[]>(
     },
 
     clear() {
-      this.cancelAll();
+      this.cancelAll({ force: true });
       this._instances = [];
     },
 
@@ -191,7 +191,8 @@ export default function useTask<T, U extends any[]>(
   onUnmounted(() => {
     // check if there's instances still, Vue 3 might have done some cleanup already
     if (task._instances) {
-      task.cancelAll();
+      // cancelAll with force is more performant is theres less need for checks
+      task.cancelAll({ force: true });
     }
   });
 

@@ -55,6 +55,33 @@ describe("useTask cancel", () => {
     });
   });
 
+  test("task.cancelAll with force works", async () => {
+    await mockSetup(async () => {
+      const task = useTask(function* () {
+        return "foo";
+      });
+      const taskInstance1 = task.perform();
+      const taskInstance2 = task.perform();
+      try {
+        await taskInstance1;
+        await taskInstance2;
+      } catch (e) {
+        expect(e).toBe("cancel");
+      }
+
+      const taskInstance3 = task.perform();
+      const taskInstance4 = task.perform();
+
+      task.cancelAll({ force: true });
+
+      expect(taskInstance1.isCanceled).toBe(true);
+      expect(taskInstance2.isCanceled).toBe(true);
+
+      await waitFor(() => expect(taskInstance3.isCanceled).toBe(true));
+      expect(taskInstance4.isCanceled).toBe(true);
+    });
+  });
+
   test("signal.pr is called when the task is canceled", async () => {
     const signalCatchCallback = jest.fn();
     await mockSetup(async () => {

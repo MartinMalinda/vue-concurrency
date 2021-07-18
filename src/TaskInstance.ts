@@ -34,7 +34,7 @@ export interface TaskInstance<T> extends PromiseLike<any> {
   status: TaskInstanceStatus;
 
   _run: () => void;
-  cancel: () => void;
+  cancel: (options?: { force: boolean }) => void;
   canceledOn: (signal: AbortSignalWithPromise) => TaskInstance<T>;
   token?: Record<string, any>;
 
@@ -106,14 +106,16 @@ export default function createTaskInstance<T>(
 
     error: null,
     value: null,
-    cancel() {
-      taskInstance.isCanceling = true;
-
-      if (taskInstance.isEnqueued) {
-        taskInstance.isFinished = true;
+    cancel({ force } = { force: false }) {
+      if (!force) {
+        taskInstance.isCanceling = true;
+  
+        if (taskInstance.isEnqueued) {
+          taskInstance.isFinished = true;
+        }
+  
+        taskInstance.isEnqueued = false;
       }
-
-      taskInstance.isEnqueued = false;
 
       if (taskInstance.token) {
         taskInstance.token.abort("cancel");
