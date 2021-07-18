@@ -60,7 +60,8 @@ export type Task<T, U extends any[]> = {
 };
 
 export default function useTask<T, U extends any[]>(
-  cb: TaskCb<T, U>
+  cb: TaskCb<T, U>,
+  options = { cancelOnUnmount: true } 
 ): Task<Resolved<T>, U> {
   const vm = getCurrentInstance();
   const content = _reactiveContent({
@@ -189,7 +190,7 @@ export default function useTask<T, U extends any[]>(
   });
   const task: Task<T, U> = _reactive(content);
 
-  if (vm) {
+  if (vm && options.cancelOnUnmount) {
     onUnmounted(() => {
       // check if there's instances still, Vue 3 might have done some cleanup already
       if (task._instances) {
