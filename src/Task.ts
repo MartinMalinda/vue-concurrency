@@ -1,4 +1,4 @@
-import { computed, onBeforeUnmount, getCurrentInstance } from "./utils/api";
+import { computed, onBeforeUnmount, getCurrentInstance, effectScope, EffectScope } from "./utils/api";
 import createTaskInstance, {
   TaskInstance,
   ModifierOptions,
@@ -32,6 +32,7 @@ export type Task<T, U extends any[]> = {
   cancelAll: (options?: { force: boolean }) => void;
   perform: (...params: U) => TaskInstance<T>;
   clear: () => void;
+  destroy: () => void;
 
   // Modifiers
   restartable: () => Task<T, U>;
@@ -57,14 +58,19 @@ export type Task<T, U extends any[]> = {
   _activeInstances: readonly TaskInstance<T>[];
   _enqueuedInstances: readonly TaskInstance<T>[];
   _notDroppedInstances: readonly TaskInstance<T>[];
+
+  // Other
+  _scope: EffectScope
 };
 
 export default function useTask<T, U extends any[]>(
   cb: TaskCb<T, U>,
-  options = { cancelOnUnmount: true } 
+  options = { cancelOnUnmount: true }
 ): Task<Resolved<T>, U> {
   const vm = getCurrentInstance();
+  const scope = effectScope();
   const content = _reactiveContent({
+    _scope: scope,
     _isRestartable: false,
     _isDropping: false,
     _isEnqueuing: false,
@@ -138,18 +144,28 @@ export default function useTask<T, U extends any[]>(
       }
 
       const onFinish = () => onTaskInstanceFinish(task);
-      const newInstance = createTaskInstance<T>(cb, params, {
-        modifiers,
-        onFinish,
-        id: task._instances.length + 1,
-      });
-      task._instances = [...task._instances, newInstance];
-      return newInstance;
+      return new Promise((resolve) => {
+        task._scope.run(() => {
+          const newInstance = createTaskInstance<T>(cb, params, {
+            modifiers,
+            onFinish,
+            id: task._instances.length + 1,
+          });
+          task._instances = [...task._instances, newInstance];
+          debugger;
+          resolve(newInstance);
+        });
+      }) as unknown as TaskInstance<T>;
     },
 
     clear() {
       this.cancelAll({ force: true });
       this._instances = [];
+    },
+
+    destroy() {
+      this._scope.stop();
+      this.clear();
     },
 
     restartable() {
@@ -195,12 +211,11 @@ export default function useTask<T, U extends any[]>(
       // check if there's instances still, Vue 3 might have done some cleanup already
       if (task._instances) {
         // cancelAll with force is more performant is theres less need for checks
-        task.cancelAll({ force: true });
+        task.destroy();
       }
     });
   }
 
-  // TODO: remove this type forcing
   return task as Task<Resolved<T>, U>;
 }
 
@@ -211,6 +226,4 @@ function onTaskInstanceFinish(task: Task<any, any>): void {
       firstEnqueued._run();
     }
   }
-
-  //TODO: run task.serialize() hook
 }

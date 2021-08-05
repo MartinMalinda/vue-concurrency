@@ -1,1 +1,1 @@
-export { ref, reactive, onMounted, onUnmounted, onBeforeUnmount, defineComponent, computed, Ref, watchEffect, watch, onServerPrefetch, getCurrentInstance } from "@vue/composition-api";
+export { ref, reactive, onMounted, onUnmounted, onBeforeUnmount, defineComponent, computed, Ref, watchEffect, watch, onServerPrefetch, getCurrentInstance, effectScope, EffectScope } from "@vue/composition-api";

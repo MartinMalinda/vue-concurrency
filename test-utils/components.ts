@@ -1,4 +1,4 @@
-import { createApp, h, nextTick } from "vue3";
+import { createApp, h, nextTick } from "@vue/composition-api";
 import Vue2 from 'vue';
 
 const vueVersion = process.env.VUE || 2;
