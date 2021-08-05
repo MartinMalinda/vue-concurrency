@@ -1,5 +1,5 @@
 import CAF from "caf";
-import { computed } from "./utils/api";
+import { computed, EffectScope } from "./utils/api";
 import { _reactive, _reactiveContent, DeferredObject, defer } from "./utils/general";
 import {
   AbortSignalWithPromise,
@@ -63,6 +63,7 @@ export interface ModifierOptions {
 
 export interface TaskInstanceOptions {
   id: number;
+  scope: EffectScope,
   modifiers: ModifierOptions;
   onFinish: (taskInstance: TaskInstance<any>) => any;
 }
@@ -145,8 +146,8 @@ export default function createTaskInstance<T>(
       taskInstance._shouldThrow = true;
       return taskInstance._deferredObject.promise.then(onFulfilled, onRejected);
     },
-    catch(onRejected) {
-      taskInstance._shouldThrow = true;
+    catch(onRejected, shouldThrow = true) {
+      taskInstance._shouldThrow = shouldThrow;
       return taskInstance._deferredObject.promise.catch(onRejected);
     },
     finally(cb) {

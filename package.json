@@ -54,9 +54,9 @@
     "release-it": "^13.6.2",
     "ts-jest": "^25.5.1",
     "typescript": "^3.9.6",
-    "vue3": "npm:vue@^3.2.20",
-    "vue-template-compiler": "^2.6.11",
     "vue": "npm:vue@2.6.11",
+    "vue-template-compiler": "^2.6.11",
+    "vue3": "npm:vue@^3.2.20",
     "vuepress": "^1.5.0",
     "vuepress-plugin-typescript": "^0.2.0"
   },
