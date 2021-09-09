@@ -61,7 +61,7 @@ export type Task<T, U extends any[]> = {
 
 export default function useTask<T, U extends any[]>(
   cb: TaskCb<T, U>,
-  options = { cancelOnUnmount: true } 
+  options = { cancelOnUnmount: true }
 ): Task<Resolved<T>, U> {
   const vm = getCurrentInstance();
   const content = _reactiveContent({

@@ -48,6 +48,7 @@ export interface TaskInstance<T> extends PromiseLike<any> {
 
   // Promise-like stuff
   _shouldThrow: boolean;
+  _canAbort: boolean;
   _deferredObject: DeferredObject<T>;
   _handled: boolean; // this is needed to set to true so that Vue does not show error about unhandled rejection
   then: (onfulfilled: onFulfilled<T>, onrejected?: onRejected) => Promise<any>;
@@ -109,16 +110,17 @@ export default function createTaskInstance<T>(
     cancel({ force } = { force: false }) {
       if (!force) {
         taskInstance.isCanceling = true;
-  
+
         if (taskInstance.isEnqueued) {
           taskInstance.isFinished = true;
         }
-  
+
         taskInstance.isEnqueued = false;
       }
 
-      if (taskInstance.token) {
+      if (taskInstance.token && taskInstance._canAbort) {
         taskInstance.token.abort("cancel");
+        taskInstance._canAbort = false;
       }
     },
     canceledOn(signal: AbortSignalWithPromise) {
@@ -138,6 +140,7 @@ export default function createTaskInstance<T>(
     _handled: true,
     _deferredObject: defer<T>(),
     _shouldThrow: false, // task throws only if it's used promise-like way (then, catch, await)
+    _canAbort: true,
     then(onFulfilled, onRejected) {
       taskInstance._shouldThrow = true;
       return taskInstance._deferredObject.promise.then(onFulfilled, onRejected);
@@ -195,6 +198,7 @@ function runTaskInstance<T>(
 
       setFinished();
       taskInstance._deferredObject.resolve(value);
+      taskInstance._canAbort = false;
       options.onFinish(taskInstance);
     })
     .catch((e) => {
