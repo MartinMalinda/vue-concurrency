@@ -71,7 +71,7 @@ export default defineComponent({
       <button @click="getUsersTask.perform">Try again</button>
     </div>
     <!-- via `.last`, the last TaskInstance is accessed. -->
-    <div v-else v-for="user in getUsers.last.value">
+    <div v-else v-for="user in getUsersTask.last.value">
       {{ user.name }}
     </div>
   </div>
