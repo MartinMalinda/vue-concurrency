@@ -15,6 +15,7 @@ export default function useTaskGroup<U extends Record<string, Task<any, any>>>(
   const taskGroup = reactive({
     isRunning: computed(() => !!taskArray.find((task) => task.isRunning)),
     isIdle: computed(() => !taskGroup.isRunning),
+    isError: computed(() => !!taskArray.find((task) => task.isError)),
     ...taskMap,
   });
 
