@@ -27,6 +27,7 @@ describe("useTaskGroup", () => {
         add20Task,
         isRunning: false,
         isIdle: true,
+        isError: false,
       });
     });
   });

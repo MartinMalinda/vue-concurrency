@@ -121,6 +121,8 @@ export default function createTaskInstance<T>(
 
       if (taskInstance.token && taskInstance._canAbort) {
         taskInstance.token.abort("cancel");
+        taskInstance.token.discard();
+        taskInstance.token = undefined;
         taskInstance._canAbort = false;
       }
     },

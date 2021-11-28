@@ -21,6 +21,8 @@ export default defineComponent({
       updateTimeTask.perform();
     });
 
+    console.log('updateTimeTask', updateTimeTask);
+
     return {
       time,
       updateTimeTask
