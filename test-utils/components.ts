@@ -1,18 +1,9 @@
-import { createApp, h, nextTick } from "@vue/composition-api";
-import Vue2 from 'vue';
+import { createApp, nextTick } from "vue";
 
-const vueVersion = process.env.VUE || 2;
-
-const mountComponent = {
-  2: (setup: () => any) => new (Vue2 as any)({
-    setup,
-    render: (h) => h('div'),
-  }).$mount(),
-  3: (setup: () => any) => createApp({
+const mountComponent = (setup: () => any) => createApp({
     setup,
     render: () => ":)"
-  }).mount(document.body)
-};
+  }).mount(document.body);
 
 export const mockSetup = async (cb): Promise<void> => {
   let _setupPromiseResolve;
@@ -20,7 +11,7 @@ export const mockSetup = async (cb): Promise<void> => {
     (resolve) => (_setupPromiseResolve = resolve)
   );
 
-  mountComponent[vueVersion](() => {
+  mountComponent(() => {
     const maybePromise = cb();
     maybePromise?.then
       ? maybePromise.then(_setupPromiseResolve)

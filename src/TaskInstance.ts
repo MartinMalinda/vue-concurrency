@@ -159,7 +159,7 @@ export default function createTaskInstance<T>(
   });
 
   // Create
-  const taskInstance: TaskInstance<T> = _reactive(content);
+  const taskInstance = _reactive(content) as TaskInstance<T>;
 
   // Process = drop, enqueue or run right away!
   const { modifiers } = options;
