@@ -206,7 +206,7 @@ export default function useTask<T, U extends any[]>(
       return task;
     },
   });
-  const task = _reactive(content) as Task<T, U>;
+  const task: Task<T, U> = _reactive(content);
 
   if (vm && options.cancelOnUnmount) {
     onBeforeUnmount(() => {

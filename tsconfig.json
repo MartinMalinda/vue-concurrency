@@ -16,6 +16,5 @@
     "sourceMap": true,
     "strict": true,
     "noImplicitAny": false
-  },
-  "exclude": ["docs", "jest.config.js"]
+  }
 }
