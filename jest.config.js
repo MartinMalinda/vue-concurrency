@@ -1,5 +1,7 @@
 const vueVersion = process.env.VUE || 2;
 
+console.log('Vue', vueVersion);
+
 module.exports = {
   preset: "ts-jest",
   setupFiles: [`<rootDir>/test-utils/vue-${vueVersion}-setup.ts`],
