@@ -40,7 +40,7 @@
   "homepage": "https://vue-concurrency.netlify.app/",
   "license": "MIT",
   "dependencies": {
-    "caf": "^9.0.0"
+    "caf": "13.1.1"
   },
   "devDependencies": {
     "@testing-library/dom": "^7.24.3",

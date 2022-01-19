@@ -1,4 +1,3 @@
-import CAF from "caf";
 import { computed } from "./utils/api";
 import { _reactive, _reactiveContent, DeferredObject, defer } from "./utils/general";
 import {
@@ -7,6 +6,9 @@ import {
   onFulfilled,
   onRejected,
 } from "./types/index";
+
+// https://github.com/MartinMalinda/vue-concurrency/issues/58
+const CAF = require('caf/caf');
 
 export type TaskInstanceStatus =
   | "running"
