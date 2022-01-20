@@ -6,8 +6,7 @@ import {
   onFulfilled,
   onRejected,
 } from "./types/index";
-
-const CAF = require('caf/caf');
+import CAF from 'caf';
 
 export type TaskInstanceStatus =
   | "running"
