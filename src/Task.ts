@@ -150,13 +150,13 @@ export default function useTask<T, U extends any[]>(
         scope: task._scope,
         id: task._instances.length + 1,
       });
-      const newInstance = task._scope.isActive ? task._scope.run(create) : create();
+      const newInstance = task._scope.active ? task._scope.run(create) : create();
 
       if (!task._scope.active) {
         console.warn('Task instance has been created in inactive scope. Perhaps youre creating task out of setup?');
       }
       
-      task._instances = [...task._instances, newInstance];
+      task._instances = [...task._instances, newInstance as TaskInstance<T>];
 
       return newInstance;
     },

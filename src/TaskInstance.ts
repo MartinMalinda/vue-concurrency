@@ -1,4 +1,3 @@
-import CAF from "caf";
 import { computed, EffectScope } from "./utils/api";
 import { _reactive, _reactiveContent, DeferredObject, defer } from "./utils/general";
 import {
@@ -7,6 +6,8 @@ import {
   onFulfilled,
   onRejected,
 } from "./types/index";
+
+const CAF = require('caf/caf');
 
 export type TaskInstanceStatus =
   | "running"
