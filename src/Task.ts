@@ -144,17 +144,18 @@ export default function useTask<T, U extends any[]>(
       }
 
       const onFinish = () => onTaskInstanceFinish(task);
-      const newInstance = task._scope.run(() => createTaskInstance<T>(cb, params, {
+      const create = () => createTaskInstance<T>(cb, params, {
         modifiers,
         onFinish,
         scope: task._scope,
         id: task._instances.length + 1,
-      }));
+      });
+      const newInstance = task._scope.isActive ? task._scope.run(create) : create();
 
-      if (!newInstance) {
-        throw new Error('Failed to create new task instance due inactive scope. Perhaps you are trying to run a task bound to destroyed component?');
+      if (!task._scope.active) {
+        console.warn('Task instance has been created in inactive scope. Perhaps youre creating task out of setup?');
       }
-
+      
       task._instances = [...task._instances, newInstance];
 
       return newInstance;
