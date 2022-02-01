@@ -35,7 +35,8 @@
   "homepage": "https://vue-concurrency.netlify.app/",
   "license": "MIT",
   "dependencies": {
-    "caf": "^13.1.1"
+    "caf": "^13.1.1",
+    "vue": "^3.2.20"
   },
   "devDependencies": {
     "@testing-library/dom": "^7.24.3",
@@ -46,7 +47,7 @@
     "release-it": "^13.6.2",
     "ts-jest": "^25.5.1",
     "typescript": "^4.3.5",
-    "vue": "^3.2.20",
+    
     "vue-template-compiler": "^2.6.11"
   },
   "release-it": {
