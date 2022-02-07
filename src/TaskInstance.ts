@@ -121,7 +121,13 @@ export default function createTaskInstance<T>(
 
       if (taskInstance.token && taskInstance._canAbort) {
         taskInstance.token.abort("cancel");
-        taskInstance.token.discard();
+        try {
+          taskInstance.token.discard();
+        } catch (e) {
+          // this can cause an error where AbortSignal cannot be changed
+          // perhaps browsers consider it to be immutable
+          // all in all, failed token discard is no big deal, the memory saved is not that big
+        }
         taskInstance.token = undefined;
         taskInstance._canAbort = false;
       }
