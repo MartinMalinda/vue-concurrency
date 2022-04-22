@@ -1,3 +1,5 @@
+
+import CAF, { cancelToken } from "caf";
 import { computed, EffectScope } from "./utils/api";
 import { _reactive, _reactiveContent, DeferredObject, defer } from "./utils/general";
 import {
@@ -6,7 +8,6 @@ import {
   onFulfilled,
   onRejected,
 } from "./types/index";
-import CAF from 'caf';
 
 export type TaskInstanceStatus =
   | "running"
@@ -186,8 +187,9 @@ function runTaskInstance<T>(
   params: any[],
   options: TaskInstanceOptions
 ): void {
-  const token = new (CAF as any).cancelToken();
-  const cancelable = (CAF as any)(cb, token);
+  // because not all environemnts support package.exports field (TS, WP4 and others), it's necessary to look for CAF function in two places
+  const token = new cancelToken();
+  const cancelable = CAF(cb, token);
   taskInstance.token = token;
 
   taskInstance.hasStarted = true;
