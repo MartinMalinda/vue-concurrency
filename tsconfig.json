@@ -17,5 +17,6 @@
     "strict": true,
     "noImplicitAny": false
   },
+  "include": ["src/**/*.ts", "src/**/*.d.ts"],
   "exclude": ["docs", "jest.config.js"]
 }
