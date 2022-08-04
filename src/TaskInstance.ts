@@ -8,6 +8,7 @@ import {
   onFulfilled,
   onRejected,
 } from "./types/index";
+import globalEvents, {EventTarget} from "./utils/events";
 
 export type TaskInstanceStatus =
   | "running"
@@ -190,6 +191,7 @@ function runTaskInstance<T>(
   // because not all environemnts support package.exports field (TS, WP4 and others), it's necessary to look for CAF function in two places
   const token = new cancelToken();
   const cancelable = CAF(cb, token);
+  const {fireEvent} = globalEvents();
   taskInstance.token = token;
 
   taskInstance.hasStarted = true;
@@ -215,6 +217,11 @@ function runTaskInstance<T>(
     .catch((e) => {
       if (e !== "cancel") {
         taskInstance.error = e;
+        fireEvent({target: EventTarget.OnError, eventArgs: {
+          sender: taskInstance,
+          params,
+          error: e
+        }})
       }
 
       setFinished();
