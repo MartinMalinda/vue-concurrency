@@ -7,7 +7,7 @@ export const EventTargetOptions = {
 
 export type EventTarget = typeof EventTargetOptions[keyof typeof EventTargetOptions];
 
-export interface IEventArgs {
+export type EventArgs = {
     sender: TaskInstance<any>,
     params?: any[],
     error?: unknown,
@@ -15,21 +15,23 @@ export interface IEventArgs {
 }
 
 export type Events = {
-    [key in EventTarget]: Record<string, ((eventArgs: IEventArgs) => PromiseLike<void> | void | Promise<void>) | undefined>;
+    [key in EventTarget]: Record<string, ((eventArgs: EventArgs) => PromiseLike<void> | void | Promise<void>) | undefined>;
 };
 
-export interface IClearEvents {
+export type ClearEventParams = {
     target: EventTarget,
 }
 
-export interface IFireEvent extends IClearEvents {
-    eventArgs: IEventArgs
+export type FireEventParams = ClearEventParams & {
+    eventArgs: EventArgs
 }
 
-export interface IRemoveEvent extends IClearEvents {
+export type RemoveEventParams = ClearEventParams & {
     key: string,
 }
 
-export interface IAddEvent extends IRemoveEvent {
+export type HasEventParams = RemoveEventParams;
+
+export type AddEventParams = RemoveEventParams & {
     handler: (...eventArgs: unknown[]) => PromiseLike<void> | void | Promise<void>
 }

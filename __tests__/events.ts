@@ -8,32 +8,32 @@ import { TaskInstance } from "../src/TaskInstance";
 describe("events", () => {
     it("adds event handler", async () => {
       const handler = () => {}
-      const {addEvent, hasEvent} = globalEvents();
+      const {addEventHandler, hasEventHandler} = globalEvents();
       const eventHandler = {
         target: EventTargetOptions.OnError,
         key: "test",
         handler
       };
   
-      addEvent(eventHandler);
+      addEventHandler(eventHandler);
   
-      expect(hasEvent(eventHandler)).toBe(true);
+      expect(hasEventHandler(eventHandler)).toBe(true);
     });
     
     it("removes event handler", async () => {
       const handler = () => {}
-      const {addEvent, hasEvent, removeEvent} = globalEvents();
+      const {addEventHandler, hasEventHandler, removeEventHandler} = globalEvents();
       const eventHandler = {
         target: EventTargetOptions.OnError,
         key: "test",
         handler
       };
   
-      addEvent(eventHandler);
+      addEventHandler(eventHandler);
 
-      removeEvent(eventHandler);
+      removeEventHandler(eventHandler);
   
-      expect(hasEvent(eventHandler)).toBe(false);
+      expect(hasEventHandler(eventHandler)).toBe(false);
     });
 
     test("removed event doesn't fire", async () => {
@@ -48,7 +48,7 @@ describe("events", () => {
         key: "test",
         handler
       };    
-      const {addEvent, fireEvent, removeEvent} = globalEvents();
+      const {addEventHandler, fireEvent, removeEventHandler} = globalEvents();
   
       await mockSetup(() => {
         const task = useTask(function*() {});
@@ -56,8 +56,8 @@ describe("events", () => {
       });
       expect(taskInstance).not.toBe(null);
   
-      addEvent(eventHandler);
-      removeEvent(eventHandler);
+      addEventHandler(eventHandler);
+      removeEventHandler(eventHandler);
   
       fireEvent({target: EventTargetOptions.OnError, eventArgs: {
           sender: taskInstance!
@@ -68,18 +68,18 @@ describe("events", () => {
     
     it("clears event handler", async () => {
       const handler = () => {}
-      const {addEvent, hasEvent, clearTargetEvents} = globalEvents();
+      const {addEventHandler, hasEventHandler, clearTargetEventHandlers} = globalEvents();
       const eventHandler = {
         target: EventTargetOptions.OnError,
         key: "test",
         handler
       };
   
-      addEvent(eventHandler);
+      addEventHandler(eventHandler);
 
-      clearTargetEvents(eventHandler);
+      clearTargetEventHandlers(eventHandler);
   
-      expect(hasEvent(eventHandler)).toBe(false);
+      expect(hasEventHandler(eventHandler)).toBe(false);
     });
 
     test("cleared event doesn't fire", async () => {
@@ -94,7 +94,7 @@ describe("events", () => {
         key: "test",
         handler
       };    
-      const {addEvent, fireEvent, clearTargetEvents} = globalEvents();
+      const {addEventHandler, fireEvent, clearTargetEventHandlers} = globalEvents();
   
       await mockSetup(() => {
         const task = useTask(function*() {});
@@ -102,8 +102,8 @@ describe("events", () => {
       });
       expect(taskInstance).not.toBe(null);
   
-      addEvent(eventHandler);
-      clearTargetEvents(eventHandler);
+      addEventHandler(eventHandler);
+      clearTargetEventHandlers(eventHandler);
   
       fireEvent({target: EventTargetOptions.OnError, eventArgs: {
           sender: taskInstance!
@@ -124,7 +124,7 @@ describe("events", () => {
       key: "test",
       handler
     };    
-    const {addEvent, fireEvent} = globalEvents();
+    const {addEventHandler, fireEvent} = globalEvents();
 
     await mockSetup(() => {
       const task = useTask(function*() {});
@@ -132,7 +132,7 @@ describe("events", () => {
     });
     expect(taskInstance).not.toBe(null);
 
-    addEvent(eventHandler);
+    addEventHandler(eventHandler);
 
     fireEvent({target: EventTargetOptions.OnError, eventArgs: {
         sender: taskInstance!
@@ -153,9 +153,9 @@ describe("events", () => {
       key: "test",
       handler
     };    
-    const {addEvent} = globalEvents();
+    const {addEventHandler} = globalEvents();
 
-    addEvent(eventHandler);
+    addEventHandler(eventHandler);
 
     await mockSetup(() => {
       const task = useTask(function*() { throw "err"; });
