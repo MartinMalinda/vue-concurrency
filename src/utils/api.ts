@@ -1,1 +1,1 @@
-export { ref, readonly, reactive, onMounted, onUnmounted, onBeforeUnmount, defineComponent, computed, Ref, watchEffect, watch, getCurrentInstance, effectScope, EffectScope, onServerPrefetch } from "vue";
+export { ref, reactive, onMounted, onUnmounted, onBeforeUnmount, defineComponent, computed, Ref, watchEffect, watch, getCurrentInstance, effectScope, EffectScope, onServerPrefetch } from "vue";

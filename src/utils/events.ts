@@ -1,36 +1,5 @@
-import {ref, readonly} from "./api";
-import { TaskInstance } from "../TaskInstance";
-
-export enum EventTarget {
-    OnError = "onError",
-}
-
-export interface IEventArgs {
-    sender: TaskInstance<any>,
-    params?: any[],
-    error?: unknown,
-    data?: unknown
-}
-
-export type Events = {
-    [key in EventTarget]: Record<string, ((eventArgs: IEventArgs) => PromiseLike<void> | void | Promise<void>) | undefined>;
-};
-
-export interface IClearEvents {
-    target: EventTarget,
-}
-
-export interface IFireEvent extends IClearEvents {
-    eventArgs: IEventArgs
-}
-
-export interface IRemoveEvent extends IClearEvents {
-    key: string,
-}
-
-export interface IAddEvent extends IRemoveEvent {
-    handler: (...eventArgs: unknown[]) => PromiseLike<void> | void | Promise<void>
-}
+import {ref} from "./api";
+import {IRemoveEvent, Events, IAddEvent, IFireEvent} from "../types/events"
 
 const events = ref<Events>({
     onError: {},

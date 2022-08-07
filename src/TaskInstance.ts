@@ -8,7 +8,8 @@ import {
   onFulfilled,
   onRejected,
 } from "./types/index";
-import globalEvents, {EventTarget} from "./utils/events";
+import globalEvents from "./utils/events";
+import {EventTargetOptions} from "./types/events"
 
 export type TaskInstanceStatus =
   | "running"
@@ -217,7 +218,7 @@ function runTaskInstance<T>(
     .catch((e) => {
       if (e !== "cancel") {
         taskInstance.error = e;
-        fireEvent({target: EventTarget.OnError, eventArgs: {
+        fireEvent({target: EventTargetOptions.OnError, eventArgs: {
           sender: taskInstance,
           params,
           error: e
