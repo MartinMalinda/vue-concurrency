@@ -22,21 +22,21 @@ export type Events = {
   >;
 };
 
-export type ClearEventParams = {
+export type ClearEventHandlerParams = {
   target: EventTarget;
 };
 
-export type FireEventParams = ClearEventParams & {
+export type FireEventHandlerParams = ClearEventHandlerParams & {
   eventArgs: EventArgs;
 };
 
-export type RemoveEventParams = ClearEventParams & {
+export type RemoveEventHandlerParams = ClearEventHandlerParams & {
   key: string;
 };
 
-export type HasEventParams = RemoveEventParams;
+export type HasEventHandlerParams = RemoveEventHandlerParams;
 
-export type AddEventParams = RemoveEventParams & {
+export type AddEventHandlerParams = RemoveEventHandlerParams & {
   handler: (
     ...eventArgs: unknown[]
   ) => PromiseLike<void> | void | Promise<void>;
