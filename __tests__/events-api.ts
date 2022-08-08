@@ -1,8 +1,4 @@
-import {
-  useTask,
-  addEventHandler,
-  removeEventHandler,
-} from "../src/index";
+import { useTask, addEventHandler, removeEventHandler } from "../src/index";
 import { EventTargetOptions } from "../src/types/index";
 import { mockSetup } from "../test-utils/components";
 
