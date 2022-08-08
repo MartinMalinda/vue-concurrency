@@ -1,4 +1,4 @@
-import globalEvents  from "../src/utils/events";
+import {addEventHandler, hasEventHandler, removeEventHandler, clearTargetEventHandlers, fireEvent}  from "../src/utils/events";
 import { EventTargetOptions } from "../src/types/events"
 import useTask, { Task } from "../src/Task";
 import { mockSetup } from "../test-utils/components";
@@ -8,7 +8,6 @@ import { TaskInstance } from "../src/TaskInstance";
 describe("events", () => {
     it("adds event handler", async () => {
       const handler = () => {}
-      const {addEventHandler, hasEventHandler} = globalEvents();
       const eventHandler = {
         target: EventTargetOptions.OnError,
         key: "test",
@@ -22,7 +21,6 @@ describe("events", () => {
     
     it("removes event handler", async () => {
       const handler = () => {}
-      const {addEventHandler, hasEventHandler, removeEventHandler} = globalEvents();
       const eventHandler = {
         target: EventTargetOptions.OnError,
         key: "test",
@@ -48,7 +46,6 @@ describe("events", () => {
         key: "test",
         handler
       };    
-      const {addEventHandler, fireEvent, removeEventHandler} = globalEvents();
   
       await mockSetup(() => {
         const task = useTask(function*() {});
@@ -68,7 +65,6 @@ describe("events", () => {
     
     it("clears event handler", async () => {
       const handler = () => {}
-      const {addEventHandler, hasEventHandler, clearTargetEventHandlers} = globalEvents();
       const eventHandler = {
         target: EventTargetOptions.OnError,
         key: "test",
@@ -94,7 +90,6 @@ describe("events", () => {
         key: "test",
         handler
       };    
-      const {addEventHandler, fireEvent, clearTargetEventHandlers} = globalEvents();
   
       await mockSetup(() => {
         const task = useTask(function*() {});
@@ -124,7 +119,6 @@ describe("events", () => {
       key: "test",
       handler
     };    
-    const {addEventHandler, fireEvent} = globalEvents();
 
     await mockSetup(() => {
       const task = useTask(function*() {});
@@ -153,7 +147,6 @@ describe("events", () => {
       key: "test",
       handler
     };    
-    const {addEventHandler} = globalEvents();
 
     addEventHandler(eventHandler);
 

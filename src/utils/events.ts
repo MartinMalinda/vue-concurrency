@@ -4,33 +4,24 @@ const events: Events = {
     onError: {},
 }
 
-export default function globalEvents() { 
-    const hasEventHandler = ({target, key}: HasEventParams) => {
-        return events[target][key] !== undefined;
-    }
 
-    const addEventHandler = ({target, key, handler}: AddEventParams) => {
-        events[target][key] = handler;
-    }
+export function hasEventHandler ({target, key}: HasEventParams) {
+    return events[target][key] !== undefined;
+}
 
-    const removeEventHandler = ({target, key}: RemoveEventParams) => {
-        events[target][key] = undefined;
-    }
+export function addEventHandler ({target, key, handler}: AddEventParams) {
+    events[target][key] = handler;
+}
 
-    const clearTargetEventHandlers = ({target}: ClearEventParams) => {
-        events[target] = {};
-    }
+export function removeEventHandler ({target, key}: RemoveEventParams) {
+    events[target][key] = undefined;
+}
 
-    const fireEvent = ({target, eventArgs}: FireEventParams) => {
-        const eventsToFire = Object.values(events[target]);
-        eventsToFire.filter(x => x !== undefined).forEach(x => x!(eventArgs))
-    }
+export function clearTargetEventHandlers ({target}: ClearEventParams) {
+    events[target] = {};
+}
 
-    return {
-        hasEventHandler,
-        addEventHandler,
-        removeEventHandler,
-        clearTargetEventHandlers,
-        fireEvent
-    }; 
+export function fireEvent ({target, eventArgs}: FireEventParams) {
+    const eventsToFire = Object.values(events[target]);
+    eventsToFire.filter(x => x !== undefined).forEach(x => x!(eventArgs))
 }
