@@ -6,3 +6,5 @@ export { default as useTaskGroup, TaskGroup } from "./TaskGroup";
 export { default as useTask, Task } from "./Task";
 export { TaskInstance } from "./TaskInstance";
 export { YieldReturn } from './types';
+
+export { addEventHandler, removeEventHandler } from "./utils/events"

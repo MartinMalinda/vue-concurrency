@@ -1,5 +1,7 @@
 import { Task } from "../Task";
 
+export {EventArgs, EventTarget, EventTargetOptions, Events, AddEventParams, HasEventParams, FireEventParams, ClearEventParams, RemoveEventParams} from "./events";
+
 export interface AbortSignalWithPromise extends AbortSignal {
   pr: Promise<void>;
 }

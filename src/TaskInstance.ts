@@ -9,7 +9,7 @@ import {
   onRejected,
 } from "./types/index";
 import {fireEvent} from "./utils/events";
-import {EventTargetOptions} from "./types/events"
+import {EventTargetOptions} from "./types/index"
 
 export type TaskInstanceStatus =
   | "running"
