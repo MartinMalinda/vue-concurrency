@@ -6,7 +6,7 @@ import {
   fireEvent,
 } from "../src/utils/events";
 import { EventTargetOptions } from "../src/types/events";
-import useTask, { Task } from "../src/Task";
+import useTask from "../src/Task";
 import { mockSetup } from "../test-utils/components";
 import { TaskInstance } from "../src/TaskInstance";
 
