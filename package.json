@@ -38,7 +38,7 @@
     "caf": "^15.0.0-preB"
   },
   "peerDependencies": {
-    "vue": "^3.2.20"
+    "vue": "^3.2.20 || ^2.7.0"
   },
   "devDependencies": {
     "@testing-library/dom": "^7.24.3",
