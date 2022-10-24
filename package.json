@@ -11,15 +11,10 @@
     "scripts"
   ],
   "scripts": {
-    "build:vue3": "microbundle build -o dist/vue3 --tsconfig tsconfig.build.json --external vue3,vue,caf --alias ./api=./api3,./utils/api=./utils/api3 && node ./scripts/fixVue3Import.js",
-    "build:vue2": "microbundle build -o dist/vue2 --tsconfig tsconfig.build.json --external caf,vue2,vue,@vue/composition-api",
-    "build": "npm run build:vue2",
+    "build": "microbundle build --tsconfig tsconfig.build.json --external vue,caf",
     "dev": "microbundle watch",
-    "test": "VUE=2 jest && VUE=3 jest",
-    "test:vue2": "jest",
-    "test:vue3": "VUE=3 jest",
+    "test": "jest",
     "prepublishOnly": "npm run build",
-    "postinstall": "node ./scripts/postinstall.js",
     "test:coverage": "jest --coverage",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
