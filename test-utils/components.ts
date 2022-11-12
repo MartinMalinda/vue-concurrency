@@ -1,4 +1,4 @@
-import { createApp, nextTick } from "vue";
+import { createApp, nextTick } from "vue-demi";
 
 const mountComponent = (setup: () => any) => createApp({
     setup,

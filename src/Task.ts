@@ -58,9 +58,6 @@ export type Task<T, U extends any[]> = {
   _activeInstances: readonly TaskInstance<T>[];
   _enqueuedInstances: readonly TaskInstance<T>[];
   _notDroppedInstances: readonly TaskInstance<T>[];
-
-  // Other
-  _scope: EffectScope
 };
 
 export default function useTask<T, U extends any[]>(
@@ -70,7 +67,6 @@ export default function useTask<T, U extends any[]>(
   const vm = getCurrentInstance();
   const scope = effectScope();
   const content = _reactiveContent({
-    _scope: scope,
     _isRestartable: false,
     _isDropping: false,
     _isEnqueuing: false,
@@ -147,12 +143,13 @@ export default function useTask<T, U extends any[]>(
       const create = () => createTaskInstance<T>(cb, params, {
         modifiers,
         onFinish,
-        scope: task._scope,
+        scope: scope,
         id: task._instances.length + 1,
       });
-      const newInstance = task._scope.active ? task._scope.run(create) : create();
-
-      if (!task._scope.active) {
+      // @ts-expect-error property is not exposed on types in Vue 2.7
+      const newInstance = scope.active ? scope.run(create) : create();
+      // @ts-expect-error
+      if (!scope.active) {
         console.warn('Task instance has been created in inactive scope. Perhaps youre creating task out of setup?');
       }
       
@@ -167,7 +164,7 @@ export default function useTask<T, U extends any[]>(
     },
 
     destroy() {
-      this._scope.stop();
+      scope.stop();
       this.clear();
     },
 
