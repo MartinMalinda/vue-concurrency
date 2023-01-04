@@ -101,7 +101,6 @@ If the approach described above is too much of a hassle, you can take a simpler 
 ```ts
 describe("SaveButton", () => {
   it("is disabled when the task is running", async () => {
-    // Error: hook has been called outside of setup
     const task = reactive({
       isRunning: true,
       performCount: 1,
