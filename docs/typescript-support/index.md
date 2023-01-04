@@ -27,7 +27,7 @@ const addUser = useTask<User, [string, number]>(function*(signal, name, age) {
 Unfortunately, with current limitations of TypeScript it's not possible to correctly infer results of `yield` operations. That will leave any `yield`ed value with type `any`. If possible, it's good to avoid `return yield` and do just `return`. But any intermediate values that were `yield`ed have to be typed explicily:
 
 ```ts
-useTask(function*(signal)) {
+useTask(function*(signal) {
   const accounts: Account[] = yield someAjax('/accounts', { signal });
 });
 ```
@@ -39,7 +39,7 @@ import { YieldReturn } from 'vue-concurrency/src/Task';
 
 /* ... */
 
-useTask(function*(signal)) {
+useTask(function*(signal) {
   const accounts: YieldReturn<typeof getAccounts> = yield getAccounts({ signal });
 });
 ```
@@ -47,7 +47,7 @@ useTask(function*(signal)) {
 This will make `accounts` the same type as what the Promise from `getAccounts` resolves to. The same approach can be used for performing tasks:
 
 ```ts
-useTask(function*()) {
+useTask(function*() {
   const accounts: YieldReturn<typeof getAccountsTask> = yield getAccountsTask.perform();
 });
 ```
