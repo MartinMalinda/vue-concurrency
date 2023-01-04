@@ -27,7 +27,7 @@ This means that errors thrown inside tasks are "safe" and they will not crash yo
     {{ task.last.error.message }}
   </div>
   <div v-else>
-    {{ task.last.vaue }}
+    {{ task.last.value }}
   </div>
 </template>
 ```
