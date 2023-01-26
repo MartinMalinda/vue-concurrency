@@ -6,9 +6,7 @@ import {
   onFulfilled,
   onRejected,
 } from "./types/index";
-
-// https://github.com/MartinMalinda/vue-concurrency/issues/58
-const CAF = require('caf/caf');
+import CAF from 'caf';
 
 export type TaskInstanceStatus =
   | "running"
@@ -180,7 +178,7 @@ function runTaskInstance<T>(
   options: TaskInstanceOptions
 ): void {
   const token = new (CAF as any).cancelToken();
-  const cancelable = (CAF as any)(cb, token);
+  const cancelable = (CAF as any)(cb);
   taskInstance.token = token;
 
   taskInstance.hasStarted = true;
