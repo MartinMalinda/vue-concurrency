@@ -17,7 +17,7 @@ export type TaskInstanceStatus =
   | "dropped"
   | "error"
   | "success";
-export interface TaskInstance<T> extends PromiseLike<any> {
+export interface TaskInstance<T> extends PromiseLike<T> {
   id: number;
 
   // Lifecycle
