@@ -1,4 +1,4 @@
-import { computed, onBeforeUnmount, getCurrentInstance, effectScope, EffectScope } from "./utils/api";
+import { computed, onBeforeUnmount, getCurrentInstance, effectScope } from "./utils/api";
 import createTaskInstance, {
   TaskInstance,
   ModifierOptions,
@@ -39,7 +39,7 @@ export type Task<T, U extends any[]> = {
   drop: () => Task<T, U>;
   enqueue: () => Task<T, U>;
   keepLatest: () => Task<T, U>;
-  maxConcurrency: (number) => Task<T, U>;
+  maxConcurrency: (number: number) => Task<T, U>;
   _resetModifierFlags: () => void;
 
   // Modifier flags
@@ -115,7 +115,7 @@ export default function useTask<T, U extends any[]>(
       );
     },
 
-    perform(...params) {
+    perform(...params: any[]) {
       const modifiers: ModifierOptions = {
         enqueue: false,
         drop: false,
@@ -146,9 +146,9 @@ export default function useTask<T, U extends any[]>(
         scope: scope,
         id: task._instances.length + 1,
       });
-      // @ts-expect-error property is not exposed on types in Vue 2.7
+
       const newInstance = scope.active ? scope.run(create) : create();
-      // @ts-expect-error
+
       if (!scope.active) {
         console.warn('Task instance has been created in inactive scope. Perhaps youre creating task out of setup?');
       }
@@ -199,7 +199,7 @@ export default function useTask<T, U extends any[]>(
       task._isDropping = false;
     },
 
-    maxConcurrency(number) {
+    maxConcurrency(number: number) {
       task._maxConcurrency = number;
       return task;
     },

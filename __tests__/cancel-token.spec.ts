@@ -1,6 +1,6 @@
 import { defer, getCancelToken } from "../src/utils/general";
-import { waitFor } from "@testing-library/dom";
 import { AbortSignalWithPromise } from "../src/types/index";
+import { vi } from 'vitest';
 
 describe("getCancelToken", () => {
   it("works", async () => {
@@ -9,7 +9,7 @@ describe("getCancelToken", () => {
       pr: promise,
     } as AbortSignalWithPromise;
 
-    const cancelFn = jest.fn();
+    const cancelFn = vi.fn();
     class CancelToken {
       constructor(cb: (cancel: () => void) => void) {
         cb(cancelFn);
@@ -22,10 +22,10 @@ describe("getCancelToken", () => {
 
     getCancelToken(axiosMock, signalMock);
 
-    expect(cancelFn).not.toBeCalled();
+    expect(cancelFn).not.toHaveBeenCalled();
 
     reject("cancel");
 
-    await waitFor(() => expect(cancelFn).toHaveBeenCalled());
-  });
+    await vi.waitFor(() => expect(cancelFn).toHaveBeenCalled());
+  })
 });

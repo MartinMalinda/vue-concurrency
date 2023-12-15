@@ -1,5 +1,5 @@
 
-import CAF, { cancelToken } from "caf";
+import {CAF} from "caf";
 import { computed, EffectScope } from "./utils/api";
 import { _reactive, _reactiveContent, DeferredObject, defer } from "./utils/general";
 import {
@@ -134,7 +134,7 @@ export default function createTaskInstance<T>(
       }
     },
     canceledOn(signal: AbortSignalWithPromise) {
-      signal.pr.catch((e) => {
+      signal.pr.catch(() => {
         taskInstance.cancel();
       });
 
@@ -151,15 +151,15 @@ export default function createTaskInstance<T>(
     _deferredObject: defer<T>(),
     _shouldThrow: false, // task throws only if it's used promise-like way (then, catch, await)
     _canAbort: true,
-    then(onFulfilled, onRejected) {
+    then(onFulfilled: any, onRejected: any) {
       taskInstance._shouldThrow = true;
       return taskInstance._deferredObject.promise.then(onFulfilled, onRejected);
     },
-    catch(onRejected, shouldThrow = true) {
+    catch(onRejected: any, shouldThrow = true) {
       taskInstance._shouldThrow = shouldThrow;
       return taskInstance._deferredObject.promise.catch(onRejected);
     },
-    finally(cb) {
+    finally(cb: any) {
       taskInstance._shouldThrow = true;
       return taskInstance._deferredObject.promise.finally(cb);
     },
@@ -188,7 +188,7 @@ function runTaskInstance<T>(
   options: TaskInstanceOptions
 ): void {
   // because not all environemnts support package.exports field (TS, WP4 and others), it's necessary to look for CAF function in two places
-  const token = new cancelToken();
+  const token = new CAF.cancelToken();
   const cancelable = CAF(cb, token);
   taskInstance.token = token;
 
@@ -203,7 +203,7 @@ function runTaskInstance<T>(
 
   cancelable
     .call(taskInstance, token, ...params)
-    .then((value) => {
+    .then((value: any) => {
       taskInstance.value = value;
       taskInstance.isSuccessful = true;
 
@@ -212,7 +212,7 @@ function runTaskInstance<T>(
       taskInstance._canAbort = false;
       options.onFinish(taskInstance);
     })
-    .catch((e) => {
+    .catch((e: any) => {
       if (e !== "cancel") {
         taskInstance.error = e;
       }

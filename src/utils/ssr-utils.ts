@@ -86,7 +86,7 @@ function getNuxtData() {
   return (window as any).__NUXT__;
 }
 
-function getTaskFromContext(key) {
+function getTaskFromContext(key: string) {
   if (!getNuxtData()) {
     throw Error(`Could not access  window.__NUXT__`);
   }
@@ -94,7 +94,7 @@ function getTaskFromContext(key) {
   return getNuxtData().vueConcurrency[key].value;
 }
 
-function deleteTaskCache(key) {
+function deleteTaskCache(key: string) {
   const nuxtData = getNuxtData();
   delete nuxtData.vueConcurrency[key];
 }

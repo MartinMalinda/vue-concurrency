@@ -1,6 +1,6 @@
 import { mockSetup } from "../test-utils/components";
 import useTaskGroup from "../src/TaskGroup";
-import { wait } from "./task-cancel";
+import { wait } from "./wait";
 import useTask from "../src/Task";
 
 describe("useTaskGroup", () => {

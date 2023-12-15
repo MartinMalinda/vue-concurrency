@@ -1,5 +1,5 @@
 import useTask from "../src/Task";
-import { wait } from "./task-cancel";
+import { wait } from "./wait";
 import { mockSetup } from "../test-utils/components";
 
 describe("useTask", () => {

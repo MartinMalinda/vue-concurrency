@@ -1,6 +1,8 @@
 import { waitFor } from "@testing-library/dom";
 import useTask from "../src/Task";
 import { mockSetup } from "../test-utils/components";
+import { vi } from "vitest";
+import { wait } from "./wait";
 
 describe("useTask cancel", () => {
   test("taskInstance.cancel results in isCanceled:true and no value", async () => {
@@ -69,7 +71,7 @@ describe("useTask cancel", () => {
   });
 
   test("signal.pr is called when the task is canceled", async () => {
-    const signalCatchCallback = jest.fn();
+    const signalCatchCallback = vi.fn();
     await mockSetup(async () => {
       const task = useTask(function* (signal) {
         signal.pr.catch(signalCatchCallback);
@@ -86,6 +88,3 @@ describe("useTask cancel", () => {
   });
 });
 
-export function wait(time: number) {
-  return new Promise((resolve) => setTimeout(resolve, time));
-}
