@@ -21,6 +21,6 @@
 
     "types": ["vitest/globals"]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "__tests__"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "__tests__/**/*.ts", "test-utils/**/*.ts"],
   "exclude": ["docs", "jest.config.js"]
 }
