@@ -1,6 +1,6 @@
 {
   "name": "vue-concurrency",
-  "version": "4.0.1",
+  "version": "5.0.0",
   "description": "A library for encapsulating asynchronous operations and managing concurrency for Vue + Composition API",
   "type": "module",
   "source": "src/index.ts",
@@ -20,7 +20,8 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "scripts": {
     "dev": "vite",

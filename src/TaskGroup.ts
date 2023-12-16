@@ -20,6 +20,5 @@ export default function useTaskGroup<U extends Record<string, Task<any, any>>>(
     ...taskMap,
   })
 
-  //@ts-expect-error why is this incompatible?
-  return taskGroup;
+  return taskGroup as TaskGroup<U>;
 }
