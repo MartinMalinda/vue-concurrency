@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, ref, onMounted } from "@vue/composition-api";
+import { defineComponent, ref, onMounted } from "vue";
 import useTask, { Task } from "../../../src/Task";
 
 function timeout(time) {
@@ -30,7 +30,7 @@ function searchArticles(term, options) {
 
 export default defineComponent({
   setup() {
-    const searchTask = useTask(function*(signal, event) {
+    const searchTask = useTask(function* (signal, event) {
       const { value } = event.target;
       yield timeout(600);
       if (!value) {
@@ -52,7 +52,7 @@ export default defineComponent({
   <div>
     <br />
     <div :style="{ display: 'flex' }">
-      <input placeholder="Search wiki..." :style="{ height: '20px' }" @input="searchTask.perform" />
+      <input placeholder="Search wiki..." :style="{ height: '20px' }" @input="(value) => { searchTask.perform(value) }" />
       <span v-if="searchTask.isRunning">&nbsp;☁️</span>
     </div>
     <div v-if="searchTask.lastSuccessful">
@@ -63,5 +63,20 @@ export default defineComponent({
   </div>
 </template>
 
-<style>
+<style scoped>
+input {
+  font-size: 16px;
+  padding: 15px 10px;
+  margin: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+  background: white;
+  cursor: pointer;
+  color: black;
+  width: 100%;
+
+  &::placeholder {
+    color: #878787;
+  }
+}
 </style>

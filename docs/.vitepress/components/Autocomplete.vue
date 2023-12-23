@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, ref, onMounted } from "@vue/composition-api";
+import { defineComponent, ref, onMounted } from "vue";
 import useTask, { Task } from "../../../src/Task";
 
 function timeout(time) {
@@ -49,7 +49,7 @@ function getSuggestionsFromText(text, value) {
 export default defineComponent({
   setup() {
     const suggestions = ref<string[]>([]);
-    const searchTask = useTask(function*(signal, event) {
+    const searchTask = useTask(function* (signal, event) {
       const { value } = event.target;
       yield timeout(500);
       if (!value) {

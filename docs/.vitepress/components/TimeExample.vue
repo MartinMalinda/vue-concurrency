@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, ref, onMounted } from "@vue/composition-api";
+import { defineComponent, ref, onMounted } from "vue";
 import useTask, { Task } from "../../../src/Task";
 
 function timeout(time) {
@@ -9,7 +9,7 @@ function timeout(time) {
 export default defineComponent({
   setup() {
     const time = ref<Date | null>(null);
-    const updateTimeTask = useTask(function*() {
+    const updateTimeTask = useTask(function* () {
       // wait some time to simulate a network request
       while (true) {
         time.value = new Date();
@@ -41,5 +41,15 @@ export default defineComponent({
   </div>
 </template>
 
-<style>
+<style scoped>
+button {
+  font-size: 12px;
+  padding: 5px 10px;
+  margin: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+  background: white;
+  cursor: pointer;
+  color: black;
+}
 </style>

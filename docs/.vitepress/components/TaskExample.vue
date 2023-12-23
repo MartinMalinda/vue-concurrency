@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "vue";
 import useTask, { Task } from "../../../src/Task";
 
 function timeout(time) {
@@ -11,7 +11,7 @@ export default defineComponent({
   props: {},
 
   setup() {
-    const task = useTask(function*() {
+    const task = useTask(function* () {
       // wait some time to simulate a network request
       yield timeout(Math.random() * 2000);
 
@@ -38,7 +38,7 @@ export default defineComponent({
   performCount: <span class="token number">{{ task.performCount }}</span>,
   isIdle: <span class="token boolean">{{ task.isIdle }}</span>,
   isRunning: <span class="token boolean">{{ task.isRunning }}</span>,
-  last: {{ task.last ? `{ status: "${task.last.status}", ... }`  : "undefined" }},
+  last: {{ task.last ? `{ status: "${task.last.status}", ... }` : "undefined" }},
   lastSuccessful: {{ task.lastSuccessful ? `{ status: "${task.lastSuccessful.status}", ... }` : "undefined" }}
 }</code></pre>
     <div>
@@ -46,13 +46,10 @@ export default defineComponent({
       <button @click="() => task._instances = []">Clear</button>
     </div>
     <h4 v-if="task._instances.length">Instances:</h4>
-    <div
-      :class="{
+    <div :class="{
       ['task-instance']: true,
       [instance.status]: true
-      }"
-      v-for="instance in task._instances"
-    >
+    }" v-for="instance in task._instances">
       <pre class="language-ts"><code>{
   status: <span class="token string">"{{ instance.status }}"</span>,
   error: {{ instance.error && `Error { message: "${instance.error.message}" }` || "null" }},
@@ -98,6 +95,7 @@ export default defineComponent({
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }

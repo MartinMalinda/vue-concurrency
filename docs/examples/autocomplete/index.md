@@ -2,6 +2,11 @@
 sidebarDepth: 0
 ---
 
+<script setup>
+import SpecieSearch from '../../.vitepress/components/SpecieSearch.vue';
+import WikiSearch from '../../.vitepress/components/WikiSearch.vue';
+</script>
+
 # Searching
 
 ## Debounced search

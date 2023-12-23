@@ -1,3 +1,8 @@
+<script setup>
+import TaskProvider from '../.vitepress/components/TaskProvider.vue';
+import Queue from '../.vitepress/components/Queue.vue';
+</script>
+
 # Managing Concurrency
 
 You can control how the task handles running multiple instances at the same time.

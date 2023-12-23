@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "vue";
 import useTask, { Task } from "../../../src/Task";
 
 export default defineComponent({
@@ -11,14 +11,14 @@ export default defineComponent({
     }
   },
 
-  setup() {}
+  setup() { }
 });
 </script>
 
 <template>
   <div>
     <pre class="language-ts task-details">
-      Task<{ isIdle: {{ task.isIdle }}, isRunning: {{ task.isRunning }}, performCount: {{ task.performCount }} }>
+      Task&lt;{ isIdle: {{ task.isIdle }}, isRunning: {{ task.isRunning }}, performCount: {{ task.performCount }} }>
     </pre>
     <br />
     <button @click="task.perform">Perform</button>
@@ -26,20 +26,28 @@ export default defineComponent({
     <button @click="() => task._instances = []">Clear</button>
     <br />
     <br />
-    <div
-      :class="{
-        ['instance-row']: true,
-        [instance.status]: true
-      }"
-      v-for="instance in task._instances"
-    >
+    <div :class="{
+      ['instance-row']: true,
+      [instance.status]: true
+    }" v-for="instance in task._instances">
       <div class="timer" v-if="instance.isRunning" />
-      Instance {{instance.id}} : {{ instance.status }}
+      Instance {{ instance.id }} : {{ instance.status }}
     </div>
   </div>
 </template>
 
-<style>
+<style scoped>
+button {
+  font-size: 12px;
+  padding: 5px 10px;
+  margin: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+  background: white;
+  cursor: pointer;
+  color: black;
+}
+
 .task-details {
   font-size: 12px !important;
   padding-left: 0 !important;
@@ -56,6 +64,7 @@ export default defineComponent({
   /* border: 2px solid black; */
   position: relative;
   overflow: hidden;
+  color: black;
 
   transition: 0.3s all;
   margin: 2px 0;
@@ -110,6 +119,7 @@ export default defineComponent({
   0% {
     width: 0%;
   }
+
   100% {
     width: 100%;
   }
@@ -119,6 +129,7 @@ export default defineComponent({
   0% {
     height: 1em;
   }
+
   100% {
     height: 0.3em;
     padding-top: 0;

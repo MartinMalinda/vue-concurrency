@@ -1,6 +1,9 @@
 ---
 sidebarDepth: 0
 ---
+<script setup>
+import TimeExample from '../.vitepress/components/TimeExample.vue';
+</script>
 
 # Cancelation
 

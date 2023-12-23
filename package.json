@@ -29,9 +29,10 @@
     "test": "vitest",
     "prepublishOnly": "npm run build",
     "test:coverage": "vitest run --coverage",
-    "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs",
-    "release": "release-it"
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "release": "release-it",
+    "docs:preview": "vitepress preview docs"
   },
   "keywords": [
     "vue",
@@ -48,7 +49,8 @@
   "homepage": "https://vue-concurrency.netlify.app/",
   "license": "MIT",
   "dependencies": {
-    "caf": "^15.0.1"
+    "caf": "^15.0.1",
+    "vitepress": "^1.0.0-rc.32"
   },
   "peerDependencies": {
     "vue": "^3.3"

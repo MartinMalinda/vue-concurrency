@@ -2,6 +2,11 @@
 sidebarDepth: 0
 ---
 
+<script setup>
+import TaskProvider from '../../.vitepress/components/TaskProvider.vue';
+import AsyncContent from '../../.vitepress/components/AsyncContent.vue';
+</script>
+
 # Loading states
 
 There's several approaches how to approach loading states.

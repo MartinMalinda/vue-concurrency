@@ -2,6 +2,10 @@
 sidebarDepth: 0
 ---
 
+<script setup>
+import ApiHeader from '../../.vitepress/components/ApiHeader.vue';
+</script>
+
 ## Task
 
 `useTask()` Accepts a Generator functions and returns a `Task<T, U[]>` where `T` is the return value of the generator and `U` is the type of parameters.
@@ -23,11 +27,13 @@ const getProgressTask = useTask(function*() {
 
 `(...params: U) => TaskInstance<T>`
 
- </ApiHeader>
+</ApiHeader>
 
 Performs the task and returns a new task instance.
 
 ```ts
+import { useTask } from "vue-concurrency";
+
 const task = useTask(function*(signal, a, b) {
   /* ... */
 });
@@ -40,7 +46,7 @@ const taskInstance = task.perform(1, 2);
 
 `() => void`
 
- </ApiHeader>
+</ApiHeader>
 
 Cancels all running or enqueued instances.
 
@@ -48,17 +54,21 @@ Cancels all running or enqueued instances.
 task.cancelAll();
 ```
 
+<ApiHeader>
+
 ### clear()
 
 `() => void`
 
- </ApiHeader>
+</ApiHeader>
 
 Cancels all running or enqueued instances and clears the instance stack to reset the task to initial state.
 
 ```ts
 task.cancelAll();
 ```
+
+
 
 <ApiHeader>
 
@@ -173,3 +183,4 @@ Set's the concurrency policy to [keepLatest](/managing-concurrency/#keepLatest) 
  </ApiHeader>
 
 Set's the [max concurrency](/managing-concurrency/#maxconcurrency) and returns itself.
+

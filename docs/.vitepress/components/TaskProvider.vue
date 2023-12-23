@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from "@vue/composition-api";
+import { defineComponent } from "vue";
 import useTask, { Task } from "../../../src/Task";
 
 function timeout(time) {
