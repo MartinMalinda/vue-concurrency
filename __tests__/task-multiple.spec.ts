@@ -1,7 +1,7 @@
 import { waitFor } from "@testing-library/dom";
 import useTask from "../src/Task";
 import { mockSetup } from "../test-utils/components";
-import { wait } from "./task-cancel";
+import { wait } from "./wait";
 import { YieldReturn } from "../src/types/index";
 
 describe("useTask | multiple | task", () => {

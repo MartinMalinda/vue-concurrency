@@ -1,12 +1,13 @@
-import { createApp, nextTick } from "vue-demi";
+import { nextTick } from "vue";
+import { render } from '@testing-library/vue'
 
-const mountComponent = (setup: () => any) => createApp({
+const mountComponent = (setup: () => any) => render({
     setup,
-    render: () => ":)"
-  }).mount(document.body);
+    render: () => {}
+  });
 
-export const mockSetup = async (cb): Promise<void> => {
-  let _setupPromiseResolve;
+export const mockSetup = async (cb: () => any): Promise<void> => {
+  let _setupPromiseResolve: (...args: any[]) => void;
   const setupPromise = new Promise(
     (resolve) => (_setupPromiseResolve = resolve)
   );

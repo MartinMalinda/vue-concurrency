@@ -1,6 +1,6 @@
 import { mockSetup } from "../test-utils/components";
 import { useAsyncTask } from "../src/utils/general";
-import { wait } from "./task-cancel";
+import { wait } from "./wait";
 
 describe("useAsyncTask", () => {
   test("works", async () => {

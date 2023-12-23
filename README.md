@@ -12,7 +12,8 @@ vue-concurrency aims to provide a reasonable abstraction for performing asynchro
 
 ## Features
 
-- Vue 3 + Vue 2.7 (Version >= 4.x)✅
+- Vue 3.3+ (Version === 5.x)✅
+- Vue 2.7 & 3.2 (Version === 4.x)✅
 - Vue 2 + [@vue/composition-api](https://github.com/vuejs/composition-api) (Version < 4.x) ✅
 - **TypeScript support**
 - **Async cancellation** via generator functions and [CAF](https://github.com/getify/CAF)

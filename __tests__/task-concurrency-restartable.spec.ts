@@ -2,7 +2,7 @@ import { waitFor } from "@testing-library/dom";
 import useTask, { Task } from "../src/Task";
 import { TaskInstance } from "../src/TaskInstance";
 import { mockSetup } from "../test-utils/components";
-import { wait } from "./task-cancel";
+import { wait } from "./wait";
 
 export function performNTimes(
   task: Task<any, any>

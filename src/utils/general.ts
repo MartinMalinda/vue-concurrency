@@ -155,7 +155,7 @@ export function printTask(task: Task<any, any>) {
   console.table(instanceRows);
 }
 
-export function timeout(time) {
+export function timeout(time: number) {
   if (process.env.NODE_ENV === "test") {
     return Promise.resolve();
   }
@@ -167,7 +167,7 @@ export function getCancelToken<T extends { CancelToken: any }>(
   axios: T,
   signal: AbortSignalWithPromise
 ) {
-  return new axios.CancelToken((cancel) => {
+  return new axios.CancelToken((cancel: any) => {
     signal.pr.catch((reason) => {
       if (reason === "cancel") {
         cancel();

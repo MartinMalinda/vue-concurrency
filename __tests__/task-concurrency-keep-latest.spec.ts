@@ -1,7 +1,7 @@
 import useTask from "../src/Task";
 import { mockSetup } from "../test-utils/components";
-import { wait } from "./task-cancel";
-import { performNTimes, perform3x } from "./task-concurrency-restartable";
+import { wait } from "./wait";
+import { performNTimes, perform3x } from "./task-concurrency-restartable.spec";
 
 describe("useTask | keepLatest task", () => {
   test("runs the first task instance right away", async () => {

@@ -1,7 +1,7 @@
 import { waitForValue, timeout } from "../src/utils/general";
 import { mockSetup } from "../test-utils/components";
 import { ref } from "../src/utils/api";
-import { wait } from "./task-cancel";
+import { wait } from "./wait";
 
 describe("waitForValue", () => {
   test("returns the right value", async () => {
