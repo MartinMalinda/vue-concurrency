@@ -131,7 +131,7 @@ setup() {
 
 You can also solve this problem by using a custom caching solution with VueX, Pinia or other centralized store with SSR support. These stores save state created on the server into a `<script>` in HTML which is then picked up and used on the client side:
 
-- [Saving data to store with tasks](/examples/store)
+- [Saving data to store with tasks](/examples/store/)
 
 ## Performing tasks on the client side only
 

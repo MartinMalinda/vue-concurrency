@@ -2,7 +2,7 @@
 sidebarDepth: 0
 ---
 <script setup>
-import ApiHeader from '../.vitepress/components/ApiHeader.vue';
+import ApiHeader from '../../.vitepress/components/ApiHeader.vue';
 </script>
 
 ## Utils

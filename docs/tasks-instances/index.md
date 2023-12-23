@@ -1,6 +1,9 @@
 ---
 sidebarDepth: 0
 ---
+<script setup>
+import TaskProvider from '../.vitepress/components/TaskProvider.vue';
+</script>
 
 # Tasks and Task Instances
 
