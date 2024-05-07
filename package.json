@@ -49,8 +49,7 @@
   "homepage": "https://vue-concurrency.netlify.app/",
   "license": "MIT",
   "dependencies": {
-    "caf": "^15.0.1",
-    "vitepress": "^1.0.0-rc.32"
+    "caf": "^15.0.1"
   },
   "peerDependencies": {
     "vue": "^3.3"
@@ -64,6 +63,7 @@
     "typescript": "5.3.3",
     "vite": "^5.0.9",
     "vite-plugin-dts": "^3.6.4",
+    "vitepress": "^1.1.4",
     "vitest": "^1.0.4",
     "vue": "^3.3.11",
     "vuepress": "^1.9.10",
