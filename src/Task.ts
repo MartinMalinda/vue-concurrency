@@ -15,6 +15,7 @@ import {
   dropEnqueued,
 } from "./utils/general";
 import { Resolved, TaskCb } from "./types/index";
+import { getCurrentScope } from "vue";
 
 export type Task<T, U extends any[]> = {
   // Lifecycle state
@@ -64,8 +65,8 @@ export default function useTask<T, U extends any[]>(
   cb: TaskCb<T, U>,
   options = { cancelOnUnmount: true }
 ): Task<Resolved<T>, U> {
-  const vm = getCurrentInstance();
-  const scope = effectScope();
+  const parentScope = getCurrentScope();
+  const scope = parentScope || effectScope();
   const content = _reactiveContent({
     _isRestartable: false,
     _isDropping: false,
@@ -149,10 +150,6 @@ export default function useTask<T, U extends any[]>(
 
       const newInstance = scope.active ? scope.run(create) : create();
 
-      if (!scope.active) {
-        console.warn('Task instance has been created in inactive scope. Perhaps youre creating task out of setup?');
-      }
-      
       task._instances = [...task._instances, newInstance as TaskInstance<T>];
 
       return newInstance;
@@ -206,14 +203,16 @@ export default function useTask<T, U extends any[]>(
   });
   const task = _reactive(content) as Task<T, U>;
 
-  if (vm && options.cancelOnUnmount) {
-    onBeforeUnmount(() => {
-      // check if there's instances still, Vue 3 might have done some cleanup already
-      if (task._instances) {
-        // cancelAll with force is more performant is theres less need for checks
-        task.destroy();
-      }
-    });
+  if (options.cancelOnUnmount) {
+    const vm = getCurrentInstance();
+    if (vm) {
+      onBeforeUnmount(() => {
+        // check if there's instances still, Vue 3 might have done some cleanup already
+        if (task._instances) {
+          task.destroy();
+        }
+      });
+    }
   }
 
   return task as Task<Resolved<T>, U>;
