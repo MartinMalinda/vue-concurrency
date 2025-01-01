@@ -15,7 +15,6 @@ import {
   dropEnqueued,
 } from "./utils/general";
 import { Resolved, TaskCb } from "./types/index";
-import { getCurrentScope } from "vue";
 
 export type Task<T, U extends any[]> = {
   // Lifecycle state
@@ -65,8 +64,7 @@ export default function useTask<T, U extends any[]>(
   cb: TaskCb<T, U>,
   options = { cancelOnUnmount: true }
 ): Task<Resolved<T>, U> {
-  const parentScope = getCurrentScope();
-  const scope = parentScope || effectScope();
+  const scope = effectScope();
   const content = _reactiveContent({
     _isRestartable: false,
     _isDropping: false,
