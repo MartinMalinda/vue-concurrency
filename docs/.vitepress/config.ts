@@ -9,6 +9,7 @@ export default defineConfig({
     nav: [
       { text: "Home", link: "/" },
       { text: "Guide", link: "/introduction/" },
+      { text: "GitHub", link: "https://github.com/MartinMalinda/vue-concurrency/" },
     ],
     sidebar: {
       '/': [
