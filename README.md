@@ -1,6 +1,6 @@
 # 🚦 vue-concurrency
 
-[![Test Coverage](https://api.codeclimate.com/v1/badges/59a2cde627ebcefcbba4/test_coverage)](https://codeclimate.com/github/MartinMalinda/vue-concurrency/test_coverage) [![gzip size](https://shields.io/bundlephobia/minzip/vue-concurrency)](https://bundlephobia.com/package/vue-concurrency) [![npm](https://img.shields.io/npm/v/vue-concurrency)](https://www.npmjs.com/package/vue-concurrency)
+[![gzip size](https://shields.io/bundlephobia/minzip/vue-concurrency)](https://bundlephobia.com/package/vue-concurrency) [![npm](https://img.shields.io/npm/v/vue-concurrency)](https://www.npmjs.com/package/vue-concurrency)
 
 Inspired by [ember-concurrency](http://ember-concurrency.com/).
 
