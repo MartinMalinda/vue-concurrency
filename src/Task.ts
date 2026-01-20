@@ -67,17 +67,34 @@ export type Task<T, U extends any[]> = {
   _pruneHistory: boolean;
   _pruneTimer: ReturnType<typeof setTimeout> | null;
   _performCount: number;
+
+  _keepSuccessful: number;
+  _maxInstances: number;
+  _pruneDelayMs: number;
 };
 
 export type UseTaskOptions = {
   cancelOnUnmount?: boolean;
   pruneHistory?: boolean; // default: true
+  keepSuccessful?: number; // default: 2
+  maxInstances?: number; // default: 50
+  pruneDelayMs?: number; // default: 1000
+};
+
+const DEFAULT_TASK_OPTIONS: Required<UseTaskOptions> = {
+  cancelOnUnmount: true,
+  pruneHistory: true,
+  keepSuccessful: 2,
+  maxInstances: 50,
+  pruneDelayMs: 1000,
 };
 
 export default function useTask<T, U extends any[]>(
   cb: TaskCb<T, U>,
-  options: UseTaskOptions = { cancelOnUnmount: true, pruneHistory: true },
+  options: UseTaskOptions = {}
 ): Task<Resolved<T>, U> {
+  const mergedOptions = { ...DEFAULT_TASK_OPTIONS, ...options };
+
   const scope = effectScope();
   const content = _reactiveContent({
     _isRestartable: false,
@@ -90,16 +107,19 @@ export default function useTask<T, U extends any[]>(
         task._isRestartable ||
         task._isDropping ||
         task._isEnqueuing ||
-        task._isKeepingLatest,
+        task._isKeepingLatest
     ),
 
-    _pruneHistory: options.pruneHistory ?? true,
+    _pruneHistory: mergedOptions.pruneHistory,
     _pruneTimer: null,
     _performCount: 0,
+    _keepSuccessful: mergedOptions.keepSuccessful,
+    _maxInstances: mergedOptions.maxInstances,
+    _pruneDelayMs: mergedOptions.pruneDelayMs,
 
     isIdle: computed(() => !task.isRunning),
     isRunning: computed(
-      () => !!task._instances.find((instance) => instance.isRunning),
+      () => !!task._instances.find((instance) => instance.isRunning)
     ),
     isError: computed(() => !!(task.last && task.last.isError)),
 
@@ -173,6 +193,10 @@ export default function useTask<T, U extends any[]>(
 
       task._instances = [...task._instances, newInstance as TaskInstance<T>];
 
+      if (task._pruneHistory && task._instances.length > task._maxInstances) {
+        pruneHistoryNow(task, { aggressive: true });
+      }
+
       return newInstance;
     },
 
@@ -228,7 +252,7 @@ export default function useTask<T, U extends any[]>(
   });
   const task = _reactive(content) as Task<T, U>;
 
-  if (options.cancelOnUnmount) {
+  if (mergedOptions.cancelOnUnmount) {
     const vm = getCurrentInstance();
     if (vm) {
       onBeforeUnmount(() => {
@@ -266,15 +290,21 @@ function scheduleHistoryPrune(task: Task<any, any>): void {
     task._pruneTimer = null;
 
     // Fully idle only: no running, no enqueued.
-    if (task.isRunning) return;
-    if (task._enqueuedInstances.length > 0) return;
+    if (task.isRunning || task._enqueuedInstances.length > 0) {
+      // retry until idle
+      scheduleHistoryPrune(task);
+      return;
+    }
 
-    pruneHistoryNow(task);
-  }, 1000);
+    pruneHistoryNow(task, { aggressive: false });
+  }, task._pruneDelayMs);
 }
 
-function pruneHistoryNow(task: Task<any, any>): void {
-  // Keep all active (defensive), plus last + last 2 successful.
+function pruneHistoryNow(
+  task: Task<any, any>,
+  { aggressive }: { aggressive: boolean }
+): void {
+  // Keep all active (defensive), plus last + last N successful.
   const keep = new Set<TaskInstance<any>>();
 
   for (const inst of task._instances) {
@@ -283,12 +313,23 @@ function pruneHistoryNow(task: Task<any, any>): void {
 
   if (task.last) keep.add(task.last);
 
-  // Keep last 2 successful instances.
+  // Keep last N successful instances.
   const succ = task._successfulInstances;
-  const len = succ.length;
-  if (len >= 1) keep.add(succ[len - 1]);
-  if (len >= 2) keep.add(succ[len - 2]);
+  const n = task._keepSuccessful;
+  for (let i = succ.length - 1, kept = 0; i >= 0 && kept < n; i--) {
+    const inst = succ[i];
+    if (!keep.has(inst)) {
+      keep.add(inst);
+      kept += 1;
+    }
+  }
 
-  // Prune.
-  task._instances = task._instances.filter((inst) => keep.has(inst));
+  if (aggressive) {
+    // only drop finished instances not in anchors
+    task._instances = task._instances.filter(
+      (inst) => !inst.isFinished || keep.has(inst)
+    );
+  } else {
+    task._instances = task._instances.filter((inst) => keep.has(inst));
+  }
 }
