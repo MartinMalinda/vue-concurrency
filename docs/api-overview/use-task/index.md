@@ -184,3 +184,62 @@ Set's the concurrency policy to [keepLatest](/managing-concurrency/#keepLatest) 
 
 Set's the [max concurrency](/managing-concurrency/#maxconcurrency) and returns itself.
 
+## Task Options
+
+You can configure default task behavior by passing options to `useTask()`:
+
+```ts
+import { useTask } from "vue-concurrency";
+
+const task = useTask(function*() {
+  // ...
+}, {
+  cancelOnUnmount: true,  // default: true
+  pruneHistory: true,     // default: true
+  keepSuccessful: 2,      // default: 2
+  maxInstances: 50,       // default: 50
+  pruneDelayMs: 1000,     // default: 1000
+});
+```
+
+### App-wide task defaults (SSR-safe)
+
+If you use Nuxt/SSR or have multiple Vue apps, prefer app-scoped defaults via the config plugin:
+
+```ts
+import { VueConcurrencyConfig } from "vue-concurrency/config";
+
+app.use(VueConcurrencyConfig, {
+  taskDefaults: {
+    maxInstances: 20,
+    pruneDelayMs: 250,
+  },
+});
+```
+
+Per-task options override app defaults:
+
+```ts
+useTask(cb, { maxInstances: 5 }); // overrides to 5
+```
+
+## Nuxt example
+
+`plugins/vue-concurrency.ts`:
+
+```ts
+import { defineNuxtPlugin } from "#app";
+import { VueConcurrencyConfig } from "vue-concurrency/config";
+
+export default defineNuxtPlugin((nuxtApp) => {
+  nuxtApp.vueApp.use(VueConcurrencyConfig, {
+    taskDefaults: {
+      pruneHistory: true,
+      keepSuccessful: 2,
+      maxInstances: 20,
+      pruneDelayMs: 250,
+    },
+  });
+});
+```
+

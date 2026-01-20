@@ -3,6 +3,7 @@ import {
   onBeforeUnmount,
   getCurrentInstance,
   effectScope,
+  inject,
 } from "./utils/api";
 import createTaskInstance, {
   TaskInstance,
@@ -19,6 +20,7 @@ import {
   dropEnqueued,
 } from "./utils/general";
 import { Resolved, TaskCb } from "./types/index";
+import { TASK_DEFAULTS_KEY } from "./config";
 
 export type Task<T, U extends any[]> = {
   // Lifecycle state
@@ -73,13 +75,7 @@ export type Task<T, U extends any[]> = {
   _pruneDelayMs: number;
 };
 
-export type UseTaskOptions = {
-  cancelOnUnmount?: boolean;
-  pruneHistory?: boolean; // default: true
-  keepSuccessful?: number; // default: 2
-  maxInstances?: number; // default: 50
-  pruneDelayMs?: number; // default: 1000
-};
+export type UseTaskOptions from "./types/task-options";
 
 const DEFAULT_TASK_OPTIONS: Required<UseTaskOptions> = {
   cancelOnUnmount: true,
@@ -93,7 +89,12 @@ export default function useTask<T, U extends any[]>(
   cb: TaskCb<T, U>,
   options: UseTaskOptions = {}
 ): Task<Resolved<T>, U> {
-  const mergedOptions = { ...DEFAULT_TASK_OPTIONS, ...options };
+  const injectedDefaults = inject(TASK_DEFAULTS_KEY, null);
+  const mergedOptions = {
+    ...DEFAULT_TASK_OPTIONS,
+    ...(injectedDefaults ?? {}),
+    ...options,
+  };
 
   const scope = effectScope();
   const content = _reactiveContent({
