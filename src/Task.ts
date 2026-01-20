@@ -1,4 +1,9 @@
-import { computed, onBeforeUnmount, getCurrentInstance, effectScope } from "./utils/api";
+import {
+  computed,
+  onBeforeUnmount,
+  getCurrentInstance,
+  effectScope,
+} from "./utils/api";
 import createTaskInstance, {
   TaskInstance,
   ModifierOptions,
@@ -7,7 +12,6 @@ import {
   reachedMaxConcurrency,
   cancelFirstRunning,
   filteredInstances,
-  computedLength,
   computedLastOf,
   computedFirstOf,
   _reactive,
@@ -58,11 +62,21 @@ export type Task<T, U extends any[]> = {
   _activeInstances: readonly TaskInstance<T>[];
   _enqueuedInstances: readonly TaskInstance<T>[];
   _notDroppedInstances: readonly TaskInstance<T>[];
+
+  // History pruning (internal)
+  _pruneHistory: boolean;
+  _pruneTimer: ReturnType<typeof setTimeout> | null;
+  _performCount: number;
+};
+
+export type UseTaskOptions = {
+  cancelOnUnmount?: boolean;
+  pruneHistory?: boolean; // default: true
 };
 
 export default function useTask<T, U extends any[]>(
   cb: TaskCb<T, U>,
-  options = { cancelOnUnmount: true }
+  options: UseTaskOptions = { cancelOnUnmount: true, pruneHistory: true },
 ): Task<Resolved<T>, U> {
   const scope = effectScope();
   const content = _reactiveContent({
@@ -76,12 +90,16 @@ export default function useTask<T, U extends any[]>(
         task._isRestartable ||
         task._isDropping ||
         task._isEnqueuing ||
-        task._isKeepingLatest
+        task._isKeepingLatest,
     ),
+
+    _pruneHistory: options.pruneHistory ?? true,
+    _pruneTimer: null,
+    _performCount: 0,
 
     isIdle: computed(() => !task.isRunning),
     isRunning: computed(
-      () => !!task._instances.find((instance) => instance.isRunning)
+      () => !!task._instances.find((instance) => instance.isRunning),
     ),
     isError: computed(() => !!(task.last && task.last.isError)),
 
@@ -92,29 +110,33 @@ export default function useTask<T, U extends any[]>(
     _enqueuedInstances: filteredInstances(() => task, "isEnqueued"),
     _notDroppedInstances: filteredInstances(() => task, "isNotDropped"),
     _activeInstances: filteredInstances(() => task, "isActive"),
-    performCount: computedLength(() => task._instances),
+    performCount: computed(() => task._performCount),
     last: computedLastOf(() => task._notDroppedInstances),
     lastSuccessful: computedLastOf(() => task._successfulInstances),
     firstEnqueued: computedFirstOf(() => task._enqueuedInstances),
 
     cancelAll({ force } = { force: false }) {
       // Cancel all running and enqueued instances. Finished and dropped instances can't really be canceled.
-      task._instances.forEach(
-        (taskInstance) => {
-          try {
-            if (force || !taskInstance.isDropped && !taskInstance.isFinished) {
-              taskInstance.cancel({ force });
-            }
-          } catch (e) {
-            if (e !== "cancel") {
-              throw e;
-            }
+      task._instances.forEach((taskInstance) => {
+        try {
+          if (force || (!taskInstance.isDropped && !taskInstance.isFinished)) {
+            taskInstance.cancel({ force });
+          }
+        } catch (e) {
+          if (e !== "cancel") {
+            throw e;
           }
         }
-      );
+      });
     },
 
     perform(...params: any[]) {
+      task._performCount += 1;
+      if (task._pruneTimer) {
+        clearTimeout(task._pruneTimer);
+        task._pruneTimer = null;
+      }
+
       const modifiers: ModifierOptions = {
         enqueue: false,
         drop: false,
@@ -139,12 +161,13 @@ export default function useTask<T, U extends any[]>(
       }
 
       const onFinish = () => onTaskInstanceFinish(task);
-      const create = () => createTaskInstance<T>(cb, params, {
-        modifiers,
-        onFinish,
-        scope: scope,
-        id: task._instances.length + 1,
-      });
+      const create = () =>
+        createTaskInstance<T>(cb, params, {
+          modifiers,
+          onFinish,
+          scope: scope,
+          id: task._instances.length + 1,
+        });
 
       const newInstance = scope.active ? scope.run(create) : create();
 
@@ -156,6 +179,10 @@ export default function useTask<T, U extends any[]>(
     clear() {
       this.cancelAll({ force: true });
       this._instances = [];
+      if (this._pruneTimer) {
+        clearTimeout(this._pruneTimer);
+        this._pruneTimer = null;
+      }
     },
 
     destroy() {
@@ -223,4 +250,45 @@ function onTaskInstanceFinish(task: Task<any, any>): void {
       firstEnqueued._run();
     }
   }
+
+  scheduleHistoryPrune(task);
+}
+
+function scheduleHistoryPrune(task: Task<any, any>): void {
+  if (!task._pruneHistory) return;
+
+  // Debounce: keep the most recent schedule request.
+  if (task._pruneTimer) clearTimeout(task._pruneTimer);
+
+  // “Lazy”: only prune after the task has had time to settle.
+  // Also: only prune when idle, to avoid interfering with parallel / Promise.all patterns.
+  task._pruneTimer = setTimeout(() => {
+    task._pruneTimer = null;
+
+    // Fully idle only: no running, no enqueued.
+    if (task.isRunning) return;
+    if (task._enqueuedInstances.length > 0) return;
+
+    pruneHistoryNow(task);
+  }, 1000);
+}
+
+function pruneHistoryNow(task: Task<any, any>): void {
+  // Keep all active (defensive), plus last + last 2 successful.
+  const keep = new Set<TaskInstance<any>>();
+
+  for (const inst of task._instances) {
+    if (inst.isRunning || inst.isEnqueued) keep.add(inst);
+  }
+
+  if (task.last) keep.add(task.last);
+
+  // Keep last 2 successful instances.
+  const succ = task._successfulInstances;
+  const len = succ.length;
+  if (len >= 1) keep.add(succ[len - 1]);
+  if (len >= 2) keep.add(succ[len - 2]);
+
+  // Prune.
+  task._instances = task._instances.filter((inst) => keep.has(inst));
 }
