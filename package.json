@@ -35,7 +35,7 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "tsc --p ./tsconfig.build.json && vite build",
+    "build": "tsc --p ./tsconfig.build.json && vite build && vite build --config vite.config-bundle.config.ts",
     "test": "vitest",
     "prepublishOnly": "npm run build",
     "test:coverage": "vitest run --coverage",

@@ -20,6 +20,7 @@ import {
   dropEnqueued,
 } from "./utils/general";
 import { Resolved, TaskCb } from "./types/index";
+import { UseTaskOptions } from "./types/task-options";
 import { TASK_DEFAULTS_KEY } from "./config";
 
 export type Task<T, U extends any[]> = {
@@ -75,7 +76,7 @@ export type Task<T, U extends any[]> = {
   _pruneDelayMs: number;
 };
 
-export type UseTaskOptions from "./types/task-options";
+export type { UseTaskOptions } from "./types/task-options";
 
 const DEFAULT_TASK_OPTIONS: Required<UseTaskOptions> = {
   cancelOnUnmount: true,

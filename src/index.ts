@@ -5,6 +5,6 @@ export { useTaskPrefetch, useSSRPersistance } from "./utils/ssr-utils";
 export { default as useTaskGroup } from "./TaskGroup";
 export type { TaskGroup } from "./TaskGroup";
 export { default as useTask } from "./Task";
-export type { Task } from "./Task";
+export type { Task, UseTaskOptions } from "./Task";
 export type { TaskInstance } from "./TaskInstance";
 export type { YieldReturn } from './types';

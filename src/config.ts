@@ -1,5 +1,5 @@
 import type { App, InjectionKey } from "vue";
-import type { UseTaskOptions } from "./Task";
+import type { UseTaskOptions } from "./types/task-options";
 
 export type TaskDefaults = Partial<UseTaskOptions>;
 
